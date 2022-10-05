@@ -17,6 +17,7 @@ class User(UserMixin, db.Model):
     lastname = db.Column(db.String(64), index=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    # profile picture image 
     
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -27,3 +28,20 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+class Trip(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tripname = db.Column(db.String(64), index=True, unique=True)
+    # trip photo 
+    # destination = db.Column(db.String(64), index=True, unique=True)
+    # lodging 
+    # 
+    # admin_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    
+
+class Poll(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    pollname = db.Column(db.String(256), index=True, unique=True)
+    # creator_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+
+
+    

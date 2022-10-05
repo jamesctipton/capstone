@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
-from app.models import User
+from .models import User
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -28,4 +28,24 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+# unfinished
+class CreateTripForm(FlaskForm):
+    # give trip name
+    # choose location 
+    # create initial polls
+    # invite members via email/username
+    submit = SubmitField('Create Trip')
     
+# unfinished
+class JoinTripForm(FlaskForm):
+    submit = SubmitField('Join Trip')
+
+# unfinished
+class CreatePollForm(FlaskForm):
+    submit = SubmitField('Create Poll')
+
+# unfinished
+class VotePollForm(FlaskForm):
+    submit = SubmitField('Submit vote')
+

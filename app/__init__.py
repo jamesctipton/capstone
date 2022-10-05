@@ -1,5 +1,5 @@
 from flask import Flask
-from config import Config
+from app.instance.config import Config
 from flask_sqlalchemy import SQLAlchemy 
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -14,15 +14,15 @@ def create_app():
     db.init_app(app)
 
     from .models import User
-    from .routes import routes
-    app.register_blueprint(routes, url_prefix='/')
+    from .views.home import home
+    app.register_blueprint(home, url_prefix='/')
 
     create_database(app)
     db.session.commit()
     migrate = Migrate(app, db)
 
     login_manager = LoginManager(app)
-    login_manager.login_view = 'routes.login'
+    login_manager.login_view = 'home.login'
     login_manager.init_app(app)
 
     @login_manager.user_loader
