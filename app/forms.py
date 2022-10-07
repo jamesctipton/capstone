@@ -6,8 +6,8 @@ from .models import User
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    #remember_me = BooleanField('Remember Me')
+    submit = SubmitField('Log In')
 
 class RegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired()])
@@ -18,7 +18,13 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
-    
+
+    def reformat_phone(form, field):
+        field.data = field.data.replace('-', '')
+        return True
+
+    phone = StringField('Phone Number', validators=[DataRequired(), reformat_phone])
+
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:

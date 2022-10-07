@@ -3,6 +3,7 @@ from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager
 from flask_login import UserMixin
+from sqlalchemy_utils import PhoneNumber
 
 app = Flask(__name__)
 
@@ -16,8 +17,18 @@ class User(UserMixin, db.Model):
     firstname = db.Column(db.String(64), index=True)
     lastname = db.Column(db.String(64), index=True)
     email = db.Column(db.String(120), index=True, unique=True)
+    # phone number fields that i haven't tested out yet
+    '''
+    _phone_number = db.Column(db.Unicode(20))
+    country_code = db.Column(db.Unicode(8))
+    phone_number = db.composite(
+        PhoneNumber,
+        _phone_number,
+        country_code
+    )
+    '''
     password_hash = db.Column(db.String(128))
-    # profile picture image 
+    # profile picture image
     
     def __repr__(self):
         return '<User {}>'.format(self.username)

@@ -22,10 +22,6 @@ def login():
             return redirect(url_for('home.login'))
         # login user
         login_user(user, remember=form.remember_me.data)
-        # determine url redirection
-        # next_page = request.args.get('next')
-        #if not next_page or url_parse(next_page).netloc != '':
-        #    next_page = url_for('home.login')
         return redirect(url_for('home.login'))
     return render_template('home/login.html', title='Sign In', form=form)
 
@@ -38,7 +34,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(firstname=form.first_name.data, lastname=form.last_name.data,
-                    username=form.username.data, email=form.email.data)
+                    username=form.username.data, email=form.email.data, phone_number=form.phone.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -53,6 +49,7 @@ def title():
     return render_template('home/home.html', title='Home')
 
 # User profile page
+# not finished 
 @home.route('/user', methods=['GET', 'POST'])
 def user():
     return 
