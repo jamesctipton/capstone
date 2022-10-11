@@ -2,6 +2,11 @@ import logo from './logo.svg';
 import './App.css';
 import React, { useEffect, useState } from 'react';
 
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Layout from './pages/Layout';
+
 function App() {
   const [data, setData] = useState([{}])
 
@@ -9,35 +14,15 @@ function App() {
     fetch("/")
   })
 
-  // useEffect(()=>{
-  //   fetch("/members").then(
-  //     res => res.json()
-  //   ).then(
-  //     data => {
-  //       setData(data)
-  //       console.log(data)
-  //     }
-  //   ).finally(
-  //     console.log("please")
-  //   )
-
-  // }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <div>
-
-          {(typeof data.members === 'undefined') ? (
-            <p>loading...</p>
-          ) : (
-            data.members.map((member, i) => (
-              <p key={i}>{member}</p>
-            ))
-          )}
-        </div>        
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
