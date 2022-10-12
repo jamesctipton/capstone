@@ -1,0 +1,23 @@
+@font-face {
+    font-family: 'Lato';
+    src: "./../../fonts/Lato/Lato-Bold.ttf";
+}
+
+body {
+    font-family: 'Lato', arial;
+}
+
+#flexbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#form {
+    font-size: medium;
+}
+
+#form p, #checkbox, a {
+    color: #CF7D30;
+}
