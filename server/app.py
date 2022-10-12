@@ -1,10 +1,8 @@
 from flask import Flask
+from flask_cors import CORS
 
 app = Flask(__name__)
-
-@app.route("/members")
-def members():
-    return {"members": ["member1", "member2", "member3"]}
+CORS(app)
 
 @app.route("/")
 def home():
