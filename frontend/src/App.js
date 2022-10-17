@@ -6,11 +6,13 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Layout from './pages/Layout';
 import axios from 'axios';
+import Registration from './pages/Registration';
 
 function App() {
 
   const [getMessage, setGetMessage] = useState({})
 
+  //allows the app to use the flask api
   useEffect(()=>{
     axios.get('http://localhost:5000/').then(response => {
       console.log("SUCCESS", response)
@@ -31,6 +33,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
+          <Route path="register" element={<Registration />} />
         </Route>
       </Routes>
     </BrowserRouter>
