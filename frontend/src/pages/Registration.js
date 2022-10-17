@@ -114,7 +114,7 @@ const Registration = () => {
                 </Grid>
                 <Grid item xs={12}>
                     <OutlinedInput
-                        label="password"
+                        label="Password"
                         type={values.showPassword ? 'text' : 'password'}
                         value={values.password}
                         onChange={handleChange('password')}
