@@ -34,6 +34,7 @@ const Login = () => {
               sx={{mt: 2, mb: 1}}
               id="password" 
               label="Password" 
+              type="password"
               variant="outlined" 
               required></TextField>
 

@@ -1,4 +1,16 @@
 #flexbox {
     width: 80%;
+    margin-bottom: 5%;
+}
+
+#main-form {
+    width: 50%;
+}
+
+#buttons {
     margin: auto;
+}
+
+#logo {
+    margin-bottom: 2%;
 }
