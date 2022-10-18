@@ -63,7 +63,6 @@ const TopNavBar = () => {
           <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 10}}>
             <FormControl fullWidth>
             <OutlinedInput
-                label="Search"
                 placeholder="Search Locations, Hotels, or Flights"
                 variant="outlined"
                 sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 'maxcontent'}}
