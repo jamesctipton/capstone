@@ -1,3 +1,4 @@
+import React from "react";
 import { Outlet, Link } from "react-router-dom";
 import { Drawer, List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import AppBar from '@mui/material/AppBar';
@@ -7,15 +8,25 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
-import { ThemeProvider, createTheme } from "@mui/material";
+import { InputAdornment, OutlinedInput, InputLabel } from '@mui/material';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import { ThemeProvider, createTheme, Button, Icon } from "@mui/material";
 import { Divider } from "@material-ui/core";
-import React from "react";
+import { FormControl } from '@mui/material';
+
+
 
 const theme = createTheme({
   palette: {
     primary: {
       main: '#CF7D30',
       darker: '#BE6C20'
+    },
+    secondary: {
+      main: '#00000'
     }
   }
 });
@@ -39,14 +50,55 @@ const TopNavBar = () => {
 
     
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" enableColorOnDark color="primary">
-        <Toolbar variant="dense" position='fixed'>
-          <IconButton onClick={toggleDrawer} edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-            <MenuIcon />
+      <AppBar position="static" enableColorOnDark color="secondary">
+        <Toolbar variant="regular" position='fixed' sx={{justifyContent: 'space-between'}} >
+          <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center'}}>
+          <IconButton onClick={toggleDrawer} edge="start" color="primary" aria-label="menu" sx={{ mr: 2 }}>
+            <MenuIcon fontSize="large"/>
           </IconButton>
-          <Typography variant="h6" color="inherit" component="div">
-            {title}
+          <Typography variant="h6" color="primary" component="div" sx={{ fontSize: 28 }}>
+            FRÍ
           </Typography>
+          </div>
+          <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 10}}>
+            <FormControl fullWidth>
+            <OutlinedInput
+                label="Search"
+                placeholder="Search Locations, Hotels, or Flights"
+                variant="outlined"
+                sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 'maxcontent'}}
+                fullWidth
+                endAdornment={
+                    <InputAdornment position='end'>
+                        <IconButton
+                            aria-label='show/hide password'
+                            onClick={() => {}}
+                            onMouseDown={() => {}}
+                            edge="end"
+                        >
+                            <SearchOutlinedIcon fontSize="large" />
+                        </IconButton>
+                    </InputAdornment>
+                }
+            >Search</OutlinedInput>
+            </FormControl>
+            <IconButton onClick={() => {}} edge="end" color="primary" aria-label="favorites">
+              <FavoriteBorderOutlinedIcon fontSize="large"/>
+            </IconButton>
+            <IconButton onClick={() => {}} edge="end" color="primary" aria-label="groups">
+              <PeopleAltOutlinedIcon fontSize="large" />
+            </IconButton>
+            <IconButton onClick={() => {}} edge="end" color="primary" aria-label="messages">
+              <TextsmsOutlinedIcon fontSize="large" />
+            </IconButton>
+            <Button 
+                type='button'
+                variant="outlined"
+                sx={{m: 1, borderWidth: 3, borderRadius: 30, borderColor: 'primary', whiteSpace: 'nowrap', minWidth: 'maxcontent'}}
+                size="large"
+                onClick={() => {}}
+              >Sign In</Button>
+          </div>
         </Toolbar>
       </AppBar>
     </Box>
