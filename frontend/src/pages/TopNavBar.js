@@ -75,7 +75,7 @@ const TopNavBar = () => {
                             onMouseDown={() => {}}
                             edge="end"
                         >
-                            <SearchOutlinedIcon fontSize="large" />
+                            <SearchOutlinedIcon fontSize="large" color="primary"/>
                         </IconButton>
                     </InputAdornment>
                 }
