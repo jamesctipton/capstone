@@ -55,7 +55,7 @@ const Registration = () => {
         {/* <h1>Register to FRÍ</h1> */}
         <form id='main-form' onSubmit={Submit(this)}>
             <Grid container spacing={2}>
-                <Grid xs={12} sm={10} item>
+                <Grid xs={12} sm={5} item>
                     <TextField
                         placeholder="Enter first name"
                         onChange={handleChange('firstname')}
@@ -72,7 +72,7 @@ const Registration = () => {
                         variant='outlined'
                     />
                 </Grid>
-                <Grid xs={12} sm={10} item>
+                <Grid xs={12} sm={5} item>
                     <TextField
                         placeholder="Enter last name"
                         onChange={handleChange('lastname')}
