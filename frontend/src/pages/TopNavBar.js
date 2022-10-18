@@ -69,7 +69,7 @@ const TopNavBar = () => {
         
         <Divider></Divider>
 
-        <ListItem button component={Link} to='/login'>
+        <ListItem button component={Link} to='/login' onClick={() => onItemClick('Login')}>
           <ListItemText>Sign Out</ListItemText>
         </ListItem>
       </List>
