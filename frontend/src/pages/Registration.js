@@ -5,6 +5,7 @@ import './Registration.css'
 import React from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { FormControl } from '@mui/material';
 
 const theme = createTheme({
     palette: {
@@ -113,35 +114,44 @@ const Registration = () => {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <OutlinedInput
-                        label="Password"
-                        type={values.showPassword ? 'text' : 'password'}
-                        value={values.password}
-                        onChange={handleChange('password')}
-                        placeholder="Password *"
-                        variant="outlined"
-                        fullWidth
-                        endAdornment={
-                            <InputAdornment position='end'>
-                                <IconButton
-                                    aria-label='show/hide password'
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                >
-                                    {values.showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    >Password</OutlinedInput>
+                    <FormControl fullWidth>
+                        <InputLabel htmlFor='password-input'>Password *</InputLabel>
+                        <OutlinedInput
+                            id='password-input'
+                            label="Password"
+                            InputLabel="Password"
+                            type={values.showPassword ? 'text' : 'password'}
+                            value={values.password}
+                            onChange={handleChange('password')}
+                            placeholder="Enter Password"
+                            variant="outlined"
+                            fullWidth
+                            required
+                            endAdornment={
+                                <InputAdornment position='end'>
+                                    <IconButton
+                                        aria-label='show/hide password'
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {values.showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        >Password</OutlinedInput>
+                    </FormControl>
                 </Grid>
                 <Grid item xs={12}>
+                    <FormControl fullWidth>
+                        <InputLabel htmlFor='re-pass-input'>Confirm Password *</InputLabel>
                     <OutlinedInput
+                        id='re-pass-input'
                         label="confirm password"
                         type={values.showPassword ? 'text' : 'password'}
                         value={values.confirmPassword}
                         onChange={handleChange('confirmPassword')}
-                        placeholder="Confirm Password *"
+                        placeholder="Re-Enter your Password"
                         variant="outlined"
                         fullWidth
                         endAdornment={
@@ -157,6 +167,7 @@ const Registration = () => {
                             </InputAdornment>
                         }
                     >Confirm Password</OutlinedInput>
+                    </FormControl>
                 </Grid>
                 <div id='buttons'>
                 <Button 
