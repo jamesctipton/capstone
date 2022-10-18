@@ -9,6 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import HomeIcon from '@mui/icons-material/Home';
 import { ThemeProvider, createTheme } from "@mui/material";
 import React from "react";
 
@@ -58,6 +59,7 @@ const TopNavBar = () => {
     >
       <List>
         <ListItem button component={Link} to="/" onClick={() => onItemClick('Home')}>
+          <HomeIcon />
           <ListItemText>Home</ListItemText>
         </ListItem>
         <ListItem button component={Link} to="/login" onClick={() => onItemClick('Login')}>
@@ -65,6 +67,12 @@ const TopNavBar = () => {
         </ListItem>
         <ListItem button component={Link} to="/register" onClick={() => onItemClick('Register')}>
           <ListItemText>Register</ListItemText>
+        </ListItem>
+        
+        <Divider></Divider>
+
+        <ListItem button component={Link} to='/login'>
+          <ListItemText>Sign Out</ListItemText>
         </ListItem>
       </List>
     </Drawer>
