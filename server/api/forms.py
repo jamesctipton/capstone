@@ -15,7 +15,7 @@ class LoginForm(Resource):
         json_data = request.get_json()
         username = json_data['username']
 
-        return jsonify(username = username)
+        return jsonify(u = username)
 
 class RegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired()])

@@ -27,7 +27,7 @@ const Login = () => {
 
   const Forgot = (event) => {
     console.log("forgot password")
-    axios.post('http://127.0.0.1:5000/login', {username: 'test'}).then(response => {
+    axios.post('http://127.0.0.1:5000/login', {user: 'test'}).then(response => {
       console.log("SUCCESS", response)
     }).catch(error => {
       console.log(error)
