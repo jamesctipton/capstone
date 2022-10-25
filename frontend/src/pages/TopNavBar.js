@@ -123,9 +123,9 @@ const TopNavBar = () => {
         }}
         sx={{marginTop: 2}}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to="/">Home</MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to="/login">Login</MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to="/">Logout</MenuItem>
       </Menu>
 
     <Outlet />
