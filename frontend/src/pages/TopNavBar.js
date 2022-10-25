@@ -16,7 +16,8 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ThemeProvider, createTheme, Button, Icon } from "@mui/material";
 import { Divider } from "@material-ui/core";
 import { FormControl } from '@mui/material';
-
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
 
 
 const theme = createTheme({
@@ -43,6 +44,15 @@ const TopNavBar = () => {
     changeTitle(title);
     toggleDrawer(!drawer);
   }
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   
   return (
     <ThemeProvider theme={theme}>
@@ -53,7 +63,7 @@ const TopNavBar = () => {
       <AppBar position="static" enableColorOnDark color="secondary">
         <Toolbar variant="regular" position='fixed' sx={{justifyContent: 'space-between'}} >
           <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center'}}>
-          <IconButton onClick={toggleDrawer} edge="start" color="primary" aria-label="menu" sx={{ mr: 2 }}>
+          <IconButton onClick={handleClick} edge="start" color="primary" aria-label="menu" sx={{ mr: 2 }}>
             <MenuIcon fontSize="large"/>
           </IconButton>
           <Typography variant="h6" color="primary" component="div" sx={{ fontSize: 28 }}>
@@ -65,7 +75,7 @@ const TopNavBar = () => {
             <OutlinedInput
                 placeholder="Search Locations, Hotels, or Flights"
                 variant="outlined"
-                sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 'maxcontent'}}
+                sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 310}}
                 fullWidth
                 endAdornment={
                     <InputAdornment position='end'>
@@ -103,32 +113,22 @@ const TopNavBar = () => {
       </AppBar>
     </Box>
 
-    <Drawer
-    open={drawer}
-    onClose={toggleDrawer}
-    >
-      <List>
-        <ListItem button component={Link} to="/" onClick={() => onItemClick('Home')}>
-          <HomeIcon />
-          <ListItemText>Home</ListItemText>
-        </ListItem>
-        <ListItem button component={Link} to="/login" onClick={() => onItemClick('Login')}>
-          <ListItemText>Login</ListItemText>
-        </ListItem>
-        <ListItem button component={Link} to="/register" onClick={() => onItemClick('Register')}>
-          <ListItemText>Register</ListItemText>
-        </ListItem>
-        
-        <Divider></Divider>
-
-        <ListItem button component={Link} to='/login' onClick={() => onItemClick('Login')}>
-          <ListItemText>Sign Out</ListItemText>
-        </ListItem>
-      </List>
-    </Drawer>
+    <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+        sx={{marginTop: 2}}
+      >
+        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={handleClose}>Logout</MenuItem>
+      </Menu>
 
     <Outlet />
-
     </div>
     </ThemeProvider>
   )
