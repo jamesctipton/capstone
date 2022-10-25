@@ -2,12 +2,14 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from api.models import User
+from flask_restful import Api, Resource, reqparse
 
-class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Log In')
+class LoginForm(Resource):
+    def get(self):
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': "login handler get hit"
+        }
 
 class RegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired()])

@@ -1,5 +1,5 @@
 from flask import Flask
-from api.init import db
+from api.config import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager
 from flask_login import UserMixin
