@@ -9,24 +9,6 @@ import Registration from './pages/Registration';
 import TopNavBar from './pages/TopNavBar';
 
 function App() {
-
-  const [getMessage, setGetMessage] = useState({})
-
-  //allows the app to use the flask api
-  useEffect(()=>{
-    axios.get('http://localhost:5000/').then(response => {
-      console.log("SUCCESS", response)
-      setGetMessage(response)
-    }).catch(error => {
-      console.log(error)
-    })
-
-  }, [])
-
-  useEffect(() => {
-    fetch("/")
-  })
-
   return (
     <BrowserRouter>
       <Routes>
