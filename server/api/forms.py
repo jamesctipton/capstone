@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from requests import request
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from api.models import User
@@ -9,6 +10,11 @@ class LoginForm(Resource):
         return {
             'resultStatus': 'SUCCESS',
             'message': "login handler get hit"
+        }
+    def post(self):
+        username = request.json['username']
+        return {
+            'test': username
         }
 
 class RegistrationForm(FlaskForm):
