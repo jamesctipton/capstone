@@ -174,6 +174,7 @@ const Registration = () => {
                 variant="outlined"
                 sx={{m: 1}}
                 size="large"
+                href='/login'
                 >Cancel</Button>
                 <Button 
                 type='submit'
@@ -186,6 +187,7 @@ const Registration = () => {
             </Grid>
         </form>
   </div>
+
 </ThemeProvider>
 };
   
