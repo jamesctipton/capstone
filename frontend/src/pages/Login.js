@@ -4,7 +4,7 @@ import { Checkbox, FormControlLabel, FormGroup, Button, createTheme, ThemeProvid
 import TextField from '@mui/material/TextField';
 import axios from 'axios'
 
-const url = 'http://localhost:5000/login'
+const url = 'http://127.0.0.1:5000/login'
 
 const theme = createTheme({
   palette: {
