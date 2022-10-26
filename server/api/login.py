@@ -5,9 +5,8 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from api.models import User
 from flask_restful import Api, Resource
 from flask import request, jsonify
-from api.config import db
 
-class LoginForm(Resource):
+class LoginHandler(Resource):          
     def get(self):
         return {
             'resultStatus': 'SUCCESS',
@@ -17,6 +16,8 @@ class LoginForm(Resource):
         json_data = request.get_json()
         username = json_data['username']
         password = json_data['password']
+
+        print(json_data)
 
         return jsonify(u = username, p = password)
 

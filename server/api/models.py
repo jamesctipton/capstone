@@ -1,9 +1,9 @@
 from flask import Flask
-from api.config import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager
 from flask_login import UserMixin
 from sqlalchemy_utils import PhoneNumber
+from . import db
 
 app = Flask(__name__)
 
