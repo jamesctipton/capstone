@@ -1,9 +1,11 @@
+import json
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from api.models import User
 from flask_restful import Api, Resource
 from flask import request, jsonify
+from api.config import db
 
 class LoginForm(Resource):
     def get(self):
@@ -14,8 +16,9 @@ class LoginForm(Resource):
     def post(self):
         json_data = request.get_json()
         username = json_data['username']
+        password = json_data['password']
 
-        return jsonify(u = username)
+        return jsonify(u = username, p = password)
 
 class RegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired()])
