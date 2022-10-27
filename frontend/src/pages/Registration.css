@@ -1,7 +1,9 @@
+@font-face {
+    font-family: 'Lato';
+    src: "./../../fonts/Lato/Lato-Bold.ttf";
+}
 #flexbox {
     width: 80%;
-    margin-top: 8%;
-    margin-bottom: 5%;
 }
 
 #main-form {

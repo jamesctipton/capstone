@@ -1,6 +1,13 @@
 import './Login.css';
 import React, { useState } from 'react';
-import { Checkbox, FormControlLabel, FormGroup, Button, createTheme, ThemeProvider } from '@mui/material';
+import { 
+  Checkbox, 
+  FormControlLabel, 
+  FormGroup, 
+  Button, 
+  createTheme, 
+  ThemeProvider 
+} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { Link } from "react-router-dom";
 import axios from 'axios'
@@ -30,13 +37,13 @@ const Login = () => {
       username: loginForm.username,
       password: loginForm.password
     }).then((response) => {
+      //if response['resultStatus'] == 'FAILURE'
+        //do something
       console.log(response)
     }).catch((error) => {
       console.log(error)
     })
   };
-
-  const Forgot = (event) => {}
 
     return <ThemeProvider theme={theme}>
         <div id='flexbox'> 
@@ -70,15 +77,14 @@ const Login = () => {
             </FormGroup>
             <div id='buttons'>
               <Button variant="outlined"
-                sx={{m: 1}}
+                sx={{m: 1, borderWidth: 3, borderRadius: 30, fontWeight: 600}}
                 size="large"
-                onClick={Forgot}
-                component={Link} component={Link} to="/forgot-password"
+                component={Link} to="/forgot-password"
               >Forgot Password</Button>
               <Button 
                 type='submit'
                 variant="outlined"
-                sx={{m: 1}}
+                sx={{m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600}}
                 size="large"
               >Log In</Button>
               
