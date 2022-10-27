@@ -5,6 +5,7 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from api.models import User
 from flask_restful import Api, Resource
 from flask import request, jsonify
+from . import db
 
 class LoginHandler(Resource):          
     def get(self):
@@ -17,53 +18,87 @@ class LoginHandler(Resource):
         username = json_data['username']
         password = json_data['password']
 
+        user = User.query.filter_by(username=username).first()
+        if (user is None) or (not user.check_password(password)):
+            return{
+                'resultStatus': 'FAILURE',
+                'message': "Invalid username or password"
+            }
+            
         print(json_data)
 
         return jsonify(u = username, p = password)
 
-class RegistrationForm(FlaskForm):
-    first_name = StringField('First Name', validators=[DataRequired()])
-    last_name = StringField('Last Name', validators=[DataRequired()])
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Register')
+class RegistrationHandler(Resource):
+    def get(self):
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': "registration handler get hit"
+        }
+    def post(self):
+        json_data = request.get_json()
+        username = json_data['username']
+        password = json_data['password']
+        confirmPassword = json_data['confirmPassword']
+        firstname = json_data['firstname']
+        lastname = json_data['lastname']
+        email = json_data['email']
 
-    def reformat_phone(form, field):
-        field.data = field.data.replace('-', '')
-        return True
+        # check if passwords match
+        if(password != confirmPassword):
+            return{
+                'resultStatus': 'FAILURE',
+                'message': "Passwords do not match"
+            }
 
-    phone = StringField('Phone Number', validators=[DataRequired(), reformat_phone])
+        # check if user already exists 
+        username_check = User.query.filter_by(username=username).first()
+        email_check = User.query.filter_by(email=email).first()
+        if (username_check is not None) or (email_check is not None):
+            return{
+                'resultStatus': 'FAILURE',
+                'message': "User already exists"
+            }
 
-    def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user is not None:
-            raise ValidationError('Please use a different username.')
+        user = User(firstname=firstname, lastname=lastname, username=username, 
+                    email=email)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+        
+        print(json_data)
 
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user is not None:
-            raise ValidationError('Please use a different email address.')
+        #return jsonify(u = username, p = password, f = firstname, l = lastname, )
 
 # unfinished
-class CreateTripForm(FlaskForm):
-    # give trip name
-    # choose location 
-    # create initial polls
-    # invite members via email/username
-    submit = SubmitField('Create Trip')
+class CreateTripHandler(Resource):
+    def get(self):
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': "create trip handler get hit"
+        }
     
 # unfinished
-class JoinTripForm(FlaskForm):
-    submit = SubmitField('Join Trip')
+class JoinTripHandler(Resource):
+    def get(self):
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': "join trip handler get hit"
+        }
 
 # unfinished
-class CreatePollForm(FlaskForm):
-    submit = SubmitField('Create Poll')
+class CreatePollHandler(Resource):
+    def get(self):
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': "create poll handler get hit"
+        }
 
 # unfinished
-class VotePollForm(FlaskForm):
-    submit = SubmitField('Submit vote')
+class VotePollHandler(Resource):
+    def get(self):
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': "vote poll handler get hit"
+        }
 

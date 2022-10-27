@@ -13,20 +13,10 @@ def create_app():
     db = SQLAlchemy(app)
     db.init_app(app)
 
-    from .models import User
-
     create_database(app)
     db.session.commit()
     migrate = Migrate(app, db)
 
-    login_manager = LoginManager(app)
-    login_manager.login_view = 'home.login'
-    login_manager.init_app(app)
-
-    @login_manager.user_loader
-    def load_user(id):
-        return User.query.get(int(id))   
-    
     return app
 
 def create_database(app):
