@@ -6,7 +6,9 @@ import React from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { FormControl } from '@mui/material';
+import axios from 'axios';
 
+const url = 'http://127.0.0.1:5000/register'
 const theme = createTheme({
     palette: {
       primary: {
@@ -16,9 +18,7 @@ const theme = createTheme({
     }
   });
 
-const Submit = (event) => {
-    return
-};
+
 
 const Registration = () => {
 
@@ -26,7 +26,6 @@ const Registration = () => {
         firstname: '',
         lastname: '',
         email: '',
-        phone: '',
         username: '',
         password: '',
         confirmPassword: '',
@@ -48,13 +47,29 @@ const Registration = () => {
         event.preventDefault();
     };
 
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        axios.post(url, {
+            firstname: values.firstname,
+            lastname: values.lastname,
+            email: values.email,
+            username: values.username,
+            password: values.password,
+            confirmPassword: values.confirmPassword,
+        }).then((response) => {
+            console.log(response)
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
     return <ThemeProvider theme={theme}>
     <div id='flexbox-registration'> 
         {/* logo */}
         <Typography variant='h1' color='primary' fontWeight={400}>Register for FRÍ</Typography>
         <br></br>
         {/* <h1>Register to FRÍ</h1> */}
-        <form id='main-form' onSubmit={Submit(this)}>
+        <form id='main-form' onSubmit={handleSubmit}>
             <Grid container spacing={2}>
                 <Grid xs={12} sm={5} item>
                     <TextField
@@ -95,16 +110,6 @@ const Registration = () => {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        placeholder="Enter phone number"
-                        onChange={handleChange('phone')}
-                        label="Phone"
-                        variant="outlined"
-                        fullWidth
-                        required
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
                         placeholder="Username"
                         onChange={handleChange('username')}
                         label="Username"
@@ -119,7 +124,6 @@ const Registration = () => {
                         <OutlinedInput
                             id='password-input'
                             label="Password"
-                            InputLabel="Password"
                             type={values.showPassword ? 'text' : 'password'}
                             value={values.password}
                             onChange={handleChange('password')}
@@ -169,23 +173,24 @@ const Registration = () => {
                     >Confirm Password</OutlinedInput>
                     </FormControl>
                 </Grid>
-                <div id='buttons'>
-                <Button 
+            </Grid>
+            <div id='buttons-registration'>
+            <Button 
                 variant="outlined"
-                sx={{m: 1}}
+                sx={{m: 1, borderWidth: 3, borderRadius: 30, fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: 300, height: 70, fontSize: 15}}
                 size="large"
                 href='/login'
-                >Cancel</Button>
-                <Button 
+            >Cancel</Button>
+            <Button 
                 type='submit'
                 variant="outlined"
-                sx={{m: 1}}
+                sx={{m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: 300, height: 70, fontSize: 15}}
                 size="large"
-                disabled={!(values.firstname && values.lastname && values.email && values.phone && values.username && values.password && values.confirmPassword)}
-              >Register</Button>
-              </div>
-            </Grid>
+                disabled={!(values.firstname && values.lastname && values.email && values.username && values.password && values.confirmPassword)}
+            >Register</Button>
+        </div>
         </form>
+        
   </div>
 
 </ThemeProvider>

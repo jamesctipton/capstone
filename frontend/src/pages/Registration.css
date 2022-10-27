@@ -4,14 +4,24 @@
 }
 #flexbox-registration {
     width: 80%;
+    padding-top: 10%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
 #main-form {
-    width: 50%;
+    width: 60%;
+    gap: 10px;
 }
 
-#buttons {
-    margin: auto;
+#buttons-registration {
+    display: flex !important;
+    margin: 5%;
+    gap: 10%;
 }
 
 #logo {
