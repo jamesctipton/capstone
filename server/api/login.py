@@ -1,7 +1,3 @@
-import json
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from api.models import User
 from flask_restful import Api, Resource
 from flask import request, jsonify
