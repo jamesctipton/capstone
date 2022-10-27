@@ -65,7 +65,17 @@ class RegistrationHandler(Resource):
         print(json_data)
 
         #return jsonify(u = username, p = password, f = firstname, l = lastname, )
+class ForgotPasswordHandler(Resource):
+    def get(self):
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': 'hit forgot handler'
+        }
+    def post(self):
+        json_data = request.get_json()
+        email = json_data['email']
 
+        return jsonify(email = email)
 # unfinished
 class CreateTripHandler(Resource):
     def get(self):

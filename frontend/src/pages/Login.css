@@ -8,13 +8,19 @@ body {
 }
 
 #flexbox {
-    width: 80%;
+    width: 50%;
     padding-top: 10%;
     margin: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+#buttons {
+    width: 80%;
+    display: flex !important;
+    justify-content: space-between;
+    margin: 5%;
 }
 
 #form {

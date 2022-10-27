@@ -77,14 +77,14 @@ const Login = () => {
             </FormGroup>
             <div id='buttons'>
               <Button variant="outlined"
-                sx={{m: 1, borderWidth: 3, borderRadius: 30, fontWeight: 600}}
+                sx={{m: 1, borderWidth: 3, borderRadius: 30, fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: 300, height: 70, fontSize: 15}}
                 size="large"
                 component={Link} to="/forgot-password"
               >Forgot Password</Button>
               <Button 
                 type='submit'
                 variant="outlined"
-                sx={{m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600}}
+                sx={{m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: 300, height: 70, fontSize: 15}}
                 size="large"
               >Log In</Button>
               

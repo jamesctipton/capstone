@@ -49,7 +49,7 @@ const Registration = () => {
     };
 
     return <ThemeProvider theme={theme}>
-    <div id='flexbox'> 
+    <div id='flexbox-registration'> 
         {/* logo */}
         <Typography variant='h1' color='primary' fontWeight={400}>Register for FRÍ</Typography>
         <br></br>
