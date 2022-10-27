@@ -21,9 +21,11 @@ class LoginHandler(Resource):
                 'message': "Invalid username or password"
             }
             
-        print(json_data)
 
-        return jsonify(u = username, p = password)
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': "Successful credentials"
+        }
 
 class RegistrationHandler(Resource):
     def get(self):
