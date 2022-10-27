@@ -2,6 +2,7 @@ import './Login.css';
 import React, { useState } from 'react';
 import { Checkbox, FormControlLabel, FormGroup, Button, createTheme, ThemeProvider } from '@mui/material';
 import TextField from '@mui/material/TextField';
+import { Link } from "react-router-dom";
 import axios from 'axios'
 
 const url = 'http://127.0.0.1:5000/login'
@@ -72,6 +73,7 @@ const Login = () => {
                 sx={{m: 1}}
                 size="large"
                 onClick={Forgot}
+                component={Link} component={Link} to="/forgot-password"
               >Forgot Password</Button>
               <Button 
                 type='submit'
