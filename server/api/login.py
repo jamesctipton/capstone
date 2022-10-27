@@ -64,7 +64,9 @@ class RegistrationHandler(Resource):
         
         print(json_data)
 
-        #return jsonify(u = username, p = password, f = firstname, l = lastname, )
+        return jsonify(username = username, password = password, firstname = firstname,
+                        lastname = lastname, email = email)
+
 class ForgotPasswordHandler(Resource):
     def get(self):
         return {
@@ -75,7 +77,19 @@ class ForgotPasswordHandler(Resource):
         json_data = request.get_json()
         email = json_data['email']
 
+        user = User.query.filter_by(email=email).first()
+        if (user is None):
+            return{
+                'resultStatus': 'FAILURE',
+                'message': "User does not exist with email"
+            }
+
+        # send email to user
+        # change password of user
+
+        print(json_data)
         return jsonify(email = email)
+
 # unfinished
 class CreateTripHandler(Resource):
     def get(self):
