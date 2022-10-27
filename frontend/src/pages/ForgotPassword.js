@@ -51,7 +51,7 @@ const ForgotPassword = () => {
                     size='large'
                     required
                 ></TextField>
-                <div id='buttons'>
+                <div id='buttons-forgot-password'>
                     <Button
                         id='cancelButton' 
                         variant="outlined"

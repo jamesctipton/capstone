@@ -7,7 +7,7 @@ body {
     font-family: 'Lato', arial;
 }
 
-#flexbox {
+#flexbox-login {
     width: 50%;
     padding-top: 10%;
     margin: auto;
@@ -16,14 +16,13 @@ body {
     justify-content: center;
     align-items: center;
 }
-#buttons {
-    width: 80%;
+#buttons-login {
     display: flex !important;
-    justify-content: space-between;
     margin: 5%;
 }
 
 #form {
+    align-items: center;
     font-size: medium;
 }
 
