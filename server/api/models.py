@@ -1,10 +1,7 @@
 from flask import Flask
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager
 from flask_login import UserMixin
-from . import db
-
-app = Flask(__name__)
+from api.__init__ import db
 
 # User class 
 class User(UserMixin, db.Model):
@@ -14,6 +11,7 @@ class User(UserMixin, db.Model):
     lastname = db.Column(db.String(64), index=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    hashCode = db.Column(db.String(120))
     
     def __repr__(self):
         return '<User {}>'.format(self.username)

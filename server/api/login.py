@@ -1,7 +1,9 @@
+import random, string
 from api.models import User
 from flask_restful import Api, Resource
 from flask import request, jsonify
-from . import db
+from api.__init__ import db, mail
+from flask_mail import Message
 
 class LoginHandler(Resource):          
     def get(self):
@@ -20,8 +22,6 @@ class LoginHandler(Resource):
                 'resultStatus': 'FAILURE',
                 'message': "Invalid username or password"
             }
-            
-
         return {
             'resultStatus': 'SUCCESS',
             'message': "Successful credentials"
@@ -69,6 +69,7 @@ class RegistrationHandler(Resource):
         return jsonify(username = username, password = password, firstname = firstname,
                         lastname = lastname, email = email)
 
+
 class ForgotPasswordHandler(Resource):
     def get(self):
         return {
@@ -86,8 +87,15 @@ class ForgotPasswordHandler(Resource):
                 'message': "User does not exist with email"
             }
 
+        
+
         # send email to user
-        # change password of user
+        hashCode = ''.join(random.choices(string.ascii_letters + string.digits, k=24))
+        user.hashCode = hashCode
+        db.session.commit()
+        msg = Message('Confirm Password Change', sender = 'akjai@github.com', recipients = [email])
+        msg.body = "Hello,\nWe've received a request to reset your password. If you want to reset your password, click the link below and enter your new password\n http://127.0.0.1:5000/" + user.hashCode
+        mail.send(msg)
 
         print(json_data)
         return jsonify(email = email)
