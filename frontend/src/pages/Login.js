@@ -46,7 +46,7 @@ const Login = () => {
         navigateToHome()
       }
       else {
-
+        //
       }
     }).catch((error) => {
       console.log(error)
@@ -97,6 +97,8 @@ const Login = () => {
               
             </div>
           </form>
+      </div>
+      <div id='error-div'>
       </div>
     </ThemeProvider>
   };
