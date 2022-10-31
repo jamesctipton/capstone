@@ -1,9 +1,12 @@
 import './Home.css'
 import React from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { LeafPoll, Result } from 'react-leaf-polls';
-import { Paper, Button, Card, requirePropFactory } from '@mui/material';
+import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
+import { Button, Card, Typography } from '@mui/material';
 import paris from './../assets/paris.jpeg';
+import { createTheme, ThemeProvider } from '@mui/system';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 
 const styles = {
   cardContainer: {
@@ -16,24 +19,18 @@ const styles = {
   }
 };
 
-const resData = [
-  { id: 0, text: 'Answer 1', votes: 0 },
-  { id: 1, text: 'Answer 2', votes: 0 },
-  { id: 2, text: 'Answer 3', votes: 0 }
-]
 
-const customTheme = {
-  textColor: 'black',
-  mainColor: '#00B87B',
-  backgroundColor: 'rgb(255,255,255)',
-  alignment: 'center'
-}
-
-function vote(item, results) {
-  // Here you probably want to manage
-  // and return the modified data to the server.
-  // uses Result types
-}
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#CF7D30',
+      darker: '#BE6C20'
+    },
+    secondary: {
+      main: '#00000'
+    }
+  }
+});
 
 function CustomCarousel(props)
 {
@@ -75,22 +72,63 @@ function Item(props)
     )
 }
 
+const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+  height: 10,
+  borderRadius: 5,
+  [`&.${linearProgressClasses.colorPrimary}`]: {
+    backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+  },
+  [`& .${linearProgressClasses.bar}`]: {
+    borderRadius: 5,
+    backgroundColor: theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
+  },
+}));
+
+const options = [
+  {name: 'first', votes: 0},
+  {name: 'second', votes: 1},
+  {name: 'third', votes: 1},
+]
+
+function CustomPoll(props) {
+
+  const handleVote = (item) => {
+    item.votes += 1;
+    hidePercent(false);
+  }
+
+  const [hp, hidePercent] = React.useState(true);
+
+  return (
+    <div class="poll-container">
+      {options.map((i) => (
+        <Box key={i.name} sx={{display: 'flex', alignItems: 'center'}}>
+          <Button
+              onClick={() => { handleVote(i) }}
+            >{i.name}</Button>
+          <Box hidden={hp} sx={{width: '100%', mr: 1}}>
+            <BorderLinearProgress variant="determinate" value={ Math.round( (i.votes / (options.reduce((total, current) => total = total + current.votes, 0))) * 100 ) }></BorderLinearProgress>
+          </Box>
+          <Box sx={{minWidth: 35}}>
+            <Typography hidden={hp} variant='body2' color="text.secondary">
+              {`${ Math.round( (i.votes / (options.reduce((total, current) => total = total + current.votes, 0))) * 100 ) }%`}
+            </Typography>
+          </Box>
+        </Box>
+      ))}
+    </div>
+  );
+}
 
 const Home = () => {
+
     return (
       <div>
         <div id='carousel-container'>
           <div id="carousel"><CustomCarousel></CustomCarousel></div>
         </div>
         <h1>Polls WIP</h1>
-        <LeafPoll
-          type='multiple'
-          question='What you wanna ask?'
-          results={resData}
-          theme={customTheme}
-          onVote={vote}
-          isVoted={false}
-        />
+        <CustomPoll></CustomPoll>
       </div>
     );
   };

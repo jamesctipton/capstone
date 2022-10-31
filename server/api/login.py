@@ -100,6 +100,23 @@ class ForgotPasswordHandler(Resource):
         print(json_data)
         return jsonify(email = email)
 
+#unfinished
+class NewPasswordHandler(Resource):
+    def post(self):
+        json_data = request.get_json()
+        password = json_data['password']
+
+        # gotta figure out how to get the user
+        email: string
+        user = User.query.filter_by(email=email).first()
+        if (user is None):
+            return{
+                'resultStatus': 'FAILURE',
+                'message': "User does not exist with email"
+            }
+
+        return jsonify(password = password)
+
 # unfinished
 class CreateTripHandler(Resource):
     def get(self):

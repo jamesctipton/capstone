@@ -8,6 +8,7 @@ import axios from 'axios';
 import Registration from './pages/Registration';
 import TopNavBar from './pages/TopNavBar';
 import ForgotPassword from './pages/ForgotPassword';
+import NewPassword from './pages/NewPassword';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Registration />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="new-password" element={<NewPassword />} />
         </Route>
       </Routes>
     </BrowserRouter>
