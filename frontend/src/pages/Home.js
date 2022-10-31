@@ -73,14 +73,14 @@ function Item(props)
 }
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 10,
+  height: 36,
   borderRadius: 5,
   [`&.${linearProgressClasses.colorPrimary}`]: {
     backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
   },
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
-    backgroundColor: theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
+    backgroundColor: theme.palette.mode === 'light' ? '#CF7D30' : '#BE6C20',
   },
 }));
 
@@ -102,18 +102,20 @@ function CustomPoll(props) {
   return (
     <div class="poll-container">
       {options.map((i) => (
-        <Box key={i.name} sx={{display: 'flex', alignItems: 'center'}}>
+        <Box key={i.name} sx={{display: 'flex', alignItems: 'center', mb: 1}}>
           <Button
               onClick={() => { handleVote(i) }}
-            >{i.name}</Button>
+          >{i.name}</Button>
+          
           <Box hidden={hp} sx={{width: '100%', mr: 1}}>
             <BorderLinearProgress variant="determinate" value={ Math.round( (i.votes / (options.reduce((total, current) => total = total + current.votes, 0))) * 100 ) }></BorderLinearProgress>
           </Box>
           <Box sx={{minWidth: 35}}>
-            <Typography hidden={hp} variant='body2' color="text.secondary">
+            <Typography hidden={hp} variant='h6' color="text.secondary">
               {`${ Math.round( (i.votes / (options.reduce((total, current) => total = total + current.votes, 0))) * 100 ) }%`}
             </Typography>
           </Box>
+
         </Box>
       ))}
     </div>

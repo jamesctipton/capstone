@@ -1,16 +1,11 @@
-/* img {
-    opacity: 0.65;
-    max-height: 500px;
-    width: 100%;
-    overflow: hidden;
-} */
+@font-face {
+    font-family: 'Lato';
+    src: "./../../fonts/Lato/Lato-Bold.ttf";
+}
 
-/* cards {
-    background-image: url(../assets/paris.jpeg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    
-} */
+body {
+    font-family: 'Lato', arial;
+}
 
 #carousel {
     width: 80%;
@@ -29,4 +24,5 @@
     width: 90%;
     margin-right: auto;
     margin-left: auto;
+    margin-bottom: 5%;
 }
