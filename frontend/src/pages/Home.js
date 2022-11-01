@@ -101,16 +101,17 @@ function CustomPoll(props) {
 
   return (
     <div class="poll-container">
-      {options.map((i) => (
-        <Box key={i.name} sx={{display: 'flex', alignItems: 'center', mb: 1}}>
+      {options.map((i) => (              
+        <Box key={i.name} sx={{display: 'grid', gridTemplateColumns: hp ? '1fr' : '1fr 8fr 35px', alignItems: 'center', columnGap: 1, mb: 1}}>
           <Button
+              sx={{gridColumnStart: 1, justifySelf: 'stretch', width: '100%'}}
               onClick={() => { handleVote(i) }}
           >{i.name}</Button>
           
-          <Box hidden={hp} sx={{width: '100%', mr: 1}}>
+          <Box hidden={hp} sx={{ gridColumnStart: 2, justifySelf: 'start', width: '100%', mr: 1}}>
             <BorderLinearProgress variant="determinate" value={ Math.round( (i.votes / (options.reduce((total, current) => total = total + current.votes, 0))) * 100 ) }></BorderLinearProgress>
           </Box>
-          <Box sx={{minWidth: 35}}>
+          <Box sx={{gridColumnStart: 3, minWidth: 35}}>
             <Typography hidden={hp} variant='h6' color="text.secondary">
               {`${ Math.round( (i.votes / (options.reduce((total, current) => total = total + current.votes, 0))) * 100 ) }%`}
             </Typography>
