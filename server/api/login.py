@@ -113,7 +113,7 @@ class NewPasswordHandler(Resource):
                 'resultStatus': 'FAILURE',
                 'message': "User does not exist with email"
             }
-        
+
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
