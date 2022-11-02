@@ -87,8 +87,6 @@ class ForgotPasswordHandler(Resource):
                 'message': "User does not exist with email"
             }
 
-        
-
         # send email to user
         hashCode = ''.join(random.choices(string.ascii_letters + string.digits, k=24))
         user.hashCode = hashCode
