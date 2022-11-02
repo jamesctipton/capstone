@@ -96,7 +96,7 @@ class ForgotPasswordHandler(Resource):
         mail.send(msg)
 
         print(json_data)
-        return jsonify(email = email)
+        return jsonify(email = email, hashCode=hashCode)
 
 #unfinished
 class NewPasswordHandler(Resource):
