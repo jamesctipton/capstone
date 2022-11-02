@@ -101,17 +101,22 @@ class ForgotPasswordHandler(Resource):
 #unfinished
 class NewPasswordHandler(Resource):
     def post(self):
+        # get hash code and new user password
         json_data = request.get_json()
         password = json_data['password']
+        hashCode = json_data['hashCode']
 
         # gotta figure out how to get the user
-        email: string
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(hashCode=hashCode).first()
         if (user is None):
             return{
                 'resultStatus': 'FAILURE',
                 'message': "User does not exist with email"
             }
+        
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
 
         return jsonify(password = password)
 
