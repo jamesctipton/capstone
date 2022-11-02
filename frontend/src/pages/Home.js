@@ -1,24 +1,17 @@
 import './Home.css'
 import React from 'react';
-import Carousel from 'react-material-ui-carousel';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
-import { Button, Card, Typography } from '@mui/material';
-import paris from './../assets/paris.jpeg';
+import { Button, Card, Paper, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/system';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import MobileStepper from '@mui/material/MobileStepper';
+import SwipeableViews from 'react-swipeable-views';
+import { autoPlay } from 'react-swipeable-views-utils';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
-const styles = {
-  cardContainer: {
-    backgroundImage: `url(${paris})`,
-    backgroundSize: 'cover',
-    backgroundColor: `rgba(0, 0, 0, 0.65)`, // not working
-    overflow: 'hidden',
-    height: 400,
-    borderRadius: 25
-  }
-};
-
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const theme = createTheme({
   palette: {
@@ -32,44 +25,118 @@ const theme = createTheme({
   }
 });
 
-function CustomCarousel(props)
-{
-    var items = [
+function CustomCarousel(props) {
+  
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [isHovered, setHover] = React.useState(false);
+
+  const handleNext = () => {
+    if(activeStep === items.length - 1) {
+      setActiveStep(0)
+    }
+    else {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+  };
+
+  const handleBack = () => {
+    if(activeStep === 0) {
+      setActiveStep(items.length)
+    }
+    else {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    }
+  };
+
+  const handleStepChange = (step) => {
+    setActiveStep(step);
+  };
+  
+  var items = [
         {
             name: "Random Name #1",
-            description: "Probably the most random thing you have ever seen!"
+            description: "me and da boys in san fran",
+            imgPath: 'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60'
         },
         {
-            name: "Random Name #2",
-            description: "Hello World!"
+            name: "Indonesia",
+            description: "Hello World!",
+            imgPath: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250'
         },
         {
-          name: "third",
-          description: "unique tomar emeralds"
+          name: "serbia",
+          description: "group trip",
+          imgPath: 'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60'
         }
     ]
 
     return (
-        <Carousel animation='slide'>
-            {
-                items.map( (item, i) => <Item key={i} item={item} /> )
-            }
-        </Carousel>
-    )
-}
+      <Box sx={{maxWidth: 800, flexGrow: 1, borderRadius: 25}}>
 
-function Item(props)
-{
-    return (
-        <Card style={styles.cardContainer}>
-            <h2>{props.item.name}</h2>
-            <p>{props.item.description}</p>
-
-            <Button className="CheckButton">
-                Check it out!
+        <Paper
+            square
+            elevation={0}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 60,
+              pl: 2,
+              bgcolor: 'gray',
+              borderRadius: "25px 25px 0 0"
+            }}
+          >
+            <Typography sx={{width: '100%'}} variant='h6'>{items[activeStep].name}</Typography>
+            <Typography sx={{width: '100%'}} variant='p'>{items[activeStep].description}</Typography>
+          </Paper>
+          <AutoPlaySwipeableViews
+            axis='x'
+            index={activeStep}
+            onChangeIndex={handleStepChange}
+            enableMouseEvents
+            onMouseEnter={() => {setHover(true)}}
+            onMouseLeave={() => {setHover(false)}}
+            autoplay={!isHovered}
+          >
+            {items.map((step, index) => (
+              <div key={step.name}>
+                {Math.abs(activeStep - index) <= 2 ? (
+                  <Box
+                    component="img"
+                    sx={{
+                      height: 510,
+                      display: 'block',
+                      maxWidth: 800,
+                      overflow: 'hidden',
+                      width: '100%',
+                    }}
+                    src={step.imgPath}
+                    alt={step.name}
+                  />
+                ) : null}
+              </div>
+            ))}
+          </AutoPlaySwipeableViews>
+        <MobileStepper
+          variant='dots'
+          steps={items.length}
+          position="static"
+          activeStep={activeStep}
+          sx={{ maxWidth: 800, flexGrow: 1, bgcolor: 'gray', borderRadius: '0 0 25px 25px'}}
+          nextButton={
+            <Button size="small" onClick={handleNext}>
+              <ArrowForwardIosIcon/>
             </Button>
-        </Card>
-    )
+          }
+          backButton={
+            <Button size='small' onClick={handleBack}>
+              <ArrowBackIosNewIcon/>
+            </Button>
+          }
+          />
+        </Box>
+    );
 }
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -128,7 +195,7 @@ const Home = () => {
     return (
       <div>
         <div id='carousel-container'>
-          <div id="carousel"><CustomCarousel></CustomCarousel></div>
+          <CustomCarousel></CustomCarousel>
         </div>
         <h1>Polls WIP</h1>
         <CustomPoll></CustomPoll>
