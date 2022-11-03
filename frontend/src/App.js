@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import axios from 'axios';
@@ -19,7 +19,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Registration />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="new-password" element={<NewPassword />} />
+          <Route path="new-password/:hash" element={<NewPassword />} />
         </Route>
       </Routes>
     </BrowserRouter>

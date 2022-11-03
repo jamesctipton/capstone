@@ -58,6 +58,10 @@ const Registration = () => {
             confirmPassword: values.confirmPassword,
         }).then((response) => {
             console.log(response)
+            if(response["data"]["resultStatus"] === "SUCCESS") {
+                alert("Success!") // temporary
+                // route to login
+            }
         }).catch((error) => {
             console.log(error)
         })
