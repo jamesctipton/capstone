@@ -64,8 +64,6 @@ class RegistrationHandler(Resource):
         db.session.add(user)
         db.session.commit()
         
-        print(json_data)
-
         return {
             'resultStatus': 'SUCCESS',
             'message': "registered " + firstname + " as " + username

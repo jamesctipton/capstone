@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './ForgotPassword.css';
 import { ThemeProvider, createTheme } from '@material-ui/core';
 import { Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
