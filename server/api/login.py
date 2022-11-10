@@ -95,7 +95,7 @@ class ForgotPasswordHandler(Resource):
         user.hashCode = hashCode
         db.session.commit()
         msg = Message('Confirm Password Change', sender = 'fricapstone@gmail.com', recipients = [email])
-        msg.body = "Hello,\nWe've received a request to reset your password. If you want to reset your password, click the link below and enter your new password\n http://127.0.0.1:5000/" + user.hashCode
+        msg.body = "Hello,\nWe've received a request to reset your password. If you want to reset your password, click the link below and enter your new password\n http://127.0.0.1:3000/" + user.hashCode
         mail.send(msg)
 
         print(json_data)
