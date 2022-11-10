@@ -3,10 +3,6 @@
     src: "./../../fonts/Lato/Lato-Bold.ttf";
 }
 
-body {
-    font-family: 'Lato', arial;
-}
-
 #flexbox-login {
     width: 50%;
     padding-top: 10%;

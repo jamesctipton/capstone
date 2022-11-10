@@ -64,10 +64,13 @@ class RegistrationHandler(Resource):
         db.session.add(user)
         db.session.commit()
         
-        print(json_data)
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': "registered " + firstname + " as " + username
+        }
 
-        return jsonify(username = username, password = password, firstname = firstname,
-                        lastname = lastname, email = email)
+        # return jsonify(username = username, password = password, firstname = firstname,
+        #                 lastname = lastname, email = email)
 
 
 class ForgotPasswordHandler(Resource):

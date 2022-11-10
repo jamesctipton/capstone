@@ -167,7 +167,7 @@ function CustomPoll(props) {
   const [hp, hidePercent] = React.useState(true);
 
   return (
-    <div class="poll-container">
+    <div className="poll-container">
       {options.map((i) => (              
         <Box key={i.name} sx={{display: 'grid', gridTemplateColumns: hp ? '1fr' : '1fr 8fr 35px', alignItems: 'center', columnGap: 1, mb: 1}}>
           <Button

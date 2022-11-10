@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './ForgotPassword.css';
 import { ThemeProvider, createTheme } from '@material-ui/core';
 import { Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -17,8 +16,6 @@ const theme = createTheme({
 });
 const url = 'http://127.0.0.1:5000/new-password'
 
-const user = ''
-
 const NewPassword = () => {
 
     const [password, setPassword] = useState("")
@@ -27,11 +24,17 @@ const NewPassword = () => {
 
     const handleSubmit = (event) => {
 
+        const selfLink = window.location.href;
+        let cutoff = selfLink.lastIndexOf("/");
+        const hashCode = selfLink.slice(cutoff+1);
+        // console.log(hashCode);
+
         if(password.trim() === confirmPassword.trim())
         {
             setTextError(false);
             event.preventDefault()
             axios.post(url, {
+                hashCode: hashCode,
                 password: password,
             }).then((response) => {
                 console.log(response)
