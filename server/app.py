@@ -2,10 +2,10 @@ from flask_cors import CORS
 from flask_restful import Api, Resource, reqparse
 from api.login import LoginHandler, RegistrationHandler, ForgotPasswordHandler
 import os
-from api.__init__ import create_app
+from api.__init__ import app
 from api.login import NewPasswordHandler
 
-app = create_app()
+app = app
 CORS(app)
 api = Api(app)
 

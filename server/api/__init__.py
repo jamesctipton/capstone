@@ -4,22 +4,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_mail import Mail
 
-db = SQLAlchemy()
-mail = Mail()
+app = Flask(__name__)
+app.config.from_object(Config)
 
-def create_app():
-    app = Flask(__name__)
+mail = Mail(app)
 
-    app.config.from_object(Config)
-    mail = Mail(app)
-    db = SQLAlchemy(app)
-    db.init_app(app)
+db = SQLAlchemy(app)
+db.init_app(app)
+db.create_all(app=app)
+db.session.commit()
+migrate = Migrate(app, db)
 
-    create_database(app)
-    db.session.commit()
-    migrate = Migrate(app, db)
 
-    return app
 
-def create_database(app):
-    db.create_all(app=app)
+    
