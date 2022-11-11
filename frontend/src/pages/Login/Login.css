@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'Lato';
+    src: "./../../fonts/Lato/Lato-Bold.ttf";
+}
+
+#flexbox-login {
+    width: 50%;
+    padding-top: 10%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#buttons-login {
+    display: flex !important;
+    margin: 5%;
+}
+
+#form {
+    align-items: center;
+    font-size: medium;
+}
+
+#form p, #checkbox, a {
+    color: #CF7D30;
+}
