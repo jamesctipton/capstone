@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ThemeProvider, createTheme } from '@material-ui/core';
 import { Typography, Button } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 
@@ -22,6 +22,11 @@ const NewPassword = () => {
     const [confirmPassword, setConfirm] = useState("")
     const [textError, setTextError] = useState(false)
 
+    const navigate = useNavigate()
+    const navigateToLogin = () => {
+        navigate('/login')
+    }
+
     const handleSubmit = (event) => {
 
         const selfLink = window.location.href;
@@ -38,6 +43,7 @@ const NewPassword = () => {
                 password: password,
             }).then((response) => {
                 console.log(response)
+                navigateToLogin();
             }).catch((error) => {
                 console.log(error)
             })

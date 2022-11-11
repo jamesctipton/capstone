@@ -67,7 +67,7 @@ const TopNavBar = (isLoggedIn) => {
               <OutlinedInput
                   placeholder="Search Locations, Hotels, or Flights"
                   variant="outlined"
-                  sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 310}}
+                  sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}}
                   fullWidth
                   endAdornment={
                       <InputAdornment position='end'>
@@ -93,7 +93,7 @@ const TopNavBar = (isLoggedIn) => {
                 <TextsmsOutlinedIcon fontSize="large" />
               </IconButton>
               {(isLoggedIn['isLoggedIn']) ? 
-                <IconButton onClick={() => {}} edge="end" color="secondary" aria-label="messages">
+                <IconButton onClick={() => {}} edge="end" color="primary" aria-label="messages">
                   <PersonOutlineOutlinedIcon fontSize="large" />
                 </IconButton> : 
                 <Button 

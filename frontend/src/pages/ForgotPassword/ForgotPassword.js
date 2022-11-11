@@ -57,7 +57,7 @@ const ForgotPassword = () => {
                         variant="outlined"
                         sx={{m: 1, borderWidth: 3, borderRadius: 30, fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: 300, height: 70, fontSize: 20}}
                         size="large"
-                        component={Link} to="/forgot-password"
+                        component={Link} to="/login"
                     >Cancel</Button>
                     <Button 
                         id='sendCodeButton'
