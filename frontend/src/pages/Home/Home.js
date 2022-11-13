@@ -1,8 +1,7 @@
 import './Home.css'
 import React from 'react';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
-import { Button, Card, Paper, Typography } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/system';
+import { Button, Paper, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
@@ -10,20 +9,11 @@ import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { Divider } from '@material-ui/core';
+import Steps from '../../assets/Steps.png'
+import { Link } from "react-router-dom";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#CF7D30',
-      darker: '#BE6C20'
-    },
-    secondary: {
-      main: '#00000'
-    }
-  }
-});
 
 function CustomCarousel(props) {
   
@@ -40,8 +30,8 @@ function CustomCarousel(props) {
   };
 
   const handleBack = () => {
-    if(activeStep === 0) {
-      setActiveStep(items.length)
+    if(activeStep <= 0) {
+      setActiveStep(items.length - 1)
     }
     else {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -72,7 +62,6 @@ function CustomCarousel(props) {
 
     return (
       <Box sx={{maxWidth: 800, flexGrow: 1, borderRadius: 25}}>
-
         <Paper
             square
             elevation={0}
@@ -83,11 +72,12 @@ function CustomCarousel(props) {
               justifyContent: 'center',
               height: 60,
               pl: 2,
+              mt: 2,
               bgcolor: '#eeeeee',
               borderRadius: "25px 25px 0 0"
             }}
           >
-            <Typography sx={{width: '100%', textAlign: 'center'}} variant='h6'>{items[activeStep].name}</Typography>
+            <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30'}} variant='h6'>{items[activeStep].name}</Typography>
             <Typography sx={{width: '100%', textAlign: 'center'}} variant='p'>{items[activeStep].description}</Typography>
           </Paper>
           <AutoPlaySwipeableViews
@@ -168,6 +158,7 @@ function CustomPoll(props) {
 
   return (
     <div className="poll-container">
+      <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Active Polls</Typography>
       {options.map((i) => (              
         <Box key={i.name} sx={{display: 'grid', gridTemplateColumns: hp ? '1fr' : '1fr 8fr 35px', alignItems: 'center', columnGap: 1, mb: 1}}>
           <Button
@@ -190,15 +181,40 @@ function CustomPoll(props) {
   );
 }
 
-const Home = () => {
+const Home = (isLoggedIn) => {
 
     return (
       <div>
         <div id='carousel-container'>
-          <CustomCarousel></CustomCarousel>
+          {(isLoggedIn) ? 
+          <div>
+            <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Your Trips</Typography>
+            <CustomCarousel></CustomCarousel>
+          </div>  
+          :
+          <div>
+            <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Best Deals</Typography>
+            <CustomCarousel></CustomCarousel>
+          </div> 
+          }
         </div>
-        <h1>Polls WIP</h1>
-        <CustomPoll></CustomPoll>
+        <br></br>
+        <Divider variant='middle' />
+        {(isLoggedIn) ?
+        <CustomPoll></CustomPoll> 
+        :
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', margin: '10px 0 40px 0'}}>
+          <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>How Frí Works</Typography>
+          <img src={Steps} alt="Steps" style={{width: '90%'}}></img>
+          <Typography variant='h6' sx={{color: '#CF7D30'}}>Don't have an account? <a href='/register'>Register</a> or 
+          <span><Button
+          variant='outlined'
+          sx={{m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: 100, height: 40, fontSize: 15}}
+          component={Link} to="/login"
+          >Log In</Button></span></Typography>
+        </div>
+        }
+        
       </div>
     );
   };
