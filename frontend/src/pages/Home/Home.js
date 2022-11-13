@@ -83,12 +83,12 @@ function CustomCarousel(props) {
               justifyContent: 'center',
               height: 60,
               pl: 2,
-              bgcolor: 'gray',
+              bgcolor: '#eeeeee',
               borderRadius: "25px 25px 0 0"
             }}
           >
-            <Typography sx={{width: '100%'}} variant='h6'>{items[activeStep].name}</Typography>
-            <Typography sx={{width: '100%'}} variant='p'>{items[activeStep].description}</Typography>
+            <Typography sx={{width: '100%', textAlign: 'center'}} variant='h6'>{items[activeStep].name}</Typography>
+            <Typography sx={{width: '100%', textAlign: 'center'}} variant='p'>{items[activeStep].description}</Typography>
           </Paper>
           <AutoPlaySwipeableViews
             axis='x'
@@ -123,7 +123,7 @@ function CustomCarousel(props) {
           steps={items.length}
           position="static"
           activeStep={activeStep}
-          sx={{ maxWidth: 800, flexGrow: 1, bgcolor: 'gray', borderRadius: '0 0 25px 25px'}}
+          sx={{ maxWidth: 800, flexGrow: 1, bgcolor: '#eeeeee', borderRadius: '0 0 25px 25px'}}
           nextButton={
             <Button size="small" onClick={handleNext}>
               <ArrowForwardIosIcon/>
