@@ -14,14 +14,14 @@ class CreateGroupHandler(Resource):
     def post(self):
         # json_data get
         json_data = request.get_json()
-        groupname = json_data['tripname']
+        groupname = json_data['groupname']
         destination = json_data['destination'] # nullable
         groupimage = json_data['groupimage'] # nullable
         summary = json_data['summary'] # nullable
-        hashCode = ''.join(random.choices(string.ascii_letters + string.digits, k=4))
+        groupCode = ''.join(random.choices(string.ascii_letters + string.digits, k=4))
         
-        group = Group(tripname=groupname, destination=destination, 
-                        groupimage=groupimage, summary=summary, hashCode = hashCode)
+        group = Group(groupname=groupname, destination=destination, 
+                        groupimage=groupimage, summary=summary, groupCode = groupCode)
         db.session.add(group)
         db.session.commit()
 
@@ -30,7 +30,7 @@ class CreateGroupHandler(Resource):
             'message': "Group successfully created",
             'tripname': groupname,
             'destination': destination,
-            'hashCode': hashCode
+            'groupCode': groupCode
         }
     
 # unfinished
@@ -42,8 +42,8 @@ class JoinGroupHandler(Resource):
         }
     def post(self):
         json_data = request.get_json()
-        hashCode = json_data['hashCode']
-        group = Group.query.filter_by(hashCode=hashCode).first()
+        groupCode = json_data['hashCode']
+        group = Group.query.filter_by(groupCode=groupCode).first()
         if (group is None):
             return{
                 'resultStatus': 'FAILURE',
@@ -55,7 +55,7 @@ class JoinGroupHandler(Resource):
             'message': "Group successfully joined",
             'tripname': group.groupname,
             'destination': group.destination,
-            'hashCode': group.hashCode
+            'groupCode': group.groupCode
         }
 
 class EditGroupHandler(Resource):
