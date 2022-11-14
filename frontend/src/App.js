@@ -30,7 +30,7 @@ function App() {
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="new-password/:hash" element={<NewPassword />} />
           <Route path="trip/:hash" element={<Trip />} />
-          <Route path="join-create" element={<JoinCreate />} />
+          <Route path="join-create" element={<JoinCreate isLoggedIn={loggedIn} />} />
         </Route>
       </Routes>
     </BrowserRouter>

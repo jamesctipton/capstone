@@ -12,106 +12,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Divider } from '@material-ui/core';
 import Steps from '../../assets/Steps.png'
 import { Link } from "react-router-dom";
-
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
-function CustomCarousel(props) {
-  
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [isHovered, setHover] = React.useState(false);
-
-  const handleNext = () => {
-    if(activeStep === items.length - 1) {
-      setActiveStep(0)
-    }
-    else {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    }
-  };
-
-  const handleBack = () => {
-    if(activeStep <= 0) {
-      setActiveStep(items.length - 1)
-    }
-    else {
-      setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    }
-  };
-
-  const handleStepChange = (step) => {
-    setActiveStep(step);
-  };
-  
-  var items = props.items
-
-    return (
-      <Box sx={{maxWidth: 800, flexGrow: 1, borderRadius: 25}}>
-        <Paper
-            square
-            elevation={0}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: 60,
-              pl: 2,
-              mt: 2,
-              bgcolor: '#eeeeee',
-              borderRadius: "25px 25px 0 0"
-            }}
-          >
-            <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30'}} variant='h6'><a href={'/trip/' + items[activeStep].name}>{items[activeStep].name}</a></Typography>
-            <Typography sx={{width: '100%', textAlign: 'center'}} variant='p'>{items[activeStep].description}</Typography>
-          </Paper>
-          <AutoPlaySwipeableViews
-            axis='x'
-            index={activeStep}
-            onChangeIndex={handleStepChange}
-            enableMouseEvents
-            onMouseEnter={() => {setHover(true)}}
-            onMouseLeave={() => {setHover(false)}}
-            autoplay={!isHovered}
-          >
-            {items.map((step, index) => (
-              <div key={step.name}>
-                {Math.abs(activeStep - index) <= 2 ? (
-                  <Box
-                    component="img"
-                    sx={{
-                      height: 510,
-                      display: 'block',
-                      maxWidth: 800,
-                      overflow: 'hidden',
-                      width: '100%',
-                    }}
-                    src={step.imgPath}
-                    alt={step.name}
-                  />
-                ) : null}
-              </div>
-            ))}
-          </AutoPlaySwipeableViews>
-        <MobileStepper
-          variant='dots'
-          steps={items.length}
-          position="static"
-          activeStep={activeStep}
-          sx={{ maxWidth: 800, flexGrow: 1, bgcolor: '#eeeeee', borderRadius: '0 0 25px 25px'}}
-          nextButton={
-            <Button size="small" onClick={handleNext}>
-              <ArrowForwardIosIcon/>
-            </Button>
-          }
-          backButton={
-            <Button size='small' onClick={handleBack}>
-              <ArrowBackIosNewIcon/>
-            </Button>
-          }
-          />
-        </Box>
-    );
-}
+import { Carousel } from '../../components/Carousel';
 
 function CustomPoll(props) {
 
@@ -161,7 +62,7 @@ function CustomPoll(props) {
   );
 }
 
-const trips = 0;
+const trips = 3;
 
 const Home = (isLoggedIn) => {
 
@@ -178,33 +79,36 @@ const Home = (isLoggedIn) => {
           {(isLoggedIn && (trips>0)) ? 
             <div>
               <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Your Trips</Typography>
-              <CustomCarousel
+              <Carousel
                 items={[
                   {
                       name: "Random Name #1",
                       description: "me and da boys in san fran",
                       imgPath: 'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
-                      linkHash: ''
+                      linkHash: '',
+                      users: 5
                   },
                   {
                       name: "Indonesia",
                       description: "Hello World!",
                       imgPath: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
-                      linkHash: ''
+                      linkHash: '',
+                      users: 10
                   },
                   {
                     name: "serbia",
                     description: "group trip",
                     imgPath: 'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
-                    linkHash: ''
+                    linkHash: '',
+                    users: 3
                   }
               ]}
-              ></CustomCarousel>
+              ></Carousel>
             </div>  
             :
             <div>
               <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Best Deals</Typography>
-              <CustomCarousel></CustomCarousel>
+              <Carousel></Carousel>
             </div> 
             }
           </div>
