@@ -85,19 +85,22 @@ const Home = (isLoggedIn) => {
                       name: "Random Name #1",
                       description: "me and da boys in san fran",
                       imgPath: 'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
-                      linkHash: ''
+                      linkHash: '',
+                      users: 5
                   },
                   {
                       name: "Indonesia",
                       description: "Hello World!",
                       imgPath: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
-                      linkHash: ''
+                      linkHash: '',
+                      users: 10
                   },
                   {
                     name: "serbia",
                     description: "group trip",
                     imgPath: 'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
-                    linkHash: ''
+                    linkHash: '',
+                    users: 3
                   }
               ]}
               ></Carousel>

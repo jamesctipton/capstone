@@ -1,7 +1,7 @@
+import React from "react";
+
 export function Carousel(props) {
   
-    var items = props.items
-
     var hover = false;
 
     setInterval(() => {
