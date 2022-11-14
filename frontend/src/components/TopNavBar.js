@@ -101,7 +101,6 @@ const TopNavBar = (isLoggedIn) => {
                   variant="outlined"
                   sx={{m: 1, borderWidth: 3, borderRadius: 30, borderColor: 'primary', whiteSpace: 'nowrap', minWidth: 'maxcontent'}}
                   size="large"
-                  onClick={() => {}}
                   component={Link} to="/login"
                 >Sign In</Button>
               }
