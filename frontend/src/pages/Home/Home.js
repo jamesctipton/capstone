@@ -42,23 +42,7 @@ function CustomCarousel(props) {
     setActiveStep(step);
   };
   
-  var items = [
-        {
-            name: "Random Name #1",
-            description: "me and da boys in san fran",
-            imgPath: 'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60'
-        },
-        {
-            name: "Indonesia",
-            description: "Hello World!",
-            imgPath: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250'
-        },
-        {
-          name: "serbia",
-          description: "group trip",
-          imgPath: 'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60'
-        }
-    ]
+  var items = props.items
 
     return (
       <Box sx={{maxWidth: 800, flexGrow: 1, borderRadius: 25}}>
@@ -77,7 +61,7 @@ function CustomCarousel(props) {
               borderRadius: "25px 25px 0 0"
             }}
           >
-            <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30'}} variant='h6'>{items[activeStep].name}</Typography>
+            <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30'}} variant='h6'><a href={'/trip/' + items[activeStep].name}>{items[activeStep].name}</a></Typography>
             <Typography sx={{width: '100%', textAlign: 'center'}} variant='p'>{items[activeStep].description}</Typography>
           </Paper>
           <AutoPlaySwipeableViews
@@ -129,25 +113,21 @@ function CustomCarousel(props) {
     );
 }
 
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 36,
-  borderRadius: 5,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 5,
-    backgroundColor: theme.palette.mode === 'light' ? '#CF7D30' : '#BE6C20',
-  },
-}));
-
-const options = [
-  {name: 'first', votes: 0},
-  {name: 'second', votes: 1},
-  {name: 'third', votes: 1},
-]
-
 function CustomPoll(props) {
+
+  const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+    height: 36,
+    borderRadius: 5,
+    [`&.${linearProgressClasses.colorPrimary}`]: {
+      backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+    },
+    [`& .${linearProgressClasses.bar}`]: {
+      borderRadius: 5,
+      backgroundColor: theme.palette.mode === 'light' ? '#CF7D30' : '#BE6C20',
+    },
+  }));
+  
+  const options = props.options;
 
   const handleVote = (item) => {
     item.votes += 1;
@@ -181,40 +161,78 @@ function CustomPoll(props) {
   );
 }
 
+const trips = 0;
+
 const Home = (isLoggedIn) => {
 
     return (
       <div>
-        <div id='carousel-container'>
-          {(isLoggedIn) ? 
-          <div>
-            <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Your Trips</Typography>
-            <CustomCarousel></CustomCarousel>
-          </div>  
-          :
-          <div>
-            <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Best Deals</Typography>
-            <CustomCarousel></CustomCarousel>
-          </div> 
-          }
-        </div>
-        <br></br>
-        <Divider variant='middle' />
-        {(isLoggedIn) ?
-        <CustomPoll></CustomPoll> 
+        {(trips == 0) ?
+        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '16%'}}>
+          <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h3'>You Have No Trips</Typography>
+          <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#666666', mb: 1}} variant='h5'>Click <a href='join-create'>Here</a> to create or join one</Typography>
+        </div>        
         :
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', margin: '10px 0 40px 0'}}>
-          <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>How Frí Works</Typography>
-          <img src={Steps} alt="Steps" style={{width: '90%'}}></img>
-          <Typography variant='h6' sx={{color: '#CF7D30'}}>Don't have an account? <a href='/register'>Register</a> or 
-          <span><Button
-          variant='outlined'
-          sx={{m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: 100, height: 40, fontSize: 15}}
-          component={Link} to="/login"
-          >Log In</Button></span></Typography>
-        </div>
+        <>
+          <div id='carousel-container'>
+          {(isLoggedIn && (trips>0)) ? 
+            <div>
+              <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Your Trips</Typography>
+              <CustomCarousel
+                items={[
+                  {
+                      name: "Random Name #1",
+                      description: "me and da boys in san fran",
+                      imgPath: 'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
+                      linkHash: ''
+                  },
+                  {
+                      name: "Indonesia",
+                      description: "Hello World!",
+                      imgPath: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
+                      linkHash: ''
+                  },
+                  {
+                    name: "serbia",
+                    description: "group trip",
+                    imgPath: 'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
+                    linkHash: ''
+                  }
+              ]}
+              ></CustomCarousel>
+            </div>  
+            :
+            <div>
+              <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Best Deals</Typography>
+              <CustomCarousel></CustomCarousel>
+            </div> 
+            }
+          </div>
+          <br></br>
+          <Divider variant='middle' />
+          {(isLoggedIn && (trips>0)) ?
+          <CustomPoll
+            options={[
+              {name: 'first', votes: 0},
+              {name: 'second', votes: 1},
+              {name: 'third', votes: 1},
+            ]}
+            ></CustomPoll> 
+          :
+          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', margin: '10px 0 40px 0'}}>
+            <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>How Frí Works</Typography>
+            <img src={Steps} alt="Steps" style={{width: '90%'}}></img>
+            <Typography variant='h6' sx={{color: '#CF7D30'}}>Don't have an account? <a href='/register'>Register</a> or 
+            <span><Button
+            variant='outlined'
+            sx={{m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: 100, height: 40, fontSize: 15}}
+            component={Link} to="/login"
+            >Log In</Button></span></Typography>
+          </div>
+          }
+          
+        </>
         }
-        
       </div>
     );
   };
