@@ -18,31 +18,12 @@ const theme = createTheme({
 
 const Trip = (props) => {
 
-    var hover = false;
-
-    setInterval(() => {
-        var elem = document.getElementById('car');
-        var items = document.querySelectorAll('#car .car-item').length;
-
-        if(!hover) {
-            if(elem.scrollLeft >= (elem.scrollWidth / items * 4) ) {
-                elem.scrollTo({
-                    left: 0,
-                    behavior: 'smooth'
-                })
-            }
-            else {
-                elem.scrollBy({
-                    left: (elem.scrollWidth / 6),
-                    behavior: 'smooth'
-                });
-            }
-        }   
-    }, 3000);
-
     return (
-        <Box>
-            <Carousel></Carousel>
+        <Box sx={{marginTop: '3%'}}>
+            <Carousel items={[
+                {name: 'asdfa'},
+                {name: 'fasdf'}
+            ]}></Carousel>
         </Box>
   )};
   
