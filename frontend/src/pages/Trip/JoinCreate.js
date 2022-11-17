@@ -7,15 +7,17 @@ import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { 
     FormControlLabel, 
     FormGroup, 
     IconButton 
 } from '@material-ui/core';
+import axios from 'axios';
 
 
 const url = 'http://127.0.0.1:5000/join-create'
+const join_url = 'http://127.0.0.1:5000/join'
 const theme = createTheme({
   palette: {
     primary: {
@@ -28,7 +30,28 @@ const theme = createTheme({
 
 const JoinCreate = (isLoggedIn) => {
 
+    const navigate = useNavigate()
+    const navigateToTripHome = (code) => {
+        navigate('/trip/' + code)
+    }
+
     const [groupCode, setGroupCode] = useState("")
+    const [errorValue, setError] = useState({
+        message: "",
+        result: false
+    })
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        axios.post(join_url, {
+            hashCode: groupCode
+        }).then((response) => {
+            console.log(response)
+            
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
 
     return (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 3px 1fr', marginTop: '10%' }}>
@@ -46,23 +69,24 @@ const JoinCreate = (isLoggedIn) => {
                     }}
                     required
                 ></TextField>
-                {(groupCode.length == 4) ?
-                <Button 
-                    type='submit'
-                    variant="outlined"
-                    sx={{ m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: '50%', height: 50, fontSize: 15, marginTop: '10%' }}
-                    size="large"
-                    component={Link} to={"/trip/" + groupCode}
-                >Submit</Button>
-                :
-                <Button 
-                    type='submit'
-                    variant="outlined"
-                    sx={{ m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: '50%', height: 50, fontSize: 15, marginTop: '10%' }}
-                    size="large"
-                    component={Link} to={"/join-create"}
-                >Submit</Button>
-            }
+                {(groupCode.length === 4) ?
+                    <Button 
+                        type='submit'
+                        variant="outlined"
+                        sx={{ m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: '50%', height: 50, fontSize: 15, marginTop: '10%' }}
+                        size="large"
+                        component={Link} to={"/trip/" + groupCode}
+                        onClick={handleSubmit}
+                    >Submit</Button>
+                    :
+                    <Button 
+                        type='submit'
+                        variant="outlined"
+                        sx={{ m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: '50%', height: 50, fontSize: 15, marginTop: '10%' }}
+                        size="large"
+                        component={Link} to={"/join-create"}
+                        onClick={handleSubmit}
+                    >Submit</Button>}
             </div>
                 <Divider orientation='vertical' variant='middle' flexItem sx={{ background: '#CF7D30' }}></Divider>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
