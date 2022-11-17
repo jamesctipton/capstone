@@ -1,15 +1,9 @@
 import './Home.css'
 import React from 'react';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
-import { Button, Paper, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import MobileStepper from '@mui/material/MobileStepper';
-import SwipeableViews from 'react-swipeable-views';
-import { autoPlay } from 'react-swipeable-views-utils';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { Divider } from '@material-ui/core';
 import Steps from '../../assets/Steps.png'
 import { Link } from "react-router-dom";
 import { Carousel } from '../../components/Carousel';
@@ -68,7 +62,7 @@ const Home = (isLoggedIn) => {
 
     return (
       <div>
-        {(trips == 0) ?
+        {(trips === 0) ?
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '16%'}}>
           <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h3'>You Have No Trips</Typography>
           <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#666666', mb: 1}} variant='h5'>Click <a href='join-create'>Here</a> to create or join one</Typography>

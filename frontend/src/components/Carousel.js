@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Card, CardActionArea } from "@mui/material";
+import { Card, CardActionArea } from "@mui/material";
 import { CardContent, CardMedia, Typography } from "@material-ui/core";
 
 //item:  {
@@ -9,6 +9,38 @@ import { CardContent, CardMedia, Typography } from "@material-ui/core";
 //     linkHash: string,
 //     users: int
 // }
+
+function CarouselItem(props) {
+    var step = props.step
+    return (
+    <>
+        <Card sx={{ borderRadius: '10px', backgroundColor: '#dddddd',}}>
+            <CardActionArea href={'trip/' + step.linkHash}>
+                <div style={{ position: 'absolute', zIndex: 100, backgroundColor: '#ffffff', opacity: 0.8, borderRadius: 100, width: 'auto', textAlign: 'center', padding: 12, margin: 16, right: 0 }} >
+                    {step.users} people
+                </div>
+                {(step.imgPath === '' || step.imgPath === null) ?
+                <div
+                    style={{ backgroundColor: '#666666', height: '20rem', color: '#dddddd', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', fontSize: 40, }}
+                >No image
+                </div>
+                :
+                <CardMedia
+                    component='img'
+                    height='312rem'
+                    image={step.imgPath}
+                    alt={step.name}
+                />
+                }
+                <CardContent>
+                    <Typography  variant="h5" component='div'>{step.name}</Typography>
+                    <Typography variant='body2'>{step.description}</Typography>
+                </CardContent>
+            </CardActionArea>
+        </Card>
+    </>
+    );
+}
 
 export function Carousel(props) {
   
@@ -38,7 +70,13 @@ export function Carousel(props) {
     }, 5000);
   
       return (
-        <div onMouseOver={() => {hover = true}} onMouseLeave={() => {hover = false}} id='car' style={{width: '100%', minHeight: '25rem', display: 'flex', overflowX: 'scroll', scrollSnapType: 'x mandatory'}}>
+        <div onMouseOver={() => {hover = true}} onMouseLeave={() => {hover = false}} id='car' style={{width: '100%', minHeight: '25rem', display: 'flex', overflowX: 'scroll', scrollSnapType: 'x mandatory', }}>
+            {(props.items.length === 1) ? 
+            <div style={{ marginRight: 'auto', marginLeft: 'auto' }}>
+                <CarouselItem step={props.items[0]}></CarouselItem>
+            </div>
+            :
+            <>
             <div className='car-spacer' style={{ backgroundColor: 'white', minWidth: '15%' }}></div>
             {props.items.map((step, index) => (
                 <div key={index} className='car-item' 
@@ -49,36 +87,13 @@ export function Carousel(props) {
                     borderRadius: 10,
                     marginRight: 8,
                     marginLeft: 8
-                    }}>
-                    <>
-                        <Card sx={{ borderRadius: '10px', backgroundColor: '#dddddd', }}>
-                            <CardActionArea onMouseOver={() => {hover = true}} onMouseLeave={() => {hover = false}} href={'trip/' + step.linkHash}>
-                                <div style={{ position: 'absolute', zIndex: 100, backgroundColor: '#ffffff', borderRadius: 100, width: 'auto', textAlign: 'center', padding: 12, margin: 16, right: 0 }} >
-                                    {step.users} people
-                                </div>
-                                {(step.imgPath == '' || step.imgPath == null) ?
-                                <div
-                                    style={{ backgroundColor: '#666666', height: '20rem', color: '#dddddd', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', fontSize: 40, }}
-                                >No image
-                                </div>
-                                :
-                                <CardMedia
-                                    component='img'
-                                    height='294rem'
-                                    image={step.imgPath}
-                                    alt={step.name}
-                                />
-                                }
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component='div'>{step.name}</Typography>
-                                    <Typography variant='body'>{step.description}</Typography>
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
-                    </>
+                }}>
+                <CarouselItem step={step}></CarouselItem>
                 </div>
             ))}
             <div className='car-spacer' style={{ backgroundColor: 'white', minWidth: '15%' }}></div>
+            </>
+            }
         </div>
       );
   }

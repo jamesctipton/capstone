@@ -45,4 +45,3 @@ class Poll(db.Model):
     pollname = db.Column(db.String(256), index=True, unique=True)
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id')) # user who created poll
     group_id = db.Column(db.Integer, db.ForeignKey('group.id')) # group poll belongs in
-
