@@ -1,5 +1,5 @@
 from api.__init__ import db
-from flask import request, jsonify
+from flask import request
 from flask_restful import Resource
 from api.models import Group
 import random, string
@@ -18,8 +18,13 @@ class CreateGroupHandler(Resource):
         destination = json_data['destination'] # nullable
         groupimage = json_data['groupimage'] # nullable
         summary = json_data['summary'] # nullable
-        groupCode = ''.join(random.choices(string.ascii_letters + string.digits, k=4))
         
+        # make sure group code is unique
+        groupCode = ''.join(random.choices(string.ascii_letters + string.digits, k=4))
+        db_groupCode = Group.query.filter_by(groupCode=groupCode).first()
+        while(groupCode == db_groupCode):
+            groupCode = ''.join(random.choices(string.ascii_letters + string.digits, k=4))
+
         group = Group(groupname=groupname, destination=destination, 
                         groupimage=groupimage, summary=summary, groupCode = groupCode)
         db.session.add(group)
