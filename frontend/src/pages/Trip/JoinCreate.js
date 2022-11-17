@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import Switch from '@mui/material/Switch';
-import { InputAdornment } from '@mui/material';
-import { Button } from '@mui/material';
-import { createTheme } from '@mui/material';
+import { 
+    InputAdornment,
+    Button,
+    createTheme,
+    Box,
+    Typography
+} from '@mui/material';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import { Link, useNavigate } from "react-router-dom";
 import { 
@@ -16,7 +19,6 @@ import {
 import axios from 'axios';
 
 
-const url = 'http://127.0.0.1:5000/join-create'
 const join_url = 'http://127.0.0.1:5000/join'
 const theme = createTheme({
   palette: {
@@ -31,8 +33,8 @@ const theme = createTheme({
 const JoinCreate = (isLoggedIn) => {
 
     const navigate = useNavigate()
-    const navigateToTripHome = (code) => {
-        navigate('/trip/' + code)
+    const navigateGroupHome = (groupCode) => {
+        navigate('/trip/' + groupCode)
     }
 
     const [groupCode, setGroupCode] = useState("")
@@ -41,13 +43,17 @@ const JoinCreate = (isLoggedIn) => {
         result: false
     })
 
-    const handleSubmit = (event) => {
-        event.preventDefault()
+    const verifyGroup = (event) => {
         axios.post(join_url, {
             hashCode: groupCode
         }).then((response) => {
-            console.log(response)
-            
+            if(response['data']['resultStatus'] === 'SUCCESS') {
+                console.log(response)
+                navigateGroupHome(groupCode)
+            } else {
+                console.log(response)
+                setError({message: response['data']['message'], result: true})
+            }
         }).catch((error) => {
             console.log(error)
         })
@@ -75,8 +81,8 @@ const JoinCreate = (isLoggedIn) => {
                         variant="outlined"
                         sx={{ m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: '50%', height: 50, fontSize: 15, marginTop: '10%' }}
                         size="large"
-                        component={Link} to={"/trip/" + groupCode}
-                        onClick={handleSubmit}
+                        onClick={() => verifyGroup(groupCode)}
+                        //component={Link} to={"/trip/" + groupCode}
                     >Submit</Button>
                     :
                     <Button 
@@ -85,8 +91,12 @@ const JoinCreate = (isLoggedIn) => {
                         sx={{ m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: '50%', height: 50, fontSize: 15, marginTop: '10%' }}
                         size="large"
                         component={Link} to={"/join-create"}
-                        onClick={handleSubmit}
                     >Submit</Button>}
+                    {errorValue.result ? 
+                        <Box sx={{ border: '3px solid red', borderRadius: 3, background: 'rgba(255, 0, 0, 0.1)', borderColor: 'rgba(255, 0, 0, 0.86)', color: 'red', padding: 2, marginTop: 10 }}>
+                        <Typography>{errorValue.message}</Typography>
+                        </Box>
+                    : <></> }
             </div>
                 <Divider orientation='vertical' variant='middle' flexItem sx={{ background: '#CF7D30' }}></Divider>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -100,7 +110,7 @@ const JoinCreate = (isLoggedIn) => {
                     variant='outlined'
                     sx={{ width: '65%' }}
                     placeholder='Group Name'
-                    helperText="Please enter a name for your group"
+                    helperText="*Please enter a name for your group"
                     InputProps={{
                         startAdornment: <InputAdornment position='start' sx={{ marginLeft: '35.5%' }}></InputAdornment>
                     }}
