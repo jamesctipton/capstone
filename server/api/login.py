@@ -1,6 +1,6 @@
 import random, string
 from api.models import User
-from flask_restful import Api, Resource
+from flask_restful import Resource
 from flask import request, jsonify
 from api.__init__ import db, mail
 from flask_mail import Message
@@ -122,35 +122,5 @@ class NewPasswordHandler(Resource):
 
         return jsonify(password = password)
 
-# unfinished
-class CreateTripHandler(Resource):
-    def get(self):
-        return {
-            'resultStatus': 'SUCCESS',
-            'message': "create trip handler get hit"
-        }
-    
-# unfinished
-class JoinTripHandler(Resource):
-    def get(self):
-        return {
-            'resultStatus': 'SUCCESS',
-            'message': "join trip handler get hit"
-        }
 
-# unfinished
-class CreatePollHandler(Resource):
-    def get(self):
-        return {
-            'resultStatus': 'SUCCESS',
-            'message': "create poll handler get hit"
-        }
-
-# unfinished
-class VotePollHandler(Resource):
-    def get(self):
-        return {
-            'resultStatus': 'SUCCESS',
-            'message': "vote poll handler get hit"
-        }
 

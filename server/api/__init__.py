@@ -10,10 +10,11 @@ app.config.from_object(Config)
 mail = Mail(app)
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 db.init_app(app)
 db.create_all(app=app)
 db.session.commit()
-migrate = Migrate(app, db)
+
 
 
 
