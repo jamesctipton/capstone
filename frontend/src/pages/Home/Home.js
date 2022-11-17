@@ -113,7 +113,6 @@ const Home = (isLoggedIn) => {
             }
           </div>
           <br></br>
-          <Divider variant='middle' />
           {(isLoggedIn && (trips>0)) ?
           <CustomPoll
             options={[
