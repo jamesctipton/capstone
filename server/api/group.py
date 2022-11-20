@@ -18,6 +18,7 @@ class CreateGroupHandler(Resource):
         destination = json_data['destination'] # nullable
         groupimage = json_data['groupimage'] # nullable
         summary = json_data['summary'] # nullable
+        state = json_data['groupstate']
         
         # make sure group code is unique
         groupCode = ''.join(random.choices(string.ascii_letters + string.digits, k=4))
@@ -35,7 +36,8 @@ class CreateGroupHandler(Resource):
             'message': "Group successfully created",
             'tripname': groupname,
             'destination': destination,
-            'groupCode': groupCode
+            'groupCode': groupCode,
+            'state': state
         }
     
 # unfinished

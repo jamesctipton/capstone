@@ -20,6 +20,7 @@ import axios from 'axios';
 
 
 const join_url = 'http://127.0.0.1:5000/join'
+const create_url = 'http://127.0.0.1:5000/create'
 const theme = createTheme({
   palette: {
     primary: {
@@ -38,6 +39,11 @@ const JoinCreate = (isLoggedIn) => {
     }
 
     const [groupCode, setGroupCode] = useState("")
+    const [createdGroupValues, setValues] = useState({
+        image: "",
+        name: "",
+        private: false,
+    })
     const [errorValue, setError] = useState({
         message: "",
         result: false
@@ -53,6 +59,23 @@ const JoinCreate = (isLoggedIn) => {
             } else {
                 console.log(response)
                 setError({message: response['data']['message'], result: true})
+            }
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+    const submitNewGroup = (event) => {
+        axios.post(create_url, {
+            groupname: createdGroupValues.name,
+            groupimage: createdGroupValues.image,
+            groupstate: createdGroupValues.private,
+            destination: "",
+            summary: ""
+        }).then((response) => {
+            if(response['data']['resultStatus'] === 'SUCCESS'){
+                console.log(response)
+                navigateGroupHome(response['data']['groupCode'])
             }
         }).catch((error) => {
             console.log(error)
@@ -75,6 +98,11 @@ const JoinCreate = (isLoggedIn) => {
                     }}
                     required
                 ></TextField>
+                {errorValue.result ? 
+                    <Box sx={{ border: '3px solid red', borderRadius: 3, background: 'rgba(255, 0, 0, 0.1)', borderColor: 'rgba(255, 0, 0, 0.86)', color: 'red', padding: 2 }}>
+                        <Typography>{errorValue.message}</Typography>
+                    </Box>
+                : <></> }
                 {(groupCode.length === 4) ?
                     <Button 
                         type='submit'
@@ -92,11 +120,7 @@ const JoinCreate = (isLoggedIn) => {
                         size="large"
                         component={Link} to={"/join-create"}
                     >Submit</Button>}
-                    {errorValue.result ? 
-                        <Box sx={{ border: '3px solid red', borderRadius: 3, background: 'rgba(255, 0, 0, 0.1)', borderColor: 'rgba(255, 0, 0, 0.86)', color: 'red', padding: 2, marginTop: 10 }}>
-                        <Typography>{errorValue.message}</Typography>
-                        </Box>
-                    : <></> }
+                    
             </div>
                 <Divider orientation='vertical' variant='middle' flexItem sx={{ background: '#CF7D30' }}></Divider>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -111,6 +135,8 @@ const JoinCreate = (isLoggedIn) => {
                     sx={{ width: '65%' }}
                     placeholder='Group Name'
                     helperText="*Please enter a name for your group"
+                    value={createdGroupValues.name}
+                    onChange={(e) => setValues({...createdGroupValues, name: e.target.value})}
                     InputProps={{
                         startAdornment: <InputAdornment position='start' sx={{ marginLeft: '35.5%' }}></InputAdornment>
                     }}
@@ -124,7 +150,7 @@ const JoinCreate = (isLoggedIn) => {
                 ></TextField>
                 <FormGroup style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 100, paddingLeft: 25, paddingBottom: 5 }}>
                     <Typography variant='h7' >*Private or Public group</Typography>
-                    <FormControlLabel control={<Switch defaultChecked color='warning' />} />
+                    <FormControlLabel control={<Switch color='warning' size='medium' value={createdGroupValues.private} onChange={(e) => setValues({...createdGroupValues, private: e.target.checked})} />} />
                 </FormGroup>
                 <Typography variant='p' style={{ textAlign: 'center', fontSize: 'small', paddingLeft: 10, paddingRight: 10 }}>Public means everyone in the group can invite others, Private means only selected persons can</Typography>
                 <Button 
@@ -132,7 +158,7 @@ const JoinCreate = (isLoggedIn) => {
                     variant="outlined"
                     sx={{ m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: '50%', height: 50, fontSize: 15 }}
                     size="large"
-                    
+                    onClick={() => submitNewGroup()}
                 >Create Group</Button>
             </div>
         </div>
