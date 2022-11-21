@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardActionArea } from "@mui/material";
+import { Card, CardActionArea, Divider } from "@mui/material";
 import { CardContent, CardMedia, Typography } from "@material-ui/core";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
@@ -55,8 +55,9 @@ function PollItem(props) {
     return (
         <>
             <Card sx={{ borderRadius: '10px', backgroundColor: '#dddddd',}}>
+                <CardActionArea disabled>
                 <div style={{ position: 'absolute', zIndex: 100, backgroundColor: '#ffffff', opacity: 0.8, borderRadius: 100, width: 'auto', textAlign: 'center', padding: 12, margin: 16, right: 0 }} >
-                    {(step.users == 0 || step.users == null) ? '' : step.users + ' people'}
+                    votes
                 </div>
                 {(step.imgPath == '' || step.imgPath == null) ?
                 <div
@@ -71,9 +72,15 @@ function PollItem(props) {
                     alt={step.name}
                 />
                 }
-                <CardContent>
-                    <Typography  variant="h5" component='div'>{step.name}</Typography>
-                    <Typography variant='body2'>{step.description}</Typography>
+                </CardActionArea>
+                <CardContent style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0, height: '6rem' }}>
+                    <CardActionArea sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0, height: '6rem' }}>
+                        <ThumbUpIcon sx={{ fontSize: 48, color: '#00aa00' }} />
+                    </CardActionArea>
+                    <Divider orientation="vertical" variant="middle" />
+                    <CardActionArea sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0, height: '6rem' }}>
+                        <ThumbDownIcon sx={{ fontSize: 48, color: '#dd2222' }} />
+                    </CardActionArea>
                 </CardContent>
             </Card>
         </>
@@ -117,7 +124,8 @@ export function Carousel(props) {
             <div className='car-spacer' style={{ backgroundColor: 'white', minWidth: '15%' }} />
             {props.items.map((step, index) => (
                 <div key={index} className='car-item' style={{ backgroundColor: '#ffffff', minWidth: '45%', scrollSnapAlign: 'center', borderRadius: 10, marginRight: 8, marginLeft: 8 }}>
-                    <CarouselItem step={step}></CarouselItem>
+                    {/* <CarouselItem step={step}></CarouselItem> */}
+                    <PollItem step={step}></PollItem>
                 </div>
             ))}
             <div className='car-spacer' style={{ backgroundColor: 'white', minWidth: '15%' }} />

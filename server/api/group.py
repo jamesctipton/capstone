@@ -60,9 +60,11 @@ class JoinGroupHandler(Resource):
         return{
             'resultStatus': 'SUCCESS',
             'message': "Group successfully joined",
-            'tripname': group.groupname,
+            'name': group.groupname,
             'destination': group.destination,
-            'groupCode': group.groupCode
+            'groupCode': group.groupCode,
+            'description': group.summary,
+            'imgPath': group.groupimage
         }
 
 class EditGroupHandler(Resource):

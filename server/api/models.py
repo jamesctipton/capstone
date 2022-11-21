@@ -33,15 +33,28 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     groupname = db.Column(db.String(64))
     destination = db.Column(db.String(64))
-    groupimage = db.Column(db.String(64))
+    groupimage = db.Column(db.Text(), nullable=True) # longer than string
     summary = db.Column(db.String(2048))
     groupCode = db.Column(db.String(4), unique=True)
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id')) # User who created group
     poll_parent = db.relationship('Poll', backref='group') 
-    
+
+class PollOption(object):
+    def __init__(self, name, votes=0, image=None) -> None:
+        self.name = name
+        self.votes = votes
+        self.image = image
+
 # Polls (voting on a category in a group)
 class Poll(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    pollCode = db.Column(db.String(8), unique=True)
     pollname = db.Column(db.String(256), index=True, unique=True)
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id')) # user who created poll
     group_id = db.Column(db.Integer, db.ForeignKey('group.id')) # group poll belongs in
+    option1 = db.Column(db.PickleType())
+    option2 = db.Column(db.PickleType())
+    option3 = db.Column(db.PickleType(), nullable=True) # minimum 2 poll options
+    option4 = db.Column(db.PickleType(), nullable=True)
+    option5 = db.Column(db.PickleType(), nullable=True) # maximum 5
+    totalVotes = db.Column(db.Integer)
