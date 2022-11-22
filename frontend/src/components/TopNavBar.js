@@ -38,7 +38,7 @@ const theme = createTheme({
   }
 });
 
-const TopNavBar = (isLoggedIn) => {
+const TopNavBar = ({isLoggedIn, user, setLogin, setUser}) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -48,6 +48,12 @@ const TopNavBar = (isLoggedIn) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = () => {
+    setAnchorEl(null);
+    setLogin(false);
+    setUser(null);
+  }
   
   return (
     <ThemeProvider theme={theme}>
@@ -122,7 +128,8 @@ const TopNavBar = (isLoggedIn) => {
         >
           <MenuItem onClick={handleClose} component={Link} to="/">Home</MenuItem>
           <MenuItem onClick={handleClose} component={Link} to="/login">Login</MenuItem>
-          <MenuItem onClick={handleClose} component={Link} to="/">Logout</MenuItem>
+          <MenuItem onClick={handleClose} component={Link} to="/join-create">Join a Group</MenuItem>
+          <MenuItem onClick={() => {handleLogout()}} component={Link} to="/">Logout</MenuItem>
         </Menu>
       <Outlet />
     </ThemeProvider>

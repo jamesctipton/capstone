@@ -44,7 +44,8 @@ class CreateGroupHandler(Resource):
             'tripname': groupname,
             'destination': destination,
             'groupCode': groupCode,
-            'state': state
+            'state': state,
+            'members': 1
         }
     
 # unfinished
@@ -60,6 +61,7 @@ class JoinGroupHandler(Resource):
         json_data = request.get_json()
         groupCode = json_data['hashCode']
         group = Group.query.filter_by(groupCode=groupCode).first()
+        # members field += 1a
         if (group is None):
             return{
                 'resultStatus': 'FAILURE',
@@ -76,7 +78,8 @@ class JoinGroupHandler(Resource):
             'destination': group.destination,
             'groupCode': group.groupCode,
             'description': group.summary,
-            'imgPath': group.groupimage
+            'imgPath': group.groupimage,
+            'members': group.members
         }
 
 class EditGroupHandler(Resource):
