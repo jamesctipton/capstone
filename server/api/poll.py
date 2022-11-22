@@ -63,6 +63,7 @@ class VotePollHandler(Resource):
             }
         
         poll.option[option].votes += 1
+        poll.totalVotes += 1
 
         # update db
         # return success

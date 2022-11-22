@@ -36,20 +36,19 @@ const items = [
 const Home = (isLoggedIn, user) => {
 
   // get groups from user
-
-  // axios.post(url, {
-  //   user: user
-  // }).then((response) => {
-  //   if(response['data']['resultStatus'] === 'SUCCESS') {
-  //     setError({message: "", result: false})
-  //   }
-  //   else {
-  //     console.log(response)
-  //     setError({message: "error caught", result: true})
-  //   }
-  // }).catch((error) => {
-  //   console.log(error)
-  // })
+  axios.post(url, {
+    user: user.userhash
+  }).then((response) => {
+    if(response['data']['resultStatus'] === 'SUCCESS') {
+      setError({message: "", result: false})
+    }
+    else {
+      console.log(response)
+      setError({message: "error caught", result: true})
+    }
+  }).catch((error) => {
+    console.log(error)
+  })
 
   const trips = items.length;
 
