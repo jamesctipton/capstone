@@ -1,64 +1,57 @@
 import './Home.css'
 import React from 'react';
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
 import { Button, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import Steps from '../../assets/Steps.png'
 import { Link } from "react-router-dom";
 import { Carousel } from '../../components/Carousel';
+import { Poll } from '../../components/Poll';
+import axios from 'axios'
 
-function CustomPoll(props) {
+const url = 'http://127.0.0.1:5000/group';
 
-  const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-    height: 36,
-    borderRadius: 5,
-    [`&.${linearProgressClasses.colorPrimary}`]: {
-      backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
-    },
-    [`& .${linearProgressClasses.bar}`]: {
-      borderRadius: 5,
-      backgroundColor: theme.palette.mode === 'light' ? '#CF7D30' : '#BE6C20',
-    },
-  }));
-  
-  const options = props.options;
-
-  const handleVote = (item) => {
-    item.votes += 1;
-    hidePercent(false);
+const items = [
+  {
+      name: "Random Name #1",
+      description: "me and da boys in san fran",
+      imgPath: 'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
+      linkHash: '',
+      users: 5
+  },
+  {
+      name: "Indonesia",
+      description: "Hello World!",
+      imgPath: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
+      linkHash: '',
+      users: 10
+  },
+  {
+    name: "serbia",
+    description: "group trip",
+    imgPath: 'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
+    linkHash: '',
+    users: 3
   }
+]
 
-  const [hp, hidePercent] = React.useState(true);
+const Home = (isLoggedIn, user) => {
 
-  return (
-    <div className="poll-container">
-      <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Active Polls</Typography>
-      {options.map((i) => (              
-        <Box key={i.name} sx={{display: 'grid', gridTemplateColumns: hp ? '1fr' : '1fr 8fr 35px', alignItems: 'center', columnGap: 1, mb: 1}}>
-          <Button
-              sx={{gridColumnStart: 1, justifySelf: 'stretch', width: '100%'}}
-              onClick={() => { handleVote(i) }}
-          >{i.name}</Button>
-          
-          <Box hidden={hp} sx={{ gridColumnStart: 2, justifySelf: 'start', width: '100%', mr: 1}}>
-            <BorderLinearProgress variant="determinate" value={ Math.round( (i.votes / (options.reduce((total, current) => total = total + current.votes, 0))) * 100 ) }></BorderLinearProgress>
-          </Box>
-          <Box sx={{gridColumnStart: 3, minWidth: 35}}>
-            <Typography hidden={hp} variant='h6' color="text.secondary">
-              {`${ Math.round( (i.votes / (options.reduce((total, current) => total = total + current.votes, 0))) * 100 ) }%`}
-            </Typography>
-          </Box>
+  // get groups from user
 
-        </Box>
-      ))}
-    </div>
-  );
-}
+  // axios.post(url, {
+  //   user: user
+  // }).then((response) => {
+  //   if(response['data']['resultStatus'] === 'SUCCESS') {
+  //     setError({message: "", result: false})
+  //   }
+  //   else {
+  //     console.log(response)
+  //     setError({message: "error caught", result: true})
+  //   }
+  // }).catch((error) => {
+  //   console.log(error)
+  // })
 
-const trips = 3;
-
-const Home = (isLoggedIn) => {
+  const trips = items.length;
 
     return (
       <div>
@@ -74,29 +67,7 @@ const Home = (isLoggedIn) => {
             <div>
               <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Your Trips</Typography>
               <Carousel
-                items={[
-                  {
-                      name: "Random Name #1",
-                      description: "me and da boys in san fran",
-                      imgPath: 'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
-                      linkHash: '',
-                      users: 5
-                  },
-                  {
-                      name: "Indonesia",
-                      description: "Hello World!",
-                      imgPath: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
-                      linkHash: '',
-                      users: 10
-                  },
-                  {
-                    name: "serbia",
-                    description: "group trip",
-                    imgPath: 'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
-                    linkHash: '',
-                    users: 3
-                  }
-              ]}
+                items={items}
               ></Carousel>
             </div>  
             :
@@ -108,13 +79,13 @@ const Home = (isLoggedIn) => {
           </div>
           <br></br>
           {(isLoggedIn && (trips>0)) ?
-          <CustomPoll
+          <Poll
             options={[
               {name: 'first', votes: 0},
               {name: 'second', votes: 1},
               {name: 'third', votes: 1},
             ]}
-            ></CustomPoll> 
+            ></Poll> 
           :
           <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', margin: '10px 0 40px 0'}}>
             <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>How Frí Works</Typography>

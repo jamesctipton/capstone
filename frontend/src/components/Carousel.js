@@ -134,8 +134,11 @@ export function Carousel(props) {
             <div className='car-spacer' style={{ backgroundColor: 'white', minWidth: '15%' }} />
             {props.items.map((step, index) => (
                 <div key={index} className='car-item' style={{ backgroundColor: '#ffffff', minWidth: '45%', scrollSnapAlign: 'center', borderRadius: 10, marginRight: 8, marginLeft: 8 }}>
+                    {(props.type == 'poll') ? 
+                    <PollItem choice={step}></PollItem>
+                    :
                     <CarouselItem step={step}></CarouselItem>
-                    {/* <PollItem choice={step}></PollItem> */}
+                    }
                 </div>
             ))}
             <div className='car-spacer' style={{ backgroundColor: 'white', minWidth: '15%' }} />
