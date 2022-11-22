@@ -7,8 +7,6 @@ from flask_mail import Message
 
 class LoginHandler(Resource):          
     def get(self):
-        # send user info and list of groups user is in
-
         return {
             'resultStatus': 'SUCCESS',
             'message': "login handler get hit"
@@ -24,12 +22,16 @@ class LoginHandler(Resource):
                 'resultStatus': 'FAILURE',
                 'message': "Invalid username or password"
             }
+        
+        # send user info and list of groups user is in
         return {
             'resultStatus': 'SUCCESS',
             'message': "Successful credentials",
             'name': user.username,
             'userhash': user.hashCode,
-            'groups': user.groups
+            'groups': user.groups,
+            'groups_admin': user.groups_admin,
+            'polls_created': user.polls_created
         }
 
 # done

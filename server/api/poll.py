@@ -16,7 +16,7 @@ class CreatePollHandler(Resource):
     def post(self):
         json_data = request.get_json()
         pollname = json_data['pollname']
-        creator_id = json_data['user']     # need frontend support for this
+        creator_id = json_data['user']   # need frontend support for this
         group_id = json_data['groupid']  # and this
         totalVotes = 0
         options = json_data['options']
@@ -30,9 +30,7 @@ class CreatePollHandler(Resource):
         while(pollCode == db_pollCode.pollCode):
             pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
 
-        # add poll to group 
-        # ..
-
+        # add poll to db, assign creator and group
         poll = Poll(pollCode=pollCode, pollname=pollname, creator_id=creator_id, group_id=group_id,
                     totalVotes=totalVotes, option1=pollItems[0], option2=pollItems[1],
                     option3=pollItems[2], option4=pollItems[3], option5=pollItems[4])

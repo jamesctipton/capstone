@@ -27,16 +27,18 @@ class CreateGroupHandler(Resource):
         while(groupCode == db_groupCode.groupCode):
             groupCode = ''.join(random.choices(string.ascii_letters + string.digits, k=4))
 
-        # add group to user who created the group 
+        # get user who created this group
         user = User.query.filter_by(username=username).first()
 
         # commit group to db
         group = Group(groupname=groupname, destination=destination, 
-                        groupimage=groupimage, summary=summary, groupCode = groupCode, admin_id = user.id)
+                        groupimage=groupimage, summary=summary, groupCode = groupCode, admin = user)
         db.session.add(group)
+
         user.groups.append(group) # add group to user's group
         user.groups_admin.append(group) # add group to the groups that user is an admin of
-        db.session.commit()
+
+        db.session.commit() 
 
         return {
             'resultStatus': 'SUCCESS',
@@ -45,13 +47,14 @@ class CreateGroupHandler(Resource):
             'destination': destination,
             'groupCode': groupCode,
             'state': state,
+            'group_admin': group.admin_id, 
+            'group_id': group.id,
+            'admin_id': group.admin.id
         }
     
 # unfinished
 class JoinGroupHandler(Resource):
     def get(self):
-        # get polls from group
-        # ..
         return {
             'resultStatus': 'SUCCESS',
             'message': "join group handler hit"
@@ -59,8 +62,8 @@ class JoinGroupHandler(Resource):
     def post(self):
         json_data = request.get_json()
         groupCode = json_data['hashCode']
+        username = json_data['username']
         group = Group.query.filter_by(groupCode=groupCode).first()
-        # members field += 1a
         if (group is None):
             return{
                 'resultStatus': 'FAILURE',
@@ -68,7 +71,9 @@ class JoinGroupHandler(Resource):
             }
         
         # add user to group, commit to db
-        # ..
+        user = User.query.filter_by(username=username).first()
+        group.users.append(user)
+        db.session.commit()
 
         return{
             'resultStatus': 'SUCCESS',
@@ -78,6 +83,9 @@ class JoinGroupHandler(Resource):
             'groupCode': group.groupCode,
             'description': group.summary,
             'imgPath': group.groupimage,
+            'polls': group.polls,
+            'users': group.users,
+            'group_id': group.id
         }
 
 class EditGroupHandler(Resource):

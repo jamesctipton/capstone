@@ -18,9 +18,9 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True)
     password_hash = db.Column(db.String(128), unique=True)
     hashCode = db.Column(db.String(120), unique=True)
-    groups = db.relationship('Group', secondary=Group_User, backref='users')
-    groups_admin = db.relationship('Group', backref='user')
-    poll_creator = db.relationship('Poll', backref='user')
+    groups = db.relationship('Group', secondary=Group_User, backref='users') # groups user is in
+    groups_admin = db.relationship('Group', backref='admin') # groups where user is the owner
+    polls_created = db.relationship('Poll', backref='creator') # polls the user has created
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -37,7 +37,7 @@ class Group(db.Model):
     summary = db.Column(db.String(2048))
     groupCode = db.Column(db.String(4), unique=True)
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id')) # User who created group
-    poll_parent = db.relationship('Poll', backref='group') 
+    polls = db.relationship('Poll', backref='group') # polls in the group
 
 class PollOption(object):
     def __init__(self, name, votes=0, image=None) -> None:
