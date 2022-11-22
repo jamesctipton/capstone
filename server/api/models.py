@@ -38,7 +38,6 @@ class Group(db.Model):
     groupCode = db.Column(db.String(4), unique=True)
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id')) # User who created group
     poll_parent = db.relationship('Poll', backref='group') 
-    members = db.Column(db.Integer)
 
 class PollOption(object):
     def __init__(self, name, votes=0, image=None) -> None:

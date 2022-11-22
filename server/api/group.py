@@ -45,7 +45,6 @@ class CreateGroupHandler(Resource):
             'destination': destination,
             'groupCode': groupCode,
             'state': state,
-            'members': 1
         }
     
 # unfinished
@@ -79,7 +78,6 @@ class JoinGroupHandler(Resource):
             'groupCode': group.groupCode,
             'description': group.summary,
             'imgPath': group.groupimage,
-            'members': group.members
         }
 
 class EditGroupHandler(Resource):
