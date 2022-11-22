@@ -25,7 +25,7 @@ class LoginHandler(Resource):
         return {
             'resultStatus': 'SUCCESS',
             'message': "Successful credentials",
-            'name': user.name,
+            'name': user.firstname,
             'userhash': user.hashCode,
             'groups': user.groups
         }

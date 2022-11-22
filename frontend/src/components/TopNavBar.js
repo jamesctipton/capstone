@@ -122,6 +122,7 @@ const TopNavBar = (isLoggedIn) => {
         >
           <MenuItem onClick={handleClose} component={Link} to="/">Home</MenuItem>
           <MenuItem onClick={handleClose} component={Link} to="/login">Login</MenuItem>
+          <MenuItem onClick={handleClose} component={Link} to="/join-create">Join a Group</MenuItem>
           <MenuItem onClick={handleClose} component={Link} to="/">Logout</MenuItem>
         </Menu>
       <Outlet />
