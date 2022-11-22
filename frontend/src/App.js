@@ -17,14 +17,14 @@ import JoinCreate from './pages/Trip/JoinCreate';
 
 function App() {
 
-  const [loggedIn, setLogin] = useState(false)
-  const [user, setUser] = useState(Object)
+  const [loggedIn, setLogin] = React.useState(false)
+  const [user, setUser] = useState(null)
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<TopNavBar isLoggedIn={loggedIn} user={user} />}>
-          <Route index element={<Home user={user} />} />
+        <Route path="/" element={<TopNavBar isLoggedIn={loggedIn} user={user} setLogin={setLogin} setUser={setUser} />}>
+          <Route index element={<Home isLoggedIn={loggedIn} user={user} />} />
           <Route path="login" element={<Login setLogin={setLogin} setUser={setUser}/>} />
           <Route path="register" element={<Registration />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
