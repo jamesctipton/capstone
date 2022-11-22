@@ -7,6 +7,8 @@ from flask_mail import Message
 
 class LoginHandler(Resource):          
     def get(self):
+        # send user info and list of groups user is in
+
         return {
             'resultStatus': 'SUCCESS',
             'message': "login handler get hit"
@@ -25,11 +27,12 @@ class LoginHandler(Resource):
         return {
             'resultStatus': 'SUCCESS',
             'message': "Successful credentials",
-            'name': user.name,
+            'name': user.username,
             'userhash': user.hashCode,
             'groups': user.groups
         }
 
+# done
 class RegistrationHandler(Resource):
     def get(self):
         return {
@@ -72,10 +75,8 @@ class RegistrationHandler(Resource):
             'message': "registered " + firstname + " as " + username
         }
 
-        # return jsonify(username = username, password = password, firstname = firstname,
-        #                 lastname = lastname, email = email)
 
-
+# done
 class ForgotPasswordHandler(Resource):
     def get(self):
         return {
@@ -104,6 +105,7 @@ class ForgotPasswordHandler(Resource):
         print(json_data)
         return jsonify(email = email, hashCode=hashCode)
 
+# done
 class NewPasswordHandler(Resource):
     def post(self):
         # get hash code and new user password
@@ -111,7 +113,7 @@ class NewPasswordHandler(Resource):
         password = json_data['password']
         hashCode = json_data['hashCode']
 
-        # gotta figure out how to get the user
+        # get user by hash code
         user = User.query.filter_by(hashCode=hashCode).first()
         if (user is None):
             return{
@@ -125,5 +127,4 @@ class NewPasswordHandler(Resource):
 
         return jsonify(password = password)
 
-
-
+#class LogoutHandler(Resource):   

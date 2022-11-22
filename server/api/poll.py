@@ -27,8 +27,11 @@ class CreatePollHandler(Resource):
         # make sure poll code is unique
         pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
         db_pollCode = Poll.query.filter_by(pollCode=pollCode).first()
-        while(pollCode == db_pollCode):
+        while(pollCode == db_pollCode.pollCode):
             pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+
+        # add poll to group 
+        # ..
 
         poll = Poll(pollCode=pollCode, pollname=pollname, creator_id=creator_id, group_id=group_id,
                     totalVotes=totalVotes, option1=pollItems[0], option2=pollItems[1],
@@ -40,7 +43,7 @@ class CreatePollHandler(Resource):
         return {
             'resultStatus': 'SUCCESS',
             'message': "Poll successfully created",
-            'pollID': pollCode                                  # ankit help
+            'pollID': pollCode                                 
         } 
 
 # unfinished
@@ -55,14 +58,29 @@ class VotePollHandler(Resource):
         json_data = request.get_json()
         pollCode = json_data['pollcode']
         option = json_data['option']
+        username = json_data['username'] # user who voted
+
         poll = Poll.query.filter_by(pollCode=pollCode)
         if (poll is None):
             return{
                 'resultStatus': 'FAILURE',
                 'message': "Poll does not exist"
             }
+
+        # need to make sure user only votes once 
         
         poll.option[option].votes += 1
+        poll.totalVotes += 1
 
         # update db
+        db.session.add(poll)
+        db.session.commit()   
+
         # return success
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': "Poll successfully voted on",
+            'pollID': pollCode,
+            'userWhoVoted' : username                
+        } 
+
