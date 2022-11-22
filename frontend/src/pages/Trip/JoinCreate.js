@@ -31,7 +31,7 @@ const theme = createTheme({
 });
 
 
-const JoinCreate = (isLoggedIn) => {
+const JoinCreate = (isLoggedIn, user, setUser) => {
 
     const navigate = useNavigate()
     const navigateGroupHome = (groupCode) => {
@@ -49,6 +49,18 @@ const JoinCreate = (isLoggedIn) => {
         result: false
     })
 
+    const updateUser = (response) => {
+        var temp = user
+        user.groups.push({
+            groupname: response['data']['name'],
+            groupimage: response['data']['destination'],
+            groupCode: response['data']['groupCode'],
+            destination: response['data']['description'],
+            summary: response['data']['imgPath']
+        });
+        setUser(temp)
+    }
+
     const verifyGroup = (event) => {
         axios.post(join_url, {
             hashCode: groupCode
@@ -56,6 +68,7 @@ const JoinCreate = (isLoggedIn) => {
             if(response['data']['resultStatus'] === 'SUCCESS') {
                 console.log(response)
                 navigateGroupHome(groupCode)
+                updateUser(response)
             } else {
                 console.log(response)
                 setError({message: response['data']['message'], result: true})
@@ -76,6 +89,7 @@ const JoinCreate = (isLoggedIn) => {
             if(response['data']['resultStatus'] === 'SUCCESS'){
                 console.log(response)
                 navigateGroupHome(response['data']['groupCode'])
+                updateUser(response)
             }
         }).catch((error) => {
             console.log(error)
