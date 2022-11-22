@@ -5,9 +5,6 @@ import Steps from '../../assets/Steps.png'
 import { Link } from "react-router-dom";
 import { Carousel } from '../../components/Carousel';
 import { Poll } from '../../components/Poll';
-import axios from 'axios'
-
-const url = 'http://127.0.0.1:5000/group';
 
 const items = [
   {
@@ -36,19 +33,8 @@ const items = [
 const Home = (isLoggedIn, user) => {
 
   // get groups from user
-  console.log(user)
-  // axios.post(url, {
-  //   user: user.userhash
-  // }).then((response) => {
-  //   if(response['data']['resultStatus'] === 'SUCCESS') {
-  //     console.log()
-  //   }
-  //   else {
-  //     console.log(response)
-  //   }
-  // }).catch((error) => {
-  //   console.log(error)
-  // })
+  // console.log(user)
+  user.groups = items
 
   const trips = items.length;
 
