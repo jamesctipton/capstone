@@ -52,7 +52,7 @@ class JoinGroupHandler(Resource):
         json_data = request.get_json()
         groupCode = json_data['hashCode']
         group = Group.query.filter_by(groupCode=groupCode).first()
-        # members field += 1
+        # members field += 1a
         if (group is None):
             return{
                 'resultStatus': 'FAILURE',
