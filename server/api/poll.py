@@ -22,7 +22,7 @@ class CreatePollHandler(Resource):
         options = json_data['options']
         pollItems = []
         for op in options:
-            pollItems.append(PollOption(options[op]["name"], options[op]["votes"], options[op]["image"]))
+            pollItems.append(pickle.dumps(PollOption(options[op]["name"], options[op]["votes"], options[op]["image"])))
 
         # make sure poll code is unique
         pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))

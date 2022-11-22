@@ -20,7 +20,7 @@ const Trip = (props) => {
 
     return (
         <Box sx={{marginTop: '3%'}}>
-            <Carousel items={[
+            <Carousel type="poll" items={[
                 {name: 'asdfa'},
                 {name: 'fasdf'}
             ]}></Carousel>

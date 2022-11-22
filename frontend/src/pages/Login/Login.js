@@ -25,7 +25,7 @@ const theme = createTheme({
 });
 
 
-const Login = ({ setLogin }) => {
+const Login = ({ setLogin, setUser }) => {
 
   const navigate = useNavigate()
   const navigateToHome = () => {
@@ -51,6 +51,11 @@ const Login = ({ setLogin }) => {
       if(response['data']['resultStatus'] === 'SUCCESS') {
         setError({message: "", result: false})
         setLogin(true)
+        setUser({
+          name: response['data']['name'],
+          userhash: response['data']['userhash'],
+          groups: response['data']['groups']
+        })
         navigateToHome()
       }
       else {

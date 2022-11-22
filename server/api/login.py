@@ -24,7 +24,10 @@ class LoginHandler(Resource):
             }
         return {
             'resultStatus': 'SUCCESS',
-            'message': "Successful credentials"
+            'message': "Successful credentials",
+            'name': user.name,
+            'userhash': user.hashCode,
+            'groups': user.groups
         }
 
 class RegistrationHandler(Resource):
