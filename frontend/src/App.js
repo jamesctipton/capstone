@@ -14,6 +14,7 @@ import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import Trip from './pages/Trip/Trip';
 import JoinCreate from './pages/Trip/JoinCreate';
 import { Typography } from '@mui/material';
+import Search from './pages/Search/Search';
 
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
           <Route path="new-password/:hash" element={<NewPassword />} />
           <Route path="trip/:hash" element={<Trip />} />
           <Route path="join-create" element={<JoinCreate isLoggedIn={loggedIn} user={user} setUser={setUser} />} />
-          <Route path="search" element={<Typography>Search</Typography>} />
+          <Route path="search" element={<Search />} />
           <Route path="favorites" element={<Typography>Favorites</Typography>} />
           <Route path="friends" element={<Typography>Friends</Typography>} />
           <Route path="profile" element={<Typography>Profile</Typography>} />
