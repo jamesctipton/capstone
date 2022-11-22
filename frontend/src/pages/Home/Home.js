@@ -45,7 +45,7 @@ const Home = (isLoggedIn, user) => {
     console.log(isLoggedIn)
     return (
       <>
-        {(isLoggedIn) 
+        {(isLoggedIn['isLoggedIn']) 
           ? 
           <>
           {(trips === 0) ?
@@ -78,7 +78,7 @@ const Home = (isLoggedIn, user) => {
             }
           </>
           :
-          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', margin: '10px 0 40px 0'}}>
+          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', margin: '10px 0 40px 0', marginTop: '10%'}}>
             <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>How Frí Works</Typography>
             <img src={Steps} alt="Steps" style={{width: '90%'}}></img>
             <Typography variant='h6' sx={{color: '#CF7D30'}}>Don't have an account? <a href='/register'>Register</a> or 
