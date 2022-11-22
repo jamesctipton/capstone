@@ -25,3 +25,4 @@ SERVER SIDE ===================================================
 - amadeus api things
 - testing
 - are we storing hotels, flights, and other poll results in group data?
+- logout handler
