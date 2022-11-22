@@ -65,5 +65,10 @@ class VotePollHandler(Resource):
         poll.option[option].votes += 1
         poll.totalVotes += 1
 
-        # update db
-        # return success
+        db.session.add(poll)
+        db.session.commit() 
+        return{
+                'resultStatus': 'SUCCESS',
+                'message': "Vote has been cast",
+                'poll': poll
+            }
