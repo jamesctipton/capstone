@@ -45,21 +45,28 @@ function CarouselItem(props) {
 }
 
 // pollItem: {
-//     choice: string
+//     name: string
 //     votes: int
 //     imgPath: string
+//     totalVotes: int
 // }
 
 function PollItem(props) {
-    var step = props.step; // temp
+    var choice = props.choice; // temp
+    var voted = false
+
+    const handleVote = (vote) => {
+        if(vote) { choice.votes++ }
+    }
+
     return (
         <>
             <Card sx={{ borderRadius: '10px', backgroundColor: '#dddddd',}}>
-                <CardActionArea disabled>
+                <CardActionArea disabled> {/* add link functionality for more details type beat */}
                 <div style={{ position: 'absolute', zIndex: 100, backgroundColor: '#ffffff', opacity: 0.8, borderRadius: 100, width: 'auto', textAlign: 'center', padding: 12, margin: 16, right: 0 }} >
-                    votes
+                {(voted == false ) ? 'Vote' : ((choice.votes / choice.totalVotes).toFixed(2) * 100) + '%'}
                 </div>
-                {(step.imgPath == '' || step.imgPath == null) ?
+                {(choice.imgPath == '' || choice.imgPath == null) ?
                 <div
                     style={{ backgroundColor: '#666666', height: '20rem', color: '#dddddd', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', fontSize: 40, }}
                 >No image
@@ -68,17 +75,20 @@ function PollItem(props) {
                 <CardMedia
                     component='img'
                     height='312rem'
-                    image={step.imgPath}
-                    alt={step.name}
+                    image={choice.imgPath}
+                    alt={choice.name}
                 />
                 }
+                <CardContent style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0 }}>
+                    <Typography variant="h6">{choice.name}</Typography>
+                </CardContent>
                 </CardActionArea>
                 <CardContent style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0, height: '6rem' }}>
-                    <CardActionArea sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0, height: '6rem' }}>
+                    <CardActionArea onClick={() => { handleVote(true) }} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0, height: '6rem' }}>
                         <ThumbUpIcon sx={{ fontSize: 48, color: '#00aa00' }} />
                     </CardActionArea>
                     <Divider orientation="vertical" variant="middle" />
-                    <CardActionArea sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0, height: '6rem' }}>
+                    <CardActionArea onClick={() => { handleVote(false) }} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0, height: '6rem' }}>
                         <ThumbDownIcon sx={{ fontSize: 48, color: '#dd2222' }} />
                     </CardActionArea>
                 </CardContent>
@@ -124,8 +134,8 @@ export function Carousel(props) {
             <div className='car-spacer' style={{ backgroundColor: 'white', minWidth: '15%' }} />
             {props.items.map((step, index) => (
                 <div key={index} className='car-item' style={{ backgroundColor: '#ffffff', minWidth: '45%', scrollSnapAlign: 'center', borderRadius: 10, marginRight: 8, marginLeft: 8 }}>
-                    {/* <CarouselItem step={step}></CarouselItem> */}
-                    <PollItem step={step}></PollItem>
+                    <CarouselItem step={step}></CarouselItem>
+                    {/* <PollItem choice={step}></PollItem> */}
                 </div>
             ))}
             <div className='car-spacer' style={{ backgroundColor: 'white', minWidth: '15%' }} />
