@@ -55,7 +55,6 @@ const Login = ({ setLogin, setUser }) => {
           name: response['data']['name'],
           groups: response['data']['groups']
         })
-        console.log(response)
         navigateToHome()
       }
       else {

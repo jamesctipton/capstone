@@ -42,7 +42,7 @@ const Home = (isLoggedIn, user) => {
     {name: 'third', votes: 1},
   ]
 
-    console.log(isLoggedIn)
+  console.log(isLoggedIn['isLoggedIn'])
     return (
       <>
         {(isLoggedIn['isLoggedIn']) 
@@ -80,7 +80,7 @@ const Home = (isLoggedIn, user) => {
           :
           <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', margin: '10px 0 40px 0', marginTop: '10%'}}>
             <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>How Frí Works</Typography>
-            <img src={Steps} alt="Steps" style={{width: '90%'}}></img>
+            <img src={Steps} alt="Steps" style={{width: '90%', marginBottom: '5%'}}></img>
             <Typography variant='h6' sx={{color: '#CF7D30'}}>Don't have an account? <a href='/register'>Register</a> or 
             <span><Button
             variant='outlined'
