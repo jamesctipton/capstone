@@ -55,7 +55,6 @@ const Login = ({ setLogin, setUser }) => {
           name: response['data']['name'],
           groups: response['data']['groups']
         })
-        console.log(response)
         navigateToHome()
       }
       else {
@@ -91,6 +90,11 @@ const Login = ({ setLogin, setUser }) => {
                 onChange={(e) => setLoginInfo({...loginForm, password: e.target.value})}
                 value={loginForm.password}
                 required
+                onKeyPress={event => {
+                  if (event.key === 'Enter') {
+                    handleSubmit(event)
+                  }
+                }}
               ></TextField>
 
               <p>Don't have an account? <a href='/register'>Register</a></p>

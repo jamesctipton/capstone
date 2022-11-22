@@ -81,10 +81,11 @@ const JoinCreate = (isLoggedIn, user, setUser) => {
     const submitNewGroup = (event) => {
         axios.post(create_url, {
             groupname: createdGroupValues.name,
-            groupimage: createdGroupValues.image,
-            groupstate: createdGroupValues.private,
             destination: "",
-            summary: ""
+            groupimage: createdGroupValues.image,
+            summary: "",
+            groupstate: createdGroupValues.private,
+            username: user.name
         }).then((response) => {
             if(response['data']['resultStatus'] === 'SUCCESS'){
                 console.log(response)
@@ -163,7 +164,7 @@ const JoinCreate = (isLoggedIn, user, setUser) => {
                     required
                 ></TextField>
                 <FormGroup style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 100, paddingLeft: 25, paddingBottom: 5 }}>
-                    <Typography variant='h7' >*Private or Public group</Typography>
+                    <Typography variant='h7' >Private Group</Typography>
                     <FormControlLabel control={<Switch color='warning' size='medium' value={createdGroupValues.private} onChange={(e) => setValues({...createdGroupValues, private: e.target.checked})} />} />
                 </FormGroup>
                 <Typography variant='p' style={{ textAlign: 'center', fontSize: 'small', paddingLeft: 10, paddingRight: 10 }}>Public means everyone in the group can invite others, Private means only selected persons can</Typography>

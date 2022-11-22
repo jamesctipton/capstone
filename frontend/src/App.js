@@ -13,11 +13,12 @@ import Registration from './pages/Registration/Registration';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import Trip from './pages/Trip/Trip';
 import JoinCreate from './pages/Trip/JoinCreate';
+import { Typography } from '@mui/material';
 
 
 function App() {
 
-  const [loggedIn, setLogin] = React.useState(false)
+  const [loggedIn, setLogin] = useState(false)
   const [user, setUser] = useState(null)
 
   return (
@@ -31,6 +32,10 @@ function App() {
           <Route path="new-password/:hash" element={<NewPassword />} />
           <Route path="trip/:hash" element={<Trip />} />
           <Route path="join-create" element={<JoinCreate isLoggedIn={loggedIn} user={user} setUser={setUser} />} />
+          <Route path="search" element={<Typography>Search</Typography>} />
+          <Route path="favorites" element={<Typography>Favorites</Typography>} />
+          <Route path="friends" element={<Typography>Friends</Typography>} />
+          <Route path="profile" element={<Typography>Profile</Typography>} />
         </Route>
       </Routes>
     </BrowserRouter>
