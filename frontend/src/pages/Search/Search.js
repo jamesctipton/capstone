@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Divider, FormControl, OutlinedInput, IconButton, createTheme } from "@mui/material";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import axios from "axios";
 
 const theme = createTheme({
     palette: {
@@ -14,6 +15,8 @@ const theme = createTheme({
     }
 });
 
+const desination_url = 'http://127.0.0.1:5000/search-destinations'
+
 const Search = () => {
 
     const [isActive, setActive] = useState({
@@ -24,6 +27,7 @@ const Search = () => {
     })
 
     const [initCriteria, setInitCriteria] = useState("desination")
+    const [destInput, setDestInput] = useState("")
 
     const setDesinationActive = () => {
         isActive.desination = true
@@ -77,6 +81,16 @@ const Search = () => {
         setInitCriteria("poi")
     }
 
+    const searchDesination = (dest) => {
+        axios.post(desination_url, {
+            keyword: dest
+        }).then((response) => {
+            console.log(response)
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '5%' }}>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginBottom: '1%'}}>
@@ -108,12 +122,17 @@ const Search = () => {
             {initCriteria === 'desination' 
                 ? <div style={{width: '80%', marginTop: '2%'}}>
                     <FormControl fullWidth>
-                        <OutlinedInput placeholder="Search Countries, Cities or Specific Locations" variant="outlined" sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} fullWidth
+                        <OutlinedInput 
+                            placeholder="Search Countries, Cities or Specific Locations" 
+                            variant="outlined" 
+                            sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} 
+                            value={destInput}
+                            onChange={(e) => setDestInput(e.target.value)}
+                            fullWidth
                             endAdornment={
-                            <IconButton aria-label='search' onClick={() => {}} onMouseDown={() => {}} edge="end">
+                            <IconButton aria-label='search' onClick={() => searchDesination(destInput)} onMouseDown={() => {}} edge="end">
                                 <SearchOutlinedIcon fontSize="large" color="primary"/>
                             </IconButton>}>
-
                         </OutlinedInput>
                     </FormControl>
                 </div> 
