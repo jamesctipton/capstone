@@ -10,8 +10,9 @@ class DestinationSearchHandler(Resource):
             'message': "destination search handler hit"
         }
     def post(self):
-        #json_data = request.args.get()
-        keyword = request.args.get("keyword")
+        json_data = request.get_json()
+        keyword = json_data['keyword']
+        print(keyword)
 
         destinations = get_destinations(keyword)
 
