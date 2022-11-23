@@ -3,6 +3,7 @@ from flask_restful import Api
 from api.login import *
 from api.group import * 
 from api.poll import *
+from api.search import *
 from api.__init__ import app
 
 app = app
@@ -18,6 +19,7 @@ api.add_resource(JoinGroupHandler, '/join-group')
 api.add_resource(EditGroupHandler,'/edit-group')
 api.add_resource(CreatePollHandler,'/create-poll')
 api.add_resource(VotePollHandler,'/vote-poll')
+api.add_resource(DestinationSearchHandler, '/search-destinations')
 
 if __name__ == "__main__":
     app.run(debug=True)

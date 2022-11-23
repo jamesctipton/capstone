@@ -1,6 +1,9 @@
 from amadeus import Client, ResponseError
 import ssl, urllib
 import pandas as pd
+import json
+from ast import keyword
+
 
 def ssl_disabled_urlopen(endpoint):
     context = ssl._create_unverified_context()
@@ -13,17 +16,10 @@ amadeus = Client(
 )
 
 # test code 
+
 try:
-    response = amadeus.reference_data.locations.cities.get(keyword='Paris')
-    df = pd.json_normalize(response.data)
-    df = df[["name", "address.countryCode", "address.stateCode", "geoCode.latitude", "geoCode.longitude"]]
-    list_of_cities = df.values.tolist()
-    for city in list_of_cities:
-        if city[1] == 'US':
-            city[2] = (city[2])[3:]
-        else:
-            city.pop(2)
-    print(list_of_cities)                               
+    response = amadeus.reference_data.locations.hotel.get(keyword='PARI', )
+    print(response.data)
 except ResponseError as error:
     print(error)
 
@@ -35,23 +31,30 @@ def get_destinations(keyword):
     try:
         response = amadeus.reference_data.locations.cities.get(keyword=keyword)
         df = pd.json_normalize(response.data)
+        if(df.empty):
+            return None
+
+        # Create dataframe of cities, rename columns, and convert to dictionary
         df = df[["name", "address.countryCode", "address.stateCode", "geoCode.latitude", "geoCode.longitude"]]
-        list_of_cities = df.values.tolist()
-        for city in list_of_cities:
-            if city[1] == 'US':
-                city[2] = (city[2])[3:]
+        df.rename(columns = {'address.countryCode':'countryCode', 'address.stateCode':'stateCode', 
+                             'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
+        destinations_dict = df.to_dict('records')
+
+        # remove state code if not a US state, and adjust formatting otherwise
+        for record in destinations_dict:
+            if record['countryCode'] == 'US':
+                record['stateCode'] = (record['stateCode'])[3:]
             else:
-                city.pop(2)
-        
-        return list_of_cities
+                del record['stateCode']
+
+        # Uncomment below to test
+        #print(destinations_dict)
+        return destinations_dict
     except ResponseError as error:
         return error
 
-def get_destination(destination, list_of_cities):
-    for city in list_of_cities:
-        if city[0] == destination:
-            return city
-    return None
+# Uncomment below to test
+#get_destinations("Paris")
 
 # get flights for certain destination
 def get_flights(src_airport, dst_airport, start_date, end_date):
@@ -63,32 +66,22 @@ def get_hotels(latitude, longitude):
     try:
         response = amadeus.reference_data.locations.hotels.by_geocode.get(longitude=longitude,latitude=latitude)
         df = pd.json_normalize(response.data)
+        pd.set_option('display.max_columns', None)
+        print(df)
         df = df[["name", "geoCode.latitude", "geoCode.longitude", "distance.value", "distance.unit"]]
+        df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
+        hotels_dict = df.to_dict('records')
         list_of_hotels = df.values.tolist()
+        jsonString = json.dumps(list_of_hotels)
         return list_of_hotels
     except ResponseError as error:
         raise error
 
-def get_hotel(hotel_name, list_of_hotels):
-    for hotel in list_of_hotels:
-        if hotel[0] == hotel_name:
-            return hotel
-    return None
-
+#get_hotels(48.85693, 2.3412)
 # get points of interest for certain destination
 # return poi name, category(sightseeing, restaurant, etc), atitude/longitude, and description tags
-def get_pois(latitude, longitude):
-    try:
-        response = amadeus.reference_data.locations.points_of_interest.get(latitude=latitude, longitude=longitude)
-        df = pd.json_normalize(response.data)
-        df = df[["name", "geoCode.latitude", "geoCode.longitude", "category", "tags"]]
-        list_of_pois = df.values.tolist()
-        return list_of_pois
-    except ResponseError as error:
-        raise error
-
-def get_poi(poi_name, list_of_pois):
-    for poi in list_of_pois:
-        if poi[0] == poi_name:
-            return poi
-    return None
+# def get_pois(latitude, longitude):
+    # try:
+        
+    # except ResponseError as error:
+    #     raise error
