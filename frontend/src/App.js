@@ -33,7 +33,7 @@ function App() {
           <Route path="new-password/:hash" element={<NewPassword />} />
           <Route path="trip/:hash" element={<Trip />} />
           <Route path="join-create" element={<JoinCreate isLoggedIn={loggedIn} user={user} setUser={setUser} />} />
-          <Route path="search" element={<Search />} />
+          <Route path="search" element={<Search isLoggedIn={loggedIn}/>} />
           <Route path="favorites" element={<Typography>Favorites</Typography>} />
           <Route path="friends" element={<Typography>Friends</Typography>} />
           <Route path="profile" element={<Typography>Profile</Typography>} />

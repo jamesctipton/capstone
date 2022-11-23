@@ -17,7 +17,7 @@ const theme = createTheme({
 
 const desination_url = 'http://127.0.0.1:5000/search-destinations'
 
-const Search = () => {
+const Search = ({ isLoggedIn }) => {
 
     const [isActive, setActive] = useState({
         desination: true,
@@ -85,11 +85,11 @@ const Search = () => {
     }
 
     const destinationColumns = [
-        {id: 'name', label: 'Name'},
-        {id: 'countryCode', label: 'Country'},
-        {id: 'stateCode', label: 'State'},
-        {id: 'latitude', label: 'Latitude'},
-        {id: 'longitude', label: 'Longitude'}
+        {id: 'name', label: 'Name', align: 'left'},
+        {id: 'countryCode', label: 'Country', align: 'center'},
+        {id: 'stateCode', label: 'State', align: 'center'},
+        {id: 'latitude', label: 'Latitude', align: 'center'},
+        {id: 'longitude', label: 'Longitude', align: 'center'}
     ]
     const [destinationRows, setDestinationRows] = useState([])
 
@@ -203,12 +203,12 @@ const Search = () => {
                         <Typography>{errorValue.message}</Typography>
                     </Box>
                 : <></> }
-                <TableContainer style={{ width: '90%' }}>
+                <TableContainer style={{ width: '90%', marginLeft: isLoggedIn ? '5%' : 0 }}>
                     <Table stickyHeader>
                         <TableHead>
                             <TableRow>
                                 {destinationColumns.map((column) => (
-                                    <TableCell key={column.id} sx={{ color: '#CF7D30'}}>
+                                    <TableCell key={column.id} sx={{ color: '#CF7D30'}} align={column.align}>
                                         {column.label}
                                     </TableCell>
                                 ))}
@@ -217,15 +217,20 @@ const Search = () => {
                         <TableBody>
                             {destinationRows.map((row, index1) => {
                                 return(
-                                    <TableRow key={index1}>
+                                    <TableRow key={index1} sx={{ width: '100%' }} hover>
                                         {destinationColumns.map((column, index2) => {
                                             const value = row[column.id]
                                             return (
-                                                <TableCell key={index1 + index2}>
+                                                <TableCell key={index1 + index2} align={column.align}>
                                                     {value}
                                                 </TableCell>
                                             )
                                         })}
+                                        {isLoggedIn ? 
+                                            <Button sx={{ marginTop: 1, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', border: '3px solid orange' }}>
+                                                Add To Poll
+                                            </Button> : <></>}
+                                        
                                     </TableRow>
                                 )
                             })}
