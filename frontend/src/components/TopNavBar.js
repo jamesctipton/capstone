@@ -1,15 +1,13 @@
 import React from "react";
 import { 
   Outlet, 
-  Link 
+  Link, 
+  useNavigate
 } from "react-router-dom";
 import {
-  InputAdornment, 
-  OutlinedInput,
   ThemeProvider,
   createTheme,
   Button,
-  FormControl,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
@@ -54,6 +52,22 @@ const TopNavBar = ({isLoggedIn, user, setLogin, setUser}) => {
     setLogin(false);
     setUser(null);
   }
+
+  const navigate = useNavigate()
+  const navigateToSearch = () => {
+    navigate('/search')
+  }
+  const navigateToFavorites = () => {
+    navigate('/favorites')
+  }
+  const navigateToFriends = () => {
+    navigate('/friends')
+  }
+  const navigateToProfile = () => {
+    navigate('/profile')
+  }
+
+  console.log(isLoggedIn)
   
   return (
     <ThemeProvider theme={theme}>
@@ -69,37 +83,17 @@ const TopNavBar = ({isLoggedIn, user, setLogin, setUser}) => {
             </Typography>
             </div>
             <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 10}}>
-              <FormControl fullWidth>
-              <OutlinedInput
-                  placeholder="Search Locations, Hotels, or Flights"
-                  variant="outlined"
-                  sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}}
-                  fullWidth
-                  endAdornment={
-                      <InputAdornment position='end'>
-                          <IconButton
-                              aria-label='show/hide password'
-                              onClick={() => {}}
-                              onMouseDown={() => {}}
-                              edge="end"
-                          >
-                              <SearchOutlinedIcon fontSize="large" color="primary"/>
-                          </IconButton>
-                      </InputAdornment>
-                  }
-              >Search</OutlinedInput>
-              </FormControl>
-              <IconButton onClick={() => {}} edge="end" color="primary" aria-label="favorites">
+              <IconButton aria-label='show/hide password' onClick={() => navigateToSearch()} onMouseDown={() => {}} edge="end">
+                <SearchOutlinedIcon fontSize="large" color="primary"/>
+              </IconButton>
+              <IconButton onClick={() => navigateToFavorites()} edge="end" color="primary" aria-label="favorites">
                 <FavoriteBorderOutlinedIcon fontSize="large"/>
               </IconButton>
-              <IconButton onClick={() => {}} edge="end" color="primary" aria-label="groups">
+              <IconButton onClick={() => navigateToFriends()} edge="end" color="primary" aria-label="friends">
                 <PeopleAltOutlinedIcon fontSize="large" />
               </IconButton>
-              <IconButton onClick={() => {}} edge="end" color="primary" aria-label="messages">
-                <TextsmsOutlinedIcon fontSize="large" />
-              </IconButton>
-              {(isLoggedIn['isLoggedIn']) ? 
-                <IconButton onClick={() => {}} edge="end" color="primary" aria-label="messages">
+              {(isLoggedIn) ? 
+                <IconButton onClick={() => navigateToProfile()} edge="end" color="primary" aria-label="messages">
                   <PersonOutlineOutlinedIcon fontSize="large" />
                 </IconButton> : 
                 <Button 

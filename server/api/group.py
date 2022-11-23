@@ -93,18 +93,28 @@ class EditGroupHandler(Resource):
         json_data = request.get_json()
         groupCode = json_data['hashCode']
         group = Group.query.filter_by(groupCode=groupCode).first()
-
-        # get group attributes to change 
-        # ..
-
         if (group is None):
             return{
                 'resultStatus': 'FAILURE',
                 'message': "Group does not exist"
             }
+
+        # get group attributes to change 
+        group.groupname = json_data['groupname']
+        group.destination = json_data['destination'] # nullable
+        group.groupimage = json_data['groupimage'] # nullable
+        group.summary = json_data['summary'] # nullable
+        group.state = json_data['groupstate']
         
+        db.session.commit()
 
         return{
             'resultStatus': 'SUCCESS',
             'message': "Group successfully edited",
+            'name': group.groupname,
+            'destination': group.destination,
+            'groupCode': group.groupCode,
+            'description': group.summary,
+            'imgPath': group.groupimage,
+            'group_id': group.id
         }
