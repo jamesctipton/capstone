@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from flask import request
+from flask import request, jsonify
 from api.travel_data import *
 
 # Search parameters: Just a keyword
@@ -10,14 +10,15 @@ class DestinationSearchHandler(Resource):
             'message': "destination search handler hit"
         }
     def post(self):
-        json_data = request.get_json()
-        keyword = json_data["keyword"]
+        #json_data = request.args.get()
+        keyword = request.args.get("keyword")
+
         destinations = get_destinations(keyword)
 
-        return {
+        return{
             'resultStatus': 'SUCCESS',
             'message': "Destination search successful",
-            'destinations' : destinations
+            'keyword': destinations
         }
 
 class FlightSearchHandler(Resource):          

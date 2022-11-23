@@ -17,11 +17,6 @@ amadeus = Client(
 
 # test code 
 
-try:
-    response = amadeus.reference_data.locations.hotel.get(keyword='PARI', )
-    print(response.data)
-except ResponseError as error:
-    print(error)
 
 
 # get city destination by search term
@@ -48,13 +43,13 @@ def get_destinations(keyword):
                 del record['stateCode']
 
         # Uncomment below to test
-        #print(destinations_dict)
+        print(destinations_dict)
         return destinations_dict
     except ResponseError as error:
         return error
 
 # Uncomment below to test
-#get_destinations("Paris")
+get_destinations("Paris")
 
 # get flights for certain destination
 def get_flights(src_airport, dst_airport, start_date, end_date):
