@@ -87,6 +87,7 @@ const Search = () => {
     const destinationColumns = [
         {id: 'name', label: 'Name'},
         {id: 'countryCode', label: 'Country'},
+        {id: 'stateCode', label: 'State'},
         {id: 'latitude', label: 'Latitude'},
         {id: 'longitude', label: 'Longitude'}
     ]
@@ -101,12 +102,12 @@ const Search = () => {
             axios.post(desination_url, {
                 keyword: dest
             }).then((response) => {
-                console.log(response)
                 const results = response['data']['keyword']
                 let temp = []
                 for(let i = 0; i < results.length; i++) {
                     temp.push(results[i])
                 }
+                console.log(temp)
                 setDestinationRows(temp)
             }).catch((error) => {
                 console.log(error)
