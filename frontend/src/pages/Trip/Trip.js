@@ -18,12 +18,18 @@ const theme = createTheme({
 
 const Trip = (props) => {
 
+  var totalVotes = 0
+
     return (
         <Box sx={{marginTop: '3%'}}>
-            <Carousel type="poll" items={[
+            <Carousel 
+              type="poll"
+              items={[
                 {name: 'asdfa'},
                 {name: 'fasdf'}
-            ]}></Carousel>
+              ]}
+              totalVotes={totalVotes}
+            ></Carousel>
         </Box>
   )};
   

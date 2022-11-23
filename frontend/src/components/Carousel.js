@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardActionArea, Divider } from "@mui/material";
 import { CardContent, CardMedia, Typography } from "@material-ui/core";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -8,8 +8,8 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 //     name: string,
 //     description: string,
 //     imgPath?: string,
-//     linkHash: string,
-//     users: int
+//     groupCode: string,
+//     members: int
 // }
 
 function CarouselItem(props) {
@@ -17,9 +17,9 @@ function CarouselItem(props) {
     return (
     <>
         <Card sx={{ borderRadius: '10px', backgroundColor: '#dddddd',}}>
-            <CardActionArea href={'trip/' + step.linkHash}>
+            <CardActionArea href={'trip/' + step.groupCode}>
                 <div style={{ position: 'absolute', zIndex: 100, backgroundColor: '#ffffff', opacity: 0.8, borderRadius: 100, width: 'auto', textAlign: 'center', padding: 12, margin: 16, right: 0 }} >
-                    {(step.users == 0 || step.users == null) ? '' : step.users + ' people'}
+                    {(step.members == 0 || step.members == null) ? '' : step.members + ' people'}
                 </div>
                 {(step.imgPath == '' || step.imgPath == null) ?
                 <div
@@ -51,13 +51,8 @@ function CarouselItem(props) {
 //     totalVotes: int
 // }
 
-function PollItem(props) {
+function PollItem({props, handleVote, voted}) {
     var choice = props.choice; // temp
-    var voted = false
-
-    const handleVote = (vote) => {
-        if(vote) { choice.votes++ }
-    }
 
     return (
         <>
@@ -98,6 +93,8 @@ function PollItem(props) {
 } 
 
 export function Carousel(props) {
+
+    const [voted, setVoted] = React.useState(false);
   
     var hover = false;
 
@@ -121,6 +118,13 @@ export function Carousel(props) {
             }   
         }
     }, 5000);
+
+    const handleVote = (vote) => {
+        if(vote) {
+            
+        }
+        props.totalVotes ++;
+    }
   
       return (
         <div onMouseOver={() => {hover = true}} onMouseLeave={() => {hover = false}} id='car' style={{width: '100%', minHeight: '25rem', display: 'flex', overflowX: 'scroll', scrollSnapType: 'x mandatory', }}>
@@ -135,7 +139,7 @@ export function Carousel(props) {
             {props.items.map((step, index) => (
                 <div key={index} className='car-item' style={{ backgroundColor: '#ffffff', minWidth: '45%', scrollSnapAlign: 'center', borderRadius: 10, marginRight: 8, marginLeft: 8 }}>
                     {(props.type == 'poll') ? 
-                    <PollItem choice={step}></PollItem>
+                    <PollItem choice={step} handleVote={handleVote} voted={voted} ></PollItem>
                     :
                     <CarouselItem step={step}></CarouselItem>
                     }

@@ -6,35 +6,34 @@ import { Link } from "react-router-dom";
 import { Carousel } from '../../components/Carousel';
 import { Poll } from '../../components/Poll';
 
-// const items = [
-//   {
-//       name: "Random Name #1",
-//       description: "me and da boys in san fran",
-//       imgPath: 'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
-//       groupCode: '',
-//       members: 5
-//   },
-//   {
-//       name: "Indonesia",
-//       description: "Hello World!",
-//       imgPath: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
-//       groupCode: '',
-//       members: 10
-//   },
-//   {
-//     name: "serbia",
-//     description: "group trip",
-//     imgPath: 'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
-//     groupCode: '',
-//     members: 3
-//   }
-// ]
+const items = [
+  {
+      name: "Random Name #1",
+      description: "me and da boys in san fran",
+      imgPath: 'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
+      groupCode: '',
+      members: 5
+  },
+  {
+      name: "Indonesia",
+      description: "Hello World!",
+      imgPath: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
+      groupCode: '',
+      members: 10
+  },
+  {
+    name: "serbia",
+    description: "group trip",
+    imgPath: 'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
+    groupCode: '',
+    members: 3
+  }
+]
 
 const Home = (isLoggedIn, user) => {
 
-  // get groups from user
-  // console.log(user)
-  const trips = (user.groups) ? user.groups.length : 0;
+  // const trips = (user.groups) ? user.groups.length : 0;
+  const trips = items.length
 
   const pollOptions = [
     {name: 'first', votes: 0},
@@ -60,7 +59,8 @@ const Home = (isLoggedIn, user) => {
                 <div>
                   <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Your Trips</Typography>
                   <Carousel
-                    items={user.groups}
+                    // items={user.groups}
+                    items={items}
                   ></Carousel>
                 </div>  
                 :
