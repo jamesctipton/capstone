@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask import request
-from travel_data.travel_data import *
+from travel_data import *
 
 # Search parameters: Just a keyword
 class DestinationSearchHandler(Resource):          
