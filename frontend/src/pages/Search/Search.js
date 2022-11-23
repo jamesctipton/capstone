@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Divider, FormControl, OutlinedInput, IconButton, createTheme, Box, Typography } from "@mui/material";
+import { Button, Divider, FormControl, OutlinedInput, IconButton, createTheme, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import axios from "axios";
 
@@ -84,22 +84,37 @@ const Search = () => {
         setInitCriteria("poi")
     }
 
+    const destinationColumns = [
+        {id: 'name', label: 'Name'},
+        {id: 'countryCode', label: 'Country'},
+        {id: 'latitude', label: 'Latitude'},
+        {id: 'longitude', label: 'Longitude'}
+    ]
+    const [destinationRows, setDestinationRows] = useState([])
+
     const searchDesination = (dest) => {
         if(dest === "") {
             setError({message: "Please enter a destination", result: true})
         } else {
             setError({message: "", result: false})
+            //setDestinationRows([])
             axios.post(desination_url, {
                 keyword: dest
             }).then((response) => {
                 console.log(response)
-                console.log(response['data'])
-                console.log(JSON.parse(response['data']))
+                const results = response['data']['keyword']
+                let temp = []
+                for(let i = 0; i < results.length; i++) {
+                    temp.push(results[i])
+                }
+                setDestinationRows(temp)
             }).catch((error) => {
                 console.log(error)
             })
         }  
     }
+
+    
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '5%' }}>
@@ -187,6 +202,35 @@ const Search = () => {
                         <Typography>{errorValue.message}</Typography>
                     </Box>
                 : <></> }
+                <TableContainer>
+                    <Table stickyHeader>
+                        <TableHead>
+                            <TableRow>
+                                {destinationColumns.map((column) => (
+                                    <TableCell key={column.id}>
+                                        {column.label}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {destinationRows.map((row, index1) => {
+                                return(
+                                    <TableRow key={index1}>
+                                        {destinationColumns.map((column, index2) => {
+                                            const value = row[column.id]
+                                            return (
+                                                <TableCell key={index1 + index2}>
+                                                    {value}
+                                                </TableCell>
+                                            )
+                                        })}
+                                    </TableRow>
+                                )
+                            })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
         </div>
     )
 }
