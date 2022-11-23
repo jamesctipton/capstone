@@ -203,12 +203,12 @@ const Search = () => {
                         <Typography>{errorValue.message}</Typography>
                     </Box>
                 : <></> }
-                <TableContainer>
+                <TableContainer style={{ width: '90%' }}>
                     <Table stickyHeader>
                         <TableHead>
                             <TableRow>
                                 {destinationColumns.map((column) => (
-                                    <TableCell key={column.id}>
+                                    <TableCell key={column.id} sx={{ color: '#CF7D30'}}>
                                         {column.label}
                                     </TableCell>
                                 ))}
