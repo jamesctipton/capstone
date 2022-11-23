@@ -66,8 +66,6 @@ const TopNavBar = ({isLoggedIn, user, setLogin, setUser}) => {
   const navigateToProfile = () => {
     navigate('/profile')
   }
-
-  console.log(isLoggedIn)
   
   return (
     <ThemeProvider theme={theme}>
