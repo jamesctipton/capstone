@@ -41,8 +41,7 @@ const Home = (isLoggedIn, user) => {
     {name: 'third', votes: 1},
   ]
 
-  console.log(isLoggedIn['isLoggedIn'])
-    return (
+  return (
       <>
         {(isLoggedIn['isLoggedIn']) 
           ? 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Divider, FormControl, OutlinedInput, IconButton, createTheme } from "@mui/material";
+import { Button, Divider, FormControl, OutlinedInput, IconButton, createTheme, Box, Typography } from "@mui/material";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import axios from "axios";
 
@@ -25,9 +25,12 @@ const Search = () => {
         flights: false,
         poi: false
     })
-
     const [initCriteria, setInitCriteria] = useState("desination")
     const [destInput, setDestInput] = useState("")
+    const [errorValue, setError] = useState({
+        message: "",
+        result: false
+    })
 
     const setDesinationActive = () => {
         isActive.desination = true
@@ -82,13 +85,18 @@ const Search = () => {
     }
 
     const searchDesination = (dest) => {
-        axios.post(desination_url, {
-            keyword: dest
-        }).then((response) => {
-            console.log(response)
-        }).catch((error) => {
-            console.log(error)
-        })
+        if(dest === "") {
+            setError({message: "Please enter a destination", result: true})
+        } else {
+            setError({message: "", result: false})
+            axios.post(desination_url, {
+                keyword: dest
+            }).then((response) => {
+                console.log(response)
+            }).catch((error) => {
+                console.log(error)
+            })
+        }  
     }
 
     return (
@@ -120,7 +128,7 @@ const Search = () => {
             </div>
             <Divider orientation="horizontal" variant="fullwidth" flexItem sx={{ background: '#CF7D30'}}></Divider>
             {initCriteria === 'desination' 
-                ? <div style={{width: '80%', marginTop: '2%'}}>
+                ? <div style={{width: '80%', marginTop: '2%', marginBottom: '2%'}}>
                     <FormControl fullWidth>
                         <OutlinedInput 
                             placeholder="Search Countries, Cities or Specific Locations" 
@@ -137,7 +145,7 @@ const Search = () => {
                     </FormControl>
                 </div> 
                 : (initCriteria === 'hotels')
-                    ? <div style={{width: '80%', marginTop: '2%'}}>
+                    ? <div style={{width: '80%', marginTop: '2%', marginBottom: '2%'}}>
                         <FormControl fullWidth>
                             <OutlinedInput placeholder="Search for Hotels" variant="outlined" sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} fullWidth
                                 endAdornment={
@@ -149,7 +157,7 @@ const Search = () => {
                         </FormControl>
                     </div>
                     : (initCriteria === 'flights')
-                        ? <div style={{width: '80%', marginTop: '2%'}}>
+                        ? <div style={{width: '80%', marginTop: '2%', marginBottom: '2%'}}>
                             <FormControl fullWidth>
                                 <OutlinedInput placeholder="Search Flights" variant="outlined" sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} fullWidth
                                     endAdornment={
@@ -161,7 +169,7 @@ const Search = () => {
                             </FormControl>
                         </div>
                         : (initCriteria === 'poi')
-                            ? <div style={{width: '80%', marginTop: '2%'}}>
+                            ? <div style={{width: '80%', marginTop: '2%', marginBottom: '2%'}}>
                                 <FormControl fullWidth>
                                     <OutlinedInput placeholder="Search Points of Interest" variant="outlined" sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} fullWidth
                                         endAdornment={
@@ -172,7 +180,11 @@ const Search = () => {
                                     </OutlinedInput>
                                 </FormControl>
                              </div> : <></> }
-            
+                {errorValue.result ? 
+                    <Box sx={{ border: '3px solid red', borderRadius: 3, background: 'rgba(255, 0, 0, 0.1)', borderColor: 'rgba(255, 0, 0, 0.86)', color: 'red', padding: 2 }}>
+                        <Typography>{errorValue.message}</Typography>
+                    </Box>
+                : <></> }
         </div>
     )
 }
