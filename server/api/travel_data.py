@@ -3,6 +3,7 @@ import ssl, urllib
 import pandas as pd
 import json
 from ast import keyword
+import math 
 
 
 def ssl_disabled_urlopen(endpoint):
@@ -41,6 +42,9 @@ def get_destinations(keyword):
                 record['stateCode'] = (record['stateCode'])[3:]
             else:
                 del record['stateCode']
+            if math.isnan(record['latitude']) or math.isnan(record['longitude']):
+                del record['latitude']
+                del record['longitude']
 
         # Uncomment below to test
         print(destinations_dict)
