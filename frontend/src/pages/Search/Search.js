@@ -93,6 +93,8 @@ const Search = () => {
                 keyword: dest
             }).then((response) => {
                 console.log(response)
+                console.log(response['data'])
+                console.log(JSON.parse(response['data']))
             }).catch((error) => {
                 console.log(error)
             })
