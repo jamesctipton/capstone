@@ -25,7 +25,7 @@ const theme = createTheme({
 });
 
 
-const Login = ({ setLogin, setUser }) => {
+const Login = ({ setLogin }) => {
 
   const navigate = useNavigate()
   const navigateToHome = () => {
@@ -51,10 +51,10 @@ const Login = ({ setLogin, setUser }) => {
       if(response['data']['resultStatus'] === 'SUCCESS') {
         setError({message: "", result: false})
         setLogin(true)
-        setUser({
+        localStorage.setItem('user', JSON.stringify({
           name: response['data']['name'],
           groups: response['data']['groups']
-        })
+        }))
         navigateToHome()
       }
       else {

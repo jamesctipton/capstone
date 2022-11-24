@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Switch from '@mui/material/Switch';
 import { 
     InputAdornment,
@@ -31,8 +31,12 @@ const theme = createTheme({
   }
 });
 
+let user = {};
+const JoinCreate = (isLoggedIn) => {
 
-const JoinCreate = (isLoggedIn, user, setUser) => {
+    useEffect(() => {
+        user = JSON.parse(localStorage.getItem('user'));
+    }, [])
 
     const navigate = useNavigate()
     const navigateGroupHome = (groupCode) => {
@@ -61,7 +65,7 @@ const JoinCreate = (isLoggedIn, user, setUser) => {
             destination: response['data']['description'],
             summary: response['data']['imgPath']
         });
-        setUser(temp)
+        localStorage.setItem(JSON.stringify(temp))
     }
 
     const verifyGroup = (event) => {
@@ -130,23 +134,15 @@ const JoinCreate = (isLoggedIn, user, setUser) => {
                         <Typography>{errorValue.message}</Typography>
                     </Box>
                 : <></> }
-                {(groupCode.length === 4) ?
-                    <Button 
-                        type='submit'
-                        variant="outlined"
-                        sx={{ m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: '50%', height: 50, fontSize: 15, marginTop: '10%' }}
-                        size="large"
-                        onClick={() => verifyGroup(groupCode)}
-                        //component={Link} to={"/trip/" + groupCode}
-                    >Submit</Button>
-                    :
-                    <Button 
-                        type='submit'
-                        variant="outlined"
-                        sx={{ m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: '50%', height: 50, fontSize: 15, marginTop: '10%' }}
-                        size="large"
-                        component={Link} to={"/join-create"}
-                    >Submit</Button>}
+                <Button 
+                    disabled={(groupCode.length != 4)}
+                    type='submit'
+                    variant="outlined"
+                    sx={{ m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: '50%', height: 50, fontSize: 15, marginTop: '10%' }}
+                    size="large"
+                    onClick={() => verifyGroup(groupCode)}
+                    //component={Link} to={"/trip/" + groupCode}
+                >Submit</Button>
                     
             </div>
                 <Divider orientation='vertical' variant='middle' flexItem sx={{ background: '#CF7D30' }}></Divider>

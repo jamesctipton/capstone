@@ -54,7 +54,7 @@ class VotePollHandler(Resource):
 
     def post(self):
         json_data = request.get_json()
-        pollCode = json_data['pollcode']
+        pollCode = json_data['pollCode']
         option = json_data['option']
         username = json_data['username'] # user who voted
 

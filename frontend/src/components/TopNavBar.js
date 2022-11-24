@@ -37,7 +37,7 @@ const theme = createTheme({
   }
 });
 
-const TopNavBar = ({isLoggedIn, user, setLogin, setUser}) => {
+const TopNavBar = ({isLoggedIn, setLogin}) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -51,7 +51,7 @@ const TopNavBar = ({isLoggedIn, user, setLogin, setUser}) => {
   const handleLogout = () => {
     setAnchorEl(null);
     setLogin(false);
-    setUser(null);
+    localStorage.removeItem('user');
   }
 
   const navigate = useNavigate()

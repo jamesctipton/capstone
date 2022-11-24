@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardActionArea, Divider } from "@mui/material";
 import { CardContent, CardMedia, Typography } from "@material-ui/core";
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
+const url = "http://127.0.0.1:5000/vote-poll"
 
 //item:  {
 //     name: string,
@@ -13,11 +15,19 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 // }
 
 function CarouselItem(props) {
+
     var step = props.step // item type
+    console.log(props)
+
+    const navigate = useNavigate()
+    const navigateToTrip = (groupCode) => {
+        navigate('trip/' + step.groupCode, { user: props.user, groupCode: groupCode } )
+    }
+
     return (
     <>
         <Card sx={{ borderRadius: '10px', backgroundColor: '#dddddd',}}>
-            <CardActionArea href={'trip/' + step.groupCode}>
+            <CardActionArea onClick={() => { navigateToTrip(step.groupCode) }}>
                 <div style={{ position: 'absolute', zIndex: 100, backgroundColor: '#ffffff', opacity: 0.8, borderRadius: 100, width: 'auto', textAlign: 'center', padding: 12, margin: 16, right: 0 }} >
                     {(step.members == 0 || step.members == null) ? '' : step.members + ' people'}
                 </div>
@@ -98,6 +108,7 @@ function PollItem(props) {
         );
 } 
 
+let user;
 export function Carousel(props) {
 
     const [items, setItems] = React.useState(props.items);
@@ -106,6 +117,12 @@ export function Carousel(props) {
     if(props.totalVotes && (totalVotes != props.totalVotes)) {
         setTotalVotes(props.totalVotes);
     }
+
+    useEffect(() => {
+        user = JSON.parse(localStorage.getItem('user'))
+    }, [])
+
+    // do server stuff to check didVote
 
     var hover = false;
     setInterval(() => {
@@ -138,10 +155,21 @@ export function Carousel(props) {
         
         setItems(temp)
         setTotalVotes(totalVotes + 1)
+
+        // do server stuff
+        axios.post(url, {
+            pollCode: props.pollCode,
+            option: votedChoice,
+            username: user.name
+        }).then((response) => {
+            console.log(response)
+        }).catch((error) => {
+            console.log(error)
+        })
     }
   
       return (
-        <div onMouseOver={() => {hover = true}} onMouseLeave={() => {hover = false}} id='car' style={{width: '100%', minHeight: '25rem', display: 'flex', overflowX: 'scroll', scrollSnapType: 'x mandatory', }}>
+        <div id='car' onMouseOver={() => {hover = true}} onMouseLeave={() => {hover = false}} style={{width: '100%', minHeight: '25rem', display: 'flex', overflowX: 'scroll', scrollSnapType: 'x mandatory', }}>
             {(items.length === 1) 
             ? 
             <div style={{ marginRight: 'auto', marginLeft: 'auto' }}>
@@ -155,7 +183,7 @@ export function Carousel(props) {
                     {(props.type == 'poll') ? 
                     <PollItem step={step} didVote={didVote} setDidVote={setDidVote} handleVote={handleVote} totalVotes={totalVotes}></PollItem>
                     :
-                    <CarouselItem step={step}></CarouselItem>
+                    <CarouselItem step={step} user={user}></CarouselItem>
                     }
                 </div>
             ))}

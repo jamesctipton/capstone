@@ -1,5 +1,5 @@
 import './Home.css'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Typography } from '@mui/material';
 import Steps from '../../assets/Steps.png'
 import { Link } from "react-router-dom";
@@ -11,26 +11,33 @@ const items = [
       name: "Random Name #1",
       description: "me and da boys in san fran",
       imgPath: 'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
-      groupCode: '',
+      groupCode: 'sanfran',
       members: 5
   },
   {
       name: "Indonesia",
       description: "Hello World!",
       imgPath: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
-      groupCode: '',
+      groupCode: 'indonesia',
       members: 10
   },
   {
     name: "serbia",
     description: "group trip",
     imgPath: 'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
-    groupCode: '',
+    groupCode: 'serb',
     members: 3
   }
 ]
 
-const Home = (isLoggedIn, user) => {
+let user = {};
+
+const Home = (isLoggedIn) => {
+
+  useEffect( () => {
+    user = JSON.parse(localStorage.getItem('user'))
+    console.log(user)
+  },[])
 
   // const trips = (user.groups) ? user.groups.length : 0;
   const trips = items.length
@@ -40,6 +47,20 @@ const Home = (isLoggedIn, user) => {
     {name: 'second', votes: 1},
     {name: 'third', votes: 1},
   ]
+
+  let polls = new Array()
+
+  // if user isn't empty
+  if(!(Object.keys(user).length === 0 && user.constructor === Object)) {
+    for (let i = 0; i < user.groups.length; i++) {
+      const group = user.groups[i];
+      for (let j = 0; j < group.polls.length; j++) {
+        const p = group.polls[j];
+        polls.push(p)
+      }
+      
+    }
+  }
 
   return (
       <>
@@ -60,6 +81,7 @@ const Home = (isLoggedIn, user) => {
                   <Carousel
                     // items={user.groups}
                     items={items}
+                    user={user}
                   ></Carousel>
                 </div>  
                 :
@@ -70,9 +92,19 @@ const Home = (isLoggedIn, user) => {
                 }
               </div>
               <br></br>
+              {(polls.length == 0) ?
               <Poll
                 options={pollOptions}
-              ></Poll>  
+              ></Poll>
+              :
+              <>
+                {polls.map(p => (
+                <Poll
+                  options={p.options}
+                ></Poll> 
+                ))} 
+              </>
+              }
             </>
             }
           </>
