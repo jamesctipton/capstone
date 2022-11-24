@@ -5,7 +5,8 @@ import {
     Button,
     createTheme,
     Box,
-    Typography
+    Typography,
+    Tooltip
 } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
@@ -49,6 +50,8 @@ const JoinCreate = (isLoggedIn, user, setUser) => {
         result: false
     })
 
+    const [file, setFile] = useState(null);
+
     const updateUser = (response) => {
         var temp = user
         user.groups.push({
@@ -79,10 +82,11 @@ const JoinCreate = (isLoggedIn, user, setUser) => {
     }
 
     const submitNewGroup = (event) => {
+        
         axios.post(create_url, {
             groupname: createdGroupValues.name,
             destination: "",
-            groupimage: createdGroupValues.image,
+            groupimage: (file == null) ? "" : file,
             summary: "",
             groupstate: createdGroupValues.private,
             username: user.name
@@ -95,6 +99,14 @@ const JoinCreate = (isLoggedIn, user, setUser) => {
         }).catch((error) => {
             console.log(error)
         })
+    }
+
+    const handleFileChange = (event) => {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            setFile(reader.result)
+        }
+        reader.readAsDataURL(event.target.files[0]); 
     }
 
     return (
@@ -140,11 +152,20 @@ const JoinCreate = (isLoggedIn, user, setUser) => {
                 <Divider orientation='vertical' variant='middle' flexItem sx={{ background: '#CF7D30' }}></Divider>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant='h3' sx={{ color: '#CF7D30' }}>Create Group</Typography>
-                <IconButton
-                    onClick={() => {}}
-                >
+                {(file == null) ?
+                <IconButton component="label" >
+                    <input hidden accept="image/*" type="file" onChange={(e) => {handleFileChange(e)}} />
                     <PersonPinIcon color='primary' sx={{ width: 90, height: 90 }} />
                 </IconButton>
+                :
+                <div component="label" style={{ display: 'flex', flexDirection: 'column'}}>
+                    <img src={`${file}`} alt="group image" style={{ width: 90, height: 90, overflow: 'hidden', borderRadius: 100 }} />
+                    <Button size='small' component="label">Change
+                        <input hidden accept="image/*" type="file" onChange={(e) => {handleFileChange(e)}} />
+                    </Button>
+                </div>
+            }
+                <Typography variant="p" sx={{ marginBottom: 1, color: "#666666", fontSize: 14 }} >Upload Group Photo</Typography>
                 <TextField
                     variant='outlined'
                     sx={{ width: '65%' }}

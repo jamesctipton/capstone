@@ -102,7 +102,8 @@ const Search = ({ isLoggedIn }) => {
             axios.post(destination_url, {
                 keyword: dest
             }).then((response) => {
-                const results = response['data']['keyword']
+                console.log(response)
+                const results = response['data']['destinations']
                 let temp = []
                 for(let i = 0; i < results.length; i++) {
                     temp.push(results[i])
@@ -155,6 +156,11 @@ const Search = ({ isLoggedIn }) => {
                             value={destInput}
                             onChange={(e) => setDestInput(e.target.value)}
                             fullWidth
+                            onKeyPress={event => {
+                                if (event.key === 'Enter') {
+                                  searchdestination(destInput)
+                                }
+                              }}
                             endAdornment={
                             <IconButton aria-label='search' onClick={() => searchdestination(destInput)} onMouseDown={() => {}} edge="end">
                                 <SearchOutlinedIcon fontSize="large" color="primary"/>

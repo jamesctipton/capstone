@@ -2,7 +2,7 @@ FRONTEND ===================================================
 
 ✓ set user data in app.js usestate or localstorage
 - home page:
-    - get groups from user
+    ✓ get groups from user
     - get polls from groups from user
 - trip page:
     - get polls from trip group
@@ -11,10 +11,11 @@ FRONTEND ===================================================
     - hotel poll
     - figma
 - join/create page:
-    - group photo upload
-    - make it more clear that its an upload button
+    ✓ group photo upload
+    ✓ make it more clear that its an upload button
 - navbar:
     - make sign-in button not change size when hovered
+    ✓ show tooltips for what buttons do what
 - create poll page/popup
 - get search bar going with amadeus
     - search page?
@@ -26,5 +27,5 @@ SERVER SIDE ===================================================
 - testing
 ✓ are we storing hotels, flights, and other poll results in group data? 
     Yes, storing the final choice of each category
-- logout handler
+✓ logout handler
 - vote poll handler: handle only one person voting at a time
