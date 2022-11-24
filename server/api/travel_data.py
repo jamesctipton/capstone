@@ -1,10 +1,7 @@
 from amadeus import Client, ResponseError
 import ssl, urllib
 import pandas as pd
-import json
-from ast import keyword
 import math 
-
 
 def ssl_disabled_urlopen(endpoint):
     context = ssl._create_unverified_context()
@@ -16,10 +13,6 @@ amadeus = Client(
     http=ssl_disabled_urlopen
 )
 
-# test code 
-
-
-
 # get city destination by search term
 # search term needs to be between 3 and 50 characters
 # returns list of destinations with city name, country, state if USA city, and lat/long
@@ -28,7 +21,7 @@ def get_destinations(keyword):
         response = amadeus.reference_data.locations.cities.get(keyword=keyword)
         df = pd.json_normalize(response.data)
         if(df.empty):
-            return None
+            return []
 
         # Create dataframe of cities, rename columns, and convert to dictionary
         df = df[["name", "address.countryCode", "address.stateCode", "geoCode.latitude", "geoCode.longitude"]]
@@ -46,41 +39,67 @@ def get_destinations(keyword):
                 del record['latitude']
                 del record['longitude']
 
-        # Uncomment below to test
-        print(destinations_dict)
         return destinations_dict
     except ResponseError as error:
         return error
 
 # Uncomment below to test
-get_destinations("Paris")
+#print(get_destinations("Paris"))
 
 # get flights for certain destination
 def get_flights(src_airport, dst_airport, start_date, end_date):
     return
 
-# get hotels for certain destination
+# get hotels for certain latitude/longitude in a certain radius (miles)
 # return list of hotel names with latitude/longtitude, and distance from inputted latitude/longitude 
-def get_hotels(latitude, longitude):
+# https://developers.amadeus.com/self-service/category/hotel/api-doc/hotel-list/api-reference 
+def get_hotels(latitude, longitude, radius):
     try:
-        response = amadeus.reference_data.locations.hotels.by_geocode.get(longitude=longitude,latitude=latitude)
+        response = amadeus.reference_data.locations.hotels.by_geocode.get(longitude=longitude,latitude=latitude,radius=radius,radiusUnit='MILE')
         df = pd.json_normalize(response.data)
-        pd.set_option('display.max_columns', None)
-        print(df)
+        if(df.empty):
+            return []
+
         df = df[["name", "geoCode.latitude", "geoCode.longitude", "distance.value", "distance.unit"]]
         df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
         hotels_dict = df.to_dict('records')
-        list_of_hotels = df.values.tolist()
-        jsonString = json.dumps(list_of_hotels)
-        return list_of_hotels
+        
+        for record in hotels_dict:
+            if math.isnan(record['latitude']) or math.isnan(record['longitude']):
+                del record['latitude']
+                del record['longitude']
+
+        return hotels_dict
     except ResponseError as error:
         raise error
 
-#get_hotels(48.85693, 2.3412)
+# Uncomment below to test
+#print(get_hotels(48.85693, 2.3412, 50))
+
 # get points of interest for certain destination
 # return poi name, category(sightseeing, restaurant, etc), atitude/longitude, and description tags
-# def get_pois(latitude, longitude):
-    # try:
+# https://developers.amadeus.com/self-service/category/destination-content/api-doc/points-of-interest/api-reference 
+def get_pois(latitude, longitude, radius_miles):
+    conversion_factor = 0.62137119
+    radius_kilometers = radius_miles / conversion_factor
+    try:
+        response = amadeus.reference_data.locations.points_of_interest.get(latitude=latitude, longitude=longitude, radius=radius_kilometers)
+        df = pd.json_normalize(response.data)
+        if(df.empty):
+            return []
+
+        df = df[["name", "category", "geoCode.latitude", "geoCode.longitude"]]
+        df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
+        pois_dict = df.to_dict('records')
         
-    # except ResponseError as error:
-    #     raise error
+        for record in pois_dict:
+            if math.isnan(record['latitude']) or math.isnan(record['longitude']):
+                del record['latitude']
+                del record['longitude']
+
+        return pois_dict
+    except ResponseError as error:
+         raise error
+
+# Uncomment below to test
+#print(get_pois(48.85693, 2.3412, 50))

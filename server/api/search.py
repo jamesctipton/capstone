@@ -12,14 +12,13 @@ class DestinationSearchHandler(Resource):
     def post(self):
         json_data = request.get_json()
         keyword = json_data['keyword']
-        print(keyword)
 
         destinations = get_destinations(keyword)
 
         return{
             'resultStatus': 'SUCCESS',
             'message': "Destination search successful",
-            'keyword': destinations
+            'destinations': destinations
         }
 
 class FlightSearchHandler(Resource):          
@@ -28,17 +27,47 @@ class FlightSearchHandler(Resource):
             'resultStatus': 'SUCCESS',
             'message': "flight search handler hit"
         }
-
+    
+# Search parameters: lat/long and radius in miles
+# Lat/long will be retrieved from city/poi that user chooses
 class HotelSearchHandler(Resource):          
     def get(self):
         return {
             'resultStatus': 'SUCCESS',
             'message': "hotel search handler hit"
         }
+    def post(self):
+        json_data = request.get_json()
+        latitude = json_data['latitude']
+        longitude = json_data['longitude']
+        radius = json_data['radius']
 
+        hotels = get_hotels(latitude, longitude, radius)
+
+        return{
+            'resultStatus': 'SUCCESS',
+            'message': "Hotel search successful",
+            'hotels': hotels
+        }
+
+# Search parameters: lat/long and radius in miles
+# Lat/long will be retrieved from city/hotel that user chooses
 class PoiSearchHandler(Resource):          
     def get(self):
         return {
             'resultStatus': 'SUCCESS',
             'message': "poi search handler hit"
+        }
+    def post(self):
+        json_data = request.get_json()
+        latitude = json_data['latitude']
+        longitude = json_data['longitude']
+        radius = json_data['radius']
+
+        pois = get_pois(latitude, longitude, radius)
+
+        return{
+            'resultStatus': 'SUCCESS',
+            'message': "POI search successful",
+            'pois': pois
         }
