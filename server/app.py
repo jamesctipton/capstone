@@ -20,6 +20,8 @@ api.add_resource(EditGroupHandler,'/edit-group')
 api.add_resource(CreatePollHandler,'/create-poll')
 api.add_resource(VotePollHandler,'/vote-poll')
 api.add_resource(DestinationSearchHandler, '/search-destinations')
+api.add_resource(HotelSearchHandler, '/search-hotels')
+api.add_resource(PoiSearchHandler, '/search-pois')
 
 if __name__ == "__main__":
     app.run(debug=True)
