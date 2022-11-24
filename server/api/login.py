@@ -12,9 +12,12 @@ class LoginHandler(Resource):
             'message': "login handler get hit"
         }
     def post(self):
-        json_data = request.get_json()
-        username = json_data['username']
-        password = json_data['password']
+        # json_data = request.get_json()
+        # username = json_data['username']
+        # password = json_data['password']
+
+        username = request.args.get('username')
+        password = request.args.get('password')
 
         user = User.query.filter_by(username=username).first()
         if (user is None) or (not user.check_password(password)):
@@ -29,9 +32,9 @@ class LoginHandler(Resource):
             'message': "Successful credentials",
             'name': user.username,
             'userhash': user.hashCode,
-            'groups': user.groups,
-            'groups_admin': user.groups_admin,
-            'polls_created': user.polls_created
+            'groups': [g.__dict__ for g in user.groups],
+            'groups_admin': [g.__dict__ for g in user.groups_admin],
+            'polls_created': [p.__dict__ for p in user.polls_created]
         }
 
 # done

@@ -83,8 +83,8 @@ class JoinGroupHandler(Resource):
             'groupCode': group.groupCode,
             'description': group.summary,
             'imgPath': group.groupimage,
-            'polls': group.polls,
-            'users': group.users,
+            'polls': [p.__dict__ for p in group.polls],
+            'users': [u.__dict__ for u in group.users],
             'group_id': group.id
         }
 

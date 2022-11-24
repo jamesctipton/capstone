@@ -51,6 +51,7 @@ class Poll(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     pollCode = db.Column(db.String(8), unique=True)
     pollname = db.Column(db.String(256), index=True, unique=True)
+    pollCategory = db.Column(db.String(64))
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id')) # user who created poll
     group_id = db.Column(db.Integer, db.ForeignKey('group.id')) # group poll belongs in
     option1 = db.Column(db.PickleType())
