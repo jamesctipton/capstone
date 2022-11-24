@@ -18,15 +18,38 @@ const theme = createTheme({
 
 const Trip = (props) => {
 
-  var totalVotes = 0
+  var totalVotes = 10
 
     return (
         <Box sx={{marginTop: '3%'}}>
             <Carousel 
               type="poll"
               items={[
-                {name: 'asdfa'},
-                {name: 'fasdf'}
+                {
+                  name: 'option 1',
+                  description: "sample",
+                  votes: 1,
+                  image: ""
+                },
+                {
+                  name: 'option 2',
+                  description: "",
+                  votes: 2,
+                  image: ""
+                },
+                {
+                  name: 'option 3',
+                  description: "another description thats very long another description thats very long another description thats very long another description thats very long another description thats very long another description thats very long",
+                  votes: 3,
+                  image: ""
+                },
+                {
+                  name: 'option 4',
+                  description: "",
+                  votes: 4,
+                  image: ""
+                },
+                
               ]}
               totalVotes={totalVotes}
             ></Carousel>

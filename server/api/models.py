@@ -40,8 +40,9 @@ class Group(db.Model):
     polls = db.relationship('Poll', backref='group') # polls in the group
 
 class PollOption(object):
-    def __init__(self, name, votes=0, image=None) -> None:
+    def __init__(self, name, description="", votes=0, image=None) -> None:
         self.name = name
+        self.description = description
         self.votes = votes
         self.image = image
 

@@ -6,10 +6,10 @@ FRONTEND ===================================================
     - get polls from groups from user
 - trip page:
     - get polls from trip group
-    - poll vote handling
+    ✓ poll vote handling
     - flight poll
     - hotel poll
-    - figma
+    - match figma
 - join/create page:
     ✓ group photo upload
     ✓ make it more clear that its an upload button
@@ -18,7 +18,7 @@ FRONTEND ===================================================
     ✓ show tooltips for what buttons do what
 - create poll page/popup
 - get search bar going with amadeus
-    - search page?
+    ✓ search page?
 
 SERVER SIDE ===================================================
 

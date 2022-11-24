@@ -53,46 +53,46 @@ function CarouselItem(props) {
 
 // pollItem: {
 //     name: string
+//     description: string
 //     votes: int
 //     imgPath: string
 // }
 
-function PollItem({props, handleVote, voted}) {
-    var choice = props.choice; // temp
+function PollItem(props) {
+    var step = props.step;
+    let didVote = props.didVote;
+
+    const handleSingleVote = (name) => {
+        props.handleVote(name)
+        props.setDidVote(true)
+    }
 
     return (
         <>
             <Card sx={{ borderRadius: '10px', backgroundColor: '#dddddd',}}>
-                <CardActionArea disabled> {/* add link functionality for more details type beat */}
-                <div style={{ position: 'absolute', zIndex: 100, backgroundColor: '#ffffff', opacity: 0.8, borderRadius: 100, width: 'auto', textAlign: 'center', padding: 12, margin: 16, right: 0 }} >
-                {(voted == false ) ? 'Vote' : ((choice.votes / choice.totalVotes).toFixed(2) * 100) + '%'}
-                </div>
-                {(choice.imgPath == '' || choice.imgPath == null) ?
-                <div
-                    style={{ backgroundColor: '#666666', height: '20rem', color: '#dddddd', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', fontSize: 40, }}
-                >No image
-                </div>
-                :
-                <CardMedia
-                    component='img'
-                    height='312rem'
-                    image={choice.imgPath}
-                    alt={choice.name}
-                />
-                }
-                <CardContent style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0 }}>
-                    <Typography variant="h6">{choice.name}</Typography>
-                </CardContent>
+                <CardActionArea onClick={() => { handleSingleVote(step.name) }}>
+                    <div style={{ position: 'absolute', zIndex: 100, backgroundColor: '#ffffff', opacity: 0.8, borderRadius: 100, width: 'auto', textAlign: 'center', padding: 12, margin: 16, right: 0 }} >
+                        {(didVote) ? `${((step.votes / props.totalVotes).toFixed(2) * 100)}%` : ''}
+                    </div>
+                    {(step.imgPath == '' || step.imgPath == null) ?
+                    <div
+                        style={{ backgroundColor: '#666666', height: '20rem', color: '#dddddd', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', fontSize: 40, }}
+                    >No image
+                    </div>
+                    :
+                    <CardMedia
+                        component='img'
+                        height='312rem'
+                        image={step.imgPath}
+                        alt={step.name}
+                    />
+                    }
+                    <CardContent style={{ maxHeight: '5rem', minHeight: '5rem' }}>
+                        <Typography variant="body2" style={{ textAlign: 'center' }}>Click to Vote</Typography>
+                        <Typography  variant="h6" component='div'>{step.name}</Typography>
+                        <Typography variant="subtitle2" style={{ overflowY: 'scroll' }} >{step.description}</Typography>
+                    </CardContent>
                 </CardActionArea>
-                <CardContent style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0, height: '6rem' }}>
-                    <CardActionArea onClick={() => {}} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0, height: '6rem' }}>
-                        <ThumbUpIcon sx={{ fontSize: 48, color: '#00aa00' }} />
-                    </CardActionArea>
-                    <Divider orientation="vertical" variant="middle" />
-                    <CardActionArea onClick={() => {}} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0, height: '6rem' }}>
-                        <ThumbDownIcon sx={{ fontSize: 48, color: '#dd2222' }} />
-                    </CardActionArea>
-                </CardContent>
             </Card>
         </>
         );
@@ -100,8 +100,14 @@ function PollItem({props, handleVote, voted}) {
 
 export function Carousel(props) {
 
-    var hover = false;
+    const [items, setItems] = React.useState(props.items);
+    const [totalVotes, setTotalVotes] = React.useState(0);
+    const [didVote, setDidVote] = React.useState(false); // axios to check actual state
+    if(props.totalVotes && (totalVotes != props.totalVotes)) {
+        setTotalVotes(props.totalVotes);
+    }
 
+    var hover = false;
     setInterval(() => {
         var elem = document.getElementById('car');
         var carItems = (document.querySelectorAll('#car .car-item').length > 2) ? document.querySelectorAll('#car .car-item').length : 10;
@@ -123,27 +129,31 @@ export function Carousel(props) {
         }
     }, 5000);
 
-    const handleVote = (vote) => {
-        if(vote) {
-            
-        }
-        props.totalVotes ++;
+    const handleVote = (choice) => {
+        var votedChoice = items.findIndex( (item) => {
+            return item.name === choice
+        });
+        var temp = items
+        temp[votedChoice].votes++;
+        
+        setItems(temp)
+        setTotalVotes(totalVotes + 1)
     }
   
       return (
         <div onMouseOver={() => {hover = true}} onMouseLeave={() => {hover = false}} id='car' style={{width: '100%', minHeight: '25rem', display: 'flex', overflowX: 'scroll', scrollSnapType: 'x mandatory', }}>
-            {(props.items.length === 1) 
+            {(items.length === 1) 
             ? 
             <div style={{ marginRight: 'auto', marginLeft: 'auto' }}>
-                <CarouselItem step={props.items[0]}></CarouselItem>
+                <CarouselItem step={items[0]}></CarouselItem>
             </div>
             :
             <>
             <div className='car-spacer' style={{ backgroundColor: 'white', minWidth: '15%' }} />
-            {props.items.map((step, index) => (
+            {items.map((step, index) => (
                 <div key={index} className='car-item' style={{ backgroundColor: '#ffffff', minWidth: '45%', scrollSnapAlign: 'center', borderRadius: 10, marginRight: 8, marginLeft: 8 }}>
                     {(props.type == 'poll') ? 
-                    <PollItem choice={step}></PollItem>
+                    <PollItem step={step} didVote={didVote} setDidVote={setDidVote} handleVote={handleVote} totalVotes={totalVotes}></PollItem>
                     :
                     <CarouselItem step={step}></CarouselItem>
                     }
