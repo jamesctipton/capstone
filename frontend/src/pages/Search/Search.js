@@ -15,42 +15,42 @@ const theme = createTheme({
     }
 });
 
-const desination_url = 'http://127.0.0.1:5000/search-destinations'
+const destination_url = 'http://127.0.0.1:5000/search-destinations'
 
 const Search = ({ isLoggedIn }) => {
 
     const [isActive, setActive] = useState({
-        desination: true,
+        destination: true,
         hotels: false,
         flights: false,
         poi: false
     })
-    const [initCriteria, setInitCriteria] = useState("desination")
+    const [initCriteria, setInitCriteria] = useState("destination")
     const [destInput, setDestInput] = useState("")
     const [errorValue, setError] = useState({
         message: "",
         result: false
     })
 
-    const setDesinationActive = () => {
-        isActive.desination = true
+    const setdestinationActive = () => {
+        isActive.destination = true
         isActive.hotels = false
         isActive.flights = false
         isActive.poi = false
-        setActive({...isActive, desination: true})
+        setActive({...isActive, destination: true})
         setActive({...isActive, hotels: false})
         setActive({...isActive, flights: false})
         setActive({...isActive, poi: false})
 
-        setInitCriteria("desination")
+        setInitCriteria("destination")
     }
 
     const setHotelsActive = () => {
-        isActive.desination = false
+        isActive.destination = false
         isActive.hotels = true
         isActive.flights = false
         isActive.poi = false
-        setActive({...isActive, desination: false})
+        setActive({...isActive, destination: false})
         setActive({...isActive, hotels: true})
         setActive({...isActive, flights: false})
         setActive({...isActive, poi: false})
@@ -59,11 +59,11 @@ const Search = ({ isLoggedIn }) => {
     }
 
     const setFlightsActive = () => {
-        isActive.desination = false
+        isActive.destination = false
         isActive.hotels = false
         isActive.flights = true
         isActive.poi = false
-        setActive({...isActive, desination: false})
+        setActive({...isActive, destination: false})
         setActive({...isActive, hotels: false})
         setActive({...isActive, flights: true})
         setActive({...isActive, poi: false})
@@ -72,11 +72,11 @@ const Search = ({ isLoggedIn }) => {
     }
 
     const setPOIActive = () => {
-        isActive.desination = false
+        isActive.destination = false
         isActive.hotels = false
         isActive.flights = false
         isActive.poi = true
-        setActive({...isActive, desination: false})
+        setActive({...isActive, destination: false})
         setActive({...isActive, hotels: false})
         setActive({...isActive, flights: false})
         setActive({...isActive, poi: true})
@@ -93,13 +93,13 @@ const Search = ({ isLoggedIn }) => {
     ]
     const [destinationRows, setDestinationRows] = useState([])
 
-    const searchDesination = (dest) => {
+    const searchdestination = (dest) => {
         if(dest === "") {
             setError({message: "Please enter a destination", result: true})
         } else {
             setError({message: "", result: false})
             //setDestinationRows([])
-            axios.post(desination_url, {
+            axios.post(destination_url, {
                 keyword: dest
             }).then((response) => {
                 const results = response['data']['keyword']
@@ -121,10 +121,10 @@ const Search = ({ isLoggedIn }) => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '5%' }}>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginBottom: '1%'}}>
                 <Button  
-                    sx={{ backgroundColor: isActive.desination ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }} 
-                    onClick={() => setDesinationActive()}
+                    sx={{ backgroundColor: isActive.destination ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }} 
+                    onClick={() => setdestinationActive()}
                     fullWidth
-                >Desination</Button>
+                >destination</Button>
                 <Divider orientation="vertical" variant="middle" flexItem sx={{ background: '#CF7D30', width: 1.5}}></Divider>
                 <Button  
                     sx={{ backgroundColor: isActive.hotels ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }} 
@@ -145,7 +145,7 @@ const Search = ({ isLoggedIn }) => {
                 >Points of Interest</Button>
             </div>
             <Divider orientation="horizontal" variant="fullwidth" flexItem sx={{ background: '#CF7D30'}}></Divider>
-            {initCriteria === 'desination' 
+            {initCriteria === 'destination' 
                 ? <div style={{width: '80%', marginTop: '2%', marginBottom: '2%'}}>
                     <FormControl fullWidth>
                         <OutlinedInput 
@@ -156,7 +156,7 @@ const Search = ({ isLoggedIn }) => {
                             onChange={(e) => setDestInput(e.target.value)}
                             fullWidth
                             endAdornment={
-                            <IconButton aria-label='search' onClick={() => searchDesination(destInput)} onMouseDown={() => {}} edge="end">
+                            <IconButton aria-label='search' onClick={() => searchdestination(destInput)} onMouseDown={() => {}} edge="end">
                                 <SearchOutlinedIcon fontSize="large" color="primary"/>
                             </IconButton>}>
                         </OutlinedInput>

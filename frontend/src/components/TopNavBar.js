@@ -22,6 +22,7 @@ import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import Tooltip from '@mui/material/Tooltip';
 
 
 const theme = createTheme({
@@ -73,27 +74,37 @@ const TopNavBar = ({isLoggedIn, user, setLogin, setUser}) => {
         <AppBar position="static" enableColorOnDark color="secondary">
           <Toolbar variant="regular" position='fixed' sx={{justifyContent: 'space-between'}} >
             <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center'}}>
-            <IconButton onClick={handleClick} edge="start" color="primary" aria-label="menu" sx={{ mr: 2 }}>
-              <MenuIcon fontSize="large"/>
-            </IconButton>
+            <Tooltip title="Menu">
+              <IconButton onClick={handleClick} edge="start" color="primary" aria-label="menu" sx={{ mr: 2 }}>
+                <MenuIcon fontSize="large"/>
+              </IconButton>
+            </Tooltip>
             <Typography variant="h6" color="primary" component="div" sx={{ fontSize: 28 }}>
               FRÍ
             </Typography>
             </div>
             <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 10}}>
-              <IconButton aria-label='show/hide password' onClick={() => navigateToSearch()} onMouseDown={() => {}} edge="end">
-                <SearchOutlinedIcon fontSize="large" color="primary"/>
-              </IconButton>
-              <IconButton onClick={() => navigateToFavorites()} edge="end" color="primary" aria-label="favorites">
-                <FavoriteBorderOutlinedIcon fontSize="large"/>
-              </IconButton>
-              <IconButton onClick={() => navigateToFriends()} edge="end" color="primary" aria-label="friends">
-                <PeopleAltOutlinedIcon fontSize="large" />
-              </IconButton>
+              <Tooltip title="Search">
+                <IconButton aria-label='show/hide password' onClick={() => navigateToSearch()} onMouseDown={() => {}} edge="end">
+                  <SearchOutlinedIcon fontSize="large" color="primary"/>
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Favorites">
+                <IconButton onClick={() => navigateToFavorites()} edge="end" color="primary" aria-label="favorites">
+                  <FavoriteBorderOutlinedIcon fontSize="large"/>
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Friends">
+                <IconButton onClick={() => navigateToFriends()} edge="end" color="primary" aria-label="friends">
+                  <PeopleAltOutlinedIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
               {(isLoggedIn) ? 
-                <IconButton onClick={() => navigateToProfile()} edge="end" color="primary" aria-label="messages">
-                  <PersonOutlineOutlinedIcon fontSize="large" />
-                </IconButton> : 
+                <Tooltip title="Profile">
+                  <IconButton onClick={() => navigateToProfile()} edge="end" color="primary" aria-label="messages">
+                    <PersonOutlineOutlinedIcon fontSize="large" />
+                  </IconButton>
+                </Tooltip> : 
                 <Button 
                   type='button'
                   variant="outlined"
