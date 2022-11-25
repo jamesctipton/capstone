@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 const url = "http://127.0.0.1:5000/vote-poll"
+var hover = false;
 
 //item:  {
 //     name: string,
@@ -26,7 +27,7 @@ function CarouselItem(props) {
 
     return (
     <>
-        <Card sx={{ borderRadius: '10px', backgroundColor: '#dddddd',}}>
+        <Card onMouseOver={() => { hover = true }} onMouseLeave={() => {hover = false}} sx={{ borderRadius: '10px', backgroundColor: '#dddddd',}}>
             <CardActionArea onClick={() => { navigateToTrip(step.groupCode) }}>
                 <div style={{ position: 'absolute', zIndex: 100, backgroundColor: '#ffffff', opacity: 0.8, borderRadius: 100, width: 'auto', textAlign: 'center', padding: 12, margin: 16, right: 0 }} >
                     {(step.members == 0 || step.members == null) ? '' : step.members + ' people'}
@@ -124,10 +125,10 @@ export function Carousel(props) {
 
     // do server stuff to check didVote
 
-    var hover = false;
     setInterval(() => {
         var elem = document.getElementById('car');
         var carItems = (document.querySelectorAll('#car .car-item').length > 2) ? document.querySelectorAll('#car .car-item').length : 10;
+        console.log(hover)
         if(elem) {
             if(!hover) {
                 if(elem.scrollLeft >= (elem.scrollWidth / carItems) ) {
@@ -144,6 +145,7 @@ export function Carousel(props) {
                 }
             }   
         }
+        console.log(hover)
     }, 5000);
 
     const handleVote = (choice) => {
@@ -169,7 +171,7 @@ export function Carousel(props) {
     }
   
       return (
-        <div id='car' onMouseOver={() => {hover = true}} onMouseLeave={() => {hover = false}} style={{width: '100%', minHeight: '25rem', display: 'flex', overflowX: 'scroll', scrollSnapType: 'x mandatory', }}>
+        <div id='car' onMouseOver={() => { hover = true }} onMouseLeave={() => {hover = false}} style={{width: '100%', minHeight: '25rem', display: 'flex', overflowX: 'scroll', scrollSnapType: 'x mandatory', }}>
             {(items.length === 1) 
             ? 
             <div style={{ marginRight: 'auto', marginLeft: 'auto' }}>

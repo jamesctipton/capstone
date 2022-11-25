@@ -128,12 +128,9 @@ const JoinCreate = (isLoggedIn) => {
                         startAdornment: <InputAdornment position="start" sx={{ marginLeft: '42%' }}></InputAdornment>
                     }}
                     required
+                    error={errorValue.result}
+                    helperText={(errorValue.result) ? errorValue.message : ""}
                 ></TextField>
-                {errorValue.result ? 
-                    <Box sx={{ border: '3px solid red', borderRadius: 3, background: 'rgba(255, 0, 0, 0.1)', borderColor: 'rgba(255, 0, 0, 0.86)', color: 'red', padding: 2 }}>
-                        <Typography>{errorValue.message}</Typography>
-                    </Box>
-                : <></> }
                 <Button 
                     disabled={(groupCode.length != 4)}
                     type='submit'

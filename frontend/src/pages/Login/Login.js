@@ -80,6 +80,8 @@ const Login = ({ setLogin }) => {
                 onChange={(e) => setLoginInfo({...loginForm, username: e.target.value})} 
                 value={loginForm.username}
                 required
+                error={errorValue.result}
+                helperText={(errorValue.result) ? 'Incorrect username or password' : ""}
               ></TextField>
               <TextField 
                 sx={{mt: 2, mb: 1, width: '60%'}}
@@ -95,6 +97,8 @@ const Login = ({ setLogin }) => {
                     handleSubmit(event)
                   }
                 }}
+                error={errorValue.result}
+                helperText={(errorValue.result) ? 'Incorrect username or password' : ""}
               ></TextField>
 
               <p>Don't have an account? <a href='/register'>Register</a></p>
@@ -116,11 +120,6 @@ const Login = ({ setLogin }) => {
               
             </div>
           </form>
-          {errorValue.result ? 
-            <Box sx={{ border: '3px solid red', borderRadius: 3, background: 'rgba(255, 0, 0, 0.1)', borderColor: 'rgba(255, 0, 0, 0.86)', color: 'red', padding: 2 }}>
-              <Typography>Username or Password Incorrect</Typography>
-            </Box>
-          : <></> }
       </div>
     </ThemeProvider>
   )};

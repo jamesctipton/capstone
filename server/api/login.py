@@ -12,12 +12,12 @@ class LoginHandler(Resource):
             'message': "login handler get hit"
         }
     def post(self):
-        # json_data = request.get_json()
-        # username = json_data['username']
-        # password = json_data['password']
+        json_data = request.get_json()
+        username = json_data['username']
+        password = json_data['password']
 
-        username = request.args.get('username')
-        password = request.args.get('password')
+        # username = request.args.get('username')
+        # password = request.args.get('password')
 
         user = User.query.filter_by(username=username).first()
         if (user is None) or (not user.check_password(password)):
