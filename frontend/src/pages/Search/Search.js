@@ -27,6 +27,14 @@ const Search = ({ isLoggedIn }) => {
         result: false
     })
     const [selectedDestinations, setSelectedDestinations] = useState([])
+    if(document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer') != null) {
+        if(selectedDestinations.length === 0) {
+            document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer').style.display = 'none';
+        }
+        else {
+            document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer').style = {display: 'hidden'};
+        }
+    }
 
     const criteriaDict = {
         'destination': "Search Countries, Cities or Specific Locations",
@@ -224,7 +232,7 @@ const Search = ({ isLoggedIn }) => {
                     </Button>
                 </div>
             </div>
-            <Box sx={{ height: 1152, width: '100%', marginTop: selectedDestinations.length ? '2%' : 0 }}>
+            <Box sx={{ height: 1152, width: '100%', marginTop: '2%'}}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
@@ -232,7 +240,6 @@ const Search = ({ isLoggedIn }) => {
                     rowsPerPageOptions={[20]}
                     checkboxSelection
                     isRowSelectable={(p) => selectedDestinations.length < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
-                    experimentalFeatures={{ newEditingApi: true }}
                     onSelectionModelChange={(ids) => {
                         setSelectedDestinations(ids.map((id) => rows.find((row) => row.id === id)))
                         console.log(selectedDestinations);
