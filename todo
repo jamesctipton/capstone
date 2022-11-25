@@ -15,7 +15,7 @@ FRONTEND ===================================================
     ✓ group photo upload
     ✓ make it more clear that its an upload button
 - navbar:
-    - make sign-in button not change size when hovered
+    ✓ make sign-in button not change size when hovered
     ✓ show tooltips for what buttons do what
 - create poll page/popup
 - get search bar going with amadeus

@@ -53,6 +53,7 @@ const Login = ({ setLogin }) => {
         setLogin(true)
         localStorage.setItem('user', JSON.stringify({
           name: response['data']['name'],
+          firstname: response['data']['firstname'],
           groups: response['data']['groups']
         }))
         navigateToHome()

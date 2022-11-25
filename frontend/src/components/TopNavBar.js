@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { 
   Outlet, 
   Link, 
@@ -18,7 +18,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
@@ -37,7 +36,12 @@ const theme = createTheme({
   }
 });
 
+let user;
 const TopNavBar = ({isLoggedIn, setLogin}) => {
+
+  useEffect( () => {
+    user = JSON.parse(localStorage.getItem('user'))
+  },[])
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -100,15 +104,23 @@ const TopNavBar = ({isLoggedIn, setLogin}) => {
                 </IconButton>
               </Tooltip>
               {(isLoggedIn) ? 
+                <>
+                {(user != undefined) ?
+                  <Typography sx={{ color: "#CF7D30", textTransform: 'capitalize' }}> Welcome, {user.firstname}</Typography>
+                  :
+                  <></>
+                }
                 <Tooltip title="Profile">
                   <IconButton onClick={() => navigateToProfile()} edge="end" color="primary" aria-label="messages">
                     <PersonOutlineOutlinedIcon fontSize="large" />
                   </IconButton>
-                </Tooltip> : 
+                </Tooltip>
+                </>
+                 : 
                 <Button 
                   type='button'
                   variant="outlined"
-                  sx={{m: 1, borderWidth: 3, borderRadius: 30, borderColor: 'primary', whiteSpace: 'nowrap', minWidth: 'maxcontent'}}
+                  sx={{m: 1, borderWidth: 3, borderRadius: 30, borderColor: 'primary', whiteSpace: 'nowrap', minWidth: 'maxcontent', '&:hover': { borderWidth: 3 } }}
                   size="large"
                   component={Link} to="/login"
                 >Sign In</Button>

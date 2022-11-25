@@ -31,7 +31,7 @@ class LoginHandler(Resource):
             'resultStatus': 'SUCCESS',
             'message': "Successful credentials",
             'name': user.username,
-            'userhash': user.hashCode,
+            'firstname': user.firstname,
             'groups': [g.__dict__ for g in user.groups],
             'groups_admin': [g.__dict__ for g in user.groups_admin],
             'polls_created': [p.__dict__ for p in user.polls_created]
