@@ -128,7 +128,6 @@ export function Carousel(props) {
     setInterval(() => {
         var elem = document.getElementById('car');
         var carItems = (document.querySelectorAll('#car .car-item').length > 2) ? document.querySelectorAll('#car .car-item').length : 10;
-        console.log(hover)
         if(elem) {
             if(!hover) {
                 if(elem.scrollLeft >= (elem.scrollWidth / carItems) ) {
@@ -145,7 +144,6 @@ export function Carousel(props) {
                 }
             }   
         }
-        console.log(hover)
     }, 5000);
 
     const handleVote = (choice) => {
