@@ -89,7 +89,7 @@ const TopNavBar = ({isLoggedIn, setLogin}) => {
             </div>
             <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 10}}>
               <Tooltip title="Search">
-                <IconButton aria-label='show/hide password' onClick={() => navigateToSearch()} onMouseDown={() => {}} edge="end">
+                <IconButton aria-label='show/hide password' onClick={() => navigateToSearch()} onMouseDown={() => {}} edge="end" color="primary">
                   <SearchOutlinedIcon fontSize="large" color="primary"/>
                 </IconButton>
               </Tooltip>
