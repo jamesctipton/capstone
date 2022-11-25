@@ -211,7 +211,7 @@ const Search = ({ isLoggedIn }) => {
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 10, flexWrap: 'wrap'}}>
                 {selectedDestinations.map((dest, i) => (
                         <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
-                            <Typography color='primary'>{dest['name'] + ',' + dest['countryCode']}</Typography>
+                            <Typography color='primary'>{dest['name'] + ', ' + (dest['stateCode'] ? dest['stateCode'] : dest['countryCode'])}</Typography>
                         </Box>
                     ))}
             </div>
