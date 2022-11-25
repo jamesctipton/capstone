@@ -16,7 +16,7 @@ const theme = createTheme({
     }
 });
 
-const destination_url = 'http://127.0.0.1:5000/search-destinations'
+const url = 'http://127.0.0.1:5000/search-'
 
 const Search = ({ isLoggedIn }) => {
 
@@ -41,8 +41,7 @@ const Search = ({ isLoggedIn }) => {
             setError({message: "Please enter a destination", result: true})
         } else {
             setError({message: "", result: false})
-            //setDestinationRows([])
-            axios.post(destination_url, {
+            axios.post(url+'destinations', {
                 keyword: dest
             }).then((response) => {
                 console.log(response)
