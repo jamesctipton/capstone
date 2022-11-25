@@ -26,6 +26,7 @@ const Search = ({ isLoggedIn }) => {
         message: "",
         result: false
     })
+    const [selectedDestinations, setSelectedDestination] = useState([])
 
     const criteriaDict = {
         'destination': "Search Countries, Cities or Specific Locations",
@@ -217,9 +218,9 @@ const Search = ({ isLoggedIn }) => {
                     disableSelectionOnClick
                     experimentalFeatures={{ newEditingApi: true }}
                     onSelectionModelChange={(ids) => {
-                        const selectedRowsData = ids.map((id) => rows.find((row) => row.id === id));
-                        console.log(selectedRowsData);
-                        }}
+                        selectedDestinations = ids.map((id) => rows.find((row) => row.id === id));
+                        console.log(selectedDestinations);
+                    }}
                 />
             </Box>
     </div>
