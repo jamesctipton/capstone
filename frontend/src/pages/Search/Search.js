@@ -26,7 +26,7 @@ const Search = ({ isLoggedIn }) => {
         message: "",
         result: false
     })
-    const [selectedDestinations, setSelectedDestination] = useState([])
+    const [selectedDestinations, setSelectedDestinations] = useState([])
 
     const criteriaDict = {
         'destination': "Search Countries, Cities or Specific Locations",
@@ -208,7 +208,16 @@ const Search = ({ isLoggedIn }) => {
                     <Typography>{errorValue.message}</Typography>
                 </Box>
             : <></> }
-            <Box sx={{ height: 1152, width: '100%' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 10, flexWrap: 'wrap'}}>
+                {selectedDestinations.map((dest) => {
+                    return (
+                        <Box sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
+                            <Typography color='primary'>{dest['name'] + ',' + dest['countryCode']}</Typography>
+                        </Box>
+                    )
+                })}
+            </div>
+            <Box sx={{ height: 1152, width: '100%', marginTop: selectedDestinations.length ? '2%' : 0 }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
@@ -216,9 +225,10 @@ const Search = ({ isLoggedIn }) => {
                     rowsPerPageOptions={[20]}
                     checkboxSelection={isLoggedIn}
                     disableSelectionOnClick
+                    isRowSelectable={(selectedDestinations.length >= 5)}
                     experimentalFeatures={{ newEditingApi: true }}
                     onSelectionModelChange={(ids) => {
-                        selectedDestinations = ids.map((id) => rows.find((row) => row.id === id));
+                        setSelectedDestinations(ids.map((id) => rows.find((row) => row.id === id)))
                         console.log(selectedDestinations);
                     }}
                 />
