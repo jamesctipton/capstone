@@ -1,5 +1,18 @@
 import React, { useState } from "react";
-import { Button, Divider, FormControl, OutlinedInput, IconButton, createTheme, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { 
+    Button, 
+    Divider, 
+    FormControl, 
+    OutlinedInput, 
+    IconButton, 
+    createTheme, 
+    Box, 
+    Typography,
+    TextField,
+    Select,
+    InputLabel,
+    MenuItem
+} from "@mui/material";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import axios from "axios";
 import { DataGrid } from '@mui/x-data-grid';
@@ -27,6 +40,9 @@ const Search = ({ isLoggedIn }) => {
         result: false
     })
     const [selectedDestinations, setSelectedDestinations] = useState([])
+    const [pollNameValue, setPollName] = useState("")
+    const [groupValue, setGroupValue] = useState("")
+
     if(document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer') != null) {
         if(selectedDestinations.length === 0) {
             document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer').style.display = 'none';
@@ -53,19 +69,20 @@ const Search = ({ isLoggedIn }) => {
             axios.post(url+'destinations', {
                 keyword: dest
             }).then((response) => {
-                console.log(response)
                 const results = response['data']['destinations']
                 let temp = []
                 for(let i = 0; i < results.length; i++) {
                     results[i].id = i
                     temp.push(results[i])
                 }
-                console.log(temp)
                 setRows(temp)
             }).catch((error) => {
                 console.log(error)
             })
         }  
+    }
+    const addPoll = (group, pollName, destinations) => {
+        console.log(group, pollName, destinations)
     }
 
     const columns = [
@@ -226,13 +243,29 @@ const Search = ({ isLoggedIn }) => {
                         )
                     })}
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
-                    <Button disabled={!(isLoggedIn && selectedDestinations.length > 1)} sx={{ border: '2px solid orange', borderRadius: 1, padding: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, minWidth: 'max-content'}}>
+                    <FormControl fullWidth>
+                        <Select
+                            id="group"
+                            label="Group"
+                            placeholder="Select Group"
+                            value={groupValue}
+                            onChange={(e) => setGroupValue(e.target.value)}
+                            variant="outlined"
+                            
+                        >
+                            <MenuItem value={1}>Group #1</MenuItem>
+                            <MenuItem value={2}>Group #2</MenuItem>
+                            <MenuItem value={3}>Group #3</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <TextField id='poll_name' label="Poll Name" variant="outlined" onChange={(e) => setPollName(e.target.value)} value={pollNameValue} sx={{ minWidth: 'max-content'}}></TextField>
+                    <Button disabled={!(isLoggedIn || selectedDestinations.length > 5)} sx={{ border: '2px solid orange', borderRadius: 1, padding: 1, whiteSpace: 'no-wrap', minWidth: 'max-content' }} onClick={() => addPoll(groupValue, pollNameValue, selectedDestinations)}>
                         Add Poll
                     </Button>
                 </div>
             </div>
-            <Box sx={{ height: 1152, width: '100%', marginTop: '2%'}}>
+            <Box sx={{ height: 1152, width: '97%', marginTop: '2%'}}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
@@ -242,7 +275,6 @@ const Search = ({ isLoggedIn }) => {
                     isRowSelectable={(p) => selectedDestinations.length < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
                     onSelectionModelChange={(ids) => {
                         setSelectedDestinations(ids.map((id) => rows.find((row) => row.id === id)))
-                        console.log(selectedDestinations);
                     }}
                 />
             </Box>
