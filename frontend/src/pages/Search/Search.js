@@ -208,12 +208,21 @@ const Search = ({ isLoggedIn }) => {
                     <Typography>{errorValue.message}</Typography>
                 </Box>
             : <></> }
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 10, flexWrap: 'wrap'}}>
-                {selectedDestinations.map((dest, i) => (
-                        <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
-                            <Typography color='primary'>{dest['name'] + ', ' + (dest['stateCode'] ? dest['stateCode'] : dest['countryCode'])}</Typography>
-                        </Box>
-                    ))}
+            <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '85%', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 10}}>
+                    {selectedDestinations.map((dest) => {
+                        return (
+                            <Box sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
+                                <Typography color='primary'>{dest['name'] + ',' + dest['countryCode']}</Typography>
+                            </Box>
+                        )
+                    })}
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
+                    <Button disabled={(isLoggedIn && selectedDestinations.length > 1) ? false : true} sx={{ border: '2px solid orange', borderRadius: 1, padding: 1, marginBottom: 2 }}>
+                        Add Poll
+                    </Button>
+                </div>
             </div>
             <Box sx={{ height: 1152, width: '100%', marginTop: selectedDestinations.length ? '2%' : 0 }}>
                 <DataGrid
