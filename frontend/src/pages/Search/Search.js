@@ -210,16 +210,16 @@ const Search = ({ isLoggedIn }) => {
             : <></> }
             <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '85%', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 10}}>
-                    {selectedDestinations.map((dest) => {
+                    {selectedDestinations.map((dest, i) => {
                         return (
-                            <Box sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
+                            <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
                                 <Typography color='primary'>{dest['name'] + ', ' + (dest['stateCode'] ? dest['stateCode'] : dest['countryCode'])}</Typography>
                             </Box>
                         )
                     })}
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
-                    <Button disabled={(isLoggedIn && selectedDestinations.length > 1) ? false : true} sx={{ border: '2px solid orange', borderRadius: 1, padding: 1, marginBottom: 2 }}>
+                    <Button disabled={!(isLoggedIn && selectedDestinations.length > 1)} sx={{ border: '2px solid orange', borderRadius: 1, padding: 1 }}>
                         Add Poll
                     </Button>
                 </div>
