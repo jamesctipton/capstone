@@ -209,13 +209,11 @@ const Search = ({ isLoggedIn }) => {
                 </Box>
             : <></> }
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 10, flexWrap: 'wrap'}}>
-                {selectedDestinations.map((dest) => {
-                    return (
-                        <Box sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
+                {selectedDestinations.map((dest, i) => (
+                        <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
                             <Typography color='primary'>{dest['name'] + ',' + dest['countryCode']}</Typography>
                         </Box>
-                    )
-                })}
+                    ))}
             </div>
             <Box sx={{ height: 1152, width: '100%', marginTop: selectedDestinations.length ? '2%' : 0 }}>
                 <DataGrid
@@ -223,9 +221,8 @@ const Search = ({ isLoggedIn }) => {
                     columns={columns}
                     pageSize={20}
                     rowsPerPageOptions={[20]}
-                    checkboxSelection={isLoggedIn}
-                    disableSelectionOnClick
-                    isRowSelectable={(selectedDestinations.length >= 5)}
+                    checkboxSelection
+                    isRowSelectable={(p) => selectedDestinations.length < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
                     experimentalFeatures={{ newEditingApi: true }}
                     onSelectionModelChange={(ids) => {
                         setSelectedDestinations(ids.map((id) => rows.find((row) => row.id === id)))
