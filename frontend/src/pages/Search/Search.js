@@ -20,79 +20,21 @@ const destination_url = 'http://127.0.0.1:5000/search-destinations'
 
 const Search = ({ isLoggedIn }) => {
 
-    const [isActive, setActive] = useState({
-        destination: true,
-        hotels: false,
-        flights: false,
-        poi: false
-    })
     const [initCriteria, setInitCriteria] = useState("destination")
-    const [destInput, setDestInput] = useState("")
+    const [input, setInput] = useState("")
     const [errorValue, setError] = useState({
         message: "",
         result: false
     })
 
-    const setdestinationActive = () => {
-        isActive.destination = true
-        isActive.hotels = false
-        isActive.flights = false
-        isActive.poi = false
-        setActive({...isActive, destination: true})
-        setActive({...isActive, hotels: false})
-        setActive({...isActive, flights: false})
-        setActive({...isActive, poi: false})
+    const criteriaDict = {
+        'destination': "Search Countries, Cities or Specific Locations",
+        'hotels': "Search for Hotels",
+        'flights': "Search Flights",
+        'poi': "Search Points of Interest"
+    };
 
-        setInitCriteria("destination")
-    }
-
-    const setHotelsActive = () => {
-        isActive.destination = false
-        isActive.hotels = true
-        isActive.flights = false
-        isActive.poi = false
-        setActive({...isActive, destination: false})
-        setActive({...isActive, hotels: true})
-        setActive({...isActive, flights: false})
-        setActive({...isActive, poi: false})
-
-        setInitCriteria("hotels")
-    }
-
-    const setFlightsActive = () => {
-        isActive.destination = false
-        isActive.hotels = false
-        isActive.flights = true
-        isActive.poi = false
-        setActive({...isActive, destination: false})
-        setActive({...isActive, hotels: false})
-        setActive({...isActive, flights: true})
-        setActive({...isActive, poi: false})
-
-        setInitCriteria("flights")
-    }
-
-    const setPOIActive = () => {
-        isActive.destination = false
-        isActive.hotels = false
-        isActive.flights = false
-        isActive.poi = true
-        setActive({...isActive, destination: false})
-        setActive({...isActive, hotels: false})
-        setActive({...isActive, flights: false})
-        setActive({...isActive, poi: true})
-
-        setInitCriteria("poi")
-    }
-
-    const destinationColumns = [
-        {id: 'name', label: 'Name', align: 'left'},
-        {id: 'countryCode', label: 'Country', align: 'center'},
-        {id: 'stateCode', label: 'State', align: 'center'},
-        {id: 'latitude', label: 'Latitude', align: 'center'},
-        {id: 'longitude', label: 'Longitude', align: 'center'}
-    ]
-    const [destinationRows, setDestinationRows] = useState([])
+    const [rows, setRows] = useState([])
 
     const searchdestination = (dest) => {
         if(dest === "") {
@@ -107,10 +49,11 @@ const Search = ({ isLoggedIn }) => {
                 const results = response['data']['destinations']
                 let temp = []
                 for(let i = 0; i < results.length; i++) {
+                    results[i].id = i
                     temp.push(results[i])
                 }
                 console.log(temp)
-                setDestinationRows(temp)
+                setRows(temp)
             }).catch((error) => {
                 console.log(error)
             })
@@ -118,80 +61,91 @@ const Search = ({ isLoggedIn }) => {
     }
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 90 },
-        {
-          field: 'firstName',
-          headerName: 'First name',
-          width: 150,
-          editable: true,
+        { 
+            field: 'name',
+            headerName: 'Name',
+            minWidth: 360,
+            flex: 0.4
         },
         {
-          field: 'lastName',
-          headerName: 'Last name',
-          width: 150,
-          editable: true,
+          field: 'countryCode',
+          headerName: 'Country',
+          minWidth: 120,
+          flex: 0.15
         },
         {
-          field: 'age',
-          headerName: 'Age',
+          field: 'stateCode',
+          headerName: 'State',
+          minWidth: 120,
+          flex: 0.15
+        },
+        {
+          field: 'latitude',
+          headerName: 'Latitude',
           type: 'number',
-          width: 110,
-          editable: true,
+          minWidth: 120,
+          flex: 0.15
         },
         {
-          field: 'fullName',
-          headerName: 'Full name',
-          description: 'This column has a value getter and is not sortable.',
-          sortable: false,
-          width: 160,
-          valueGetter: (params) =>
-            `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+          field: 'longitude',
+          headerName: 'Longitude',
+          type: 'number',
+        //   description: 'This column has a value getter and is not sortable.',
+          minWidth: 120,
+          flex: 0.15
         },
       ];
     
-      const rows = [
-        { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-        { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-        { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-        { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-        { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-        { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-        { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-        { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-        { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-      ];
-
-    
-
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '5%', width: '100%' }}>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginBottom: '1%'}}>
                 <Button  
-                    sx={{ backgroundColor: isActive.destination ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }} 
-                    onClick={() => setdestinationActive()}
+                    sx={{ backgroundColor: (initCriteria === 'destination') ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }} 
+                    onClick={() => setInitCriteria("destination")}
                     fullWidth
                 >destination</Button>
                 <Divider orientation="vertical" variant="middle" flexItem sx={{ background: '#CF7D30', width: 1.5}}></Divider>
                 <Button  
-                    sx={{ backgroundColor: isActive.hotels ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }} 
-                    onClick={() => setHotelsActive()}
+                    sx={{ backgroundColor: (initCriteria === 'hotels') ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }} 
+                    onClick={() => setInitCriteria("hotels")}
                     fullWidth
                 >Hotels</Button>
                 <Divider orientation="vertical" variant="middle" flexItem sx={{ background: '#CF7D30', width: 1.5}}></Divider>
                 <Button  
-                    sx={{ backgroundColor: isActive.flights ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }}
-                    onClick={() => setFlightsActive()}
+                    sx={{ backgroundColor: (initCriteria === 'flights') ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }}
+                    onClick={() => setInitCriteria("flights")}
                     fullWidth
                 >Flights</Button>
                 <Divider orientation="vertical" variant="middle" flexItem sx={{ background: '#CF7D30', width: 1.5}}></Divider>
                 <Button  
-                    sx={{ backgroundColor: isActive.poi ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }}
-                    onClick={() => setPOIActive()}
+                    sx={{ backgroundColor: (initCriteria === 'poi') ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }}
+                    onClick={() => setInitCriteria("poi")}
                     fullWidth
                 >Points of Interest</Button>
             </div>
             <Divider orientation="horizontal" variant="fullwidth" flexItem sx={{ background: '#CF7D30'}}></Divider>
-            {initCriteria === 'destination' 
+            <div style={{width: '80%', marginTop: '2%', marginBottom: '2%'}}>
+                <FormControl fullWidth>
+                    <OutlinedInput 
+                        placeholder={criteriaDict[initCriteria]}
+                        variant="outlined" 
+                        sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} 
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        fullWidth
+                        onKeyPress={event => {
+                            if (event.key === 'Enter') {
+                                searchdestination(input)
+                            }
+                            }}
+                        endAdornment={
+                        <IconButton aria-label='search' onClick={() => searchdestination(input)} onMouseDown={() => {}} edge="end">
+                            <SearchOutlinedIcon fontSize="large" color="primary"/>
+                        </IconButton>}>
+                    </OutlinedInput>
+                </FormControl>
+            </div> 
+            {/* {initCriteria === 'destination' 
                 ? <div style={{width: '80%', marginTop: '2%', marginBottom: '2%'}}>
                     <FormControl fullWidth>
                         <OutlinedInput 
@@ -248,59 +202,28 @@ const Search = ({ isLoggedIn }) => {
             
                                     </OutlinedInput>
                                 </FormControl>
-                             </div> : <></> }
-                {errorValue.result ? 
-                    <Box sx={{ border: '3px solid red', borderRadius: 3, background: 'rgba(255, 0, 0, 0.1)', borderColor: 'rgba(255, 0, 0, 0.86)', color: 'red', padding: 2 }}>
-                        <Typography>{errorValue.message}</Typography>
-                    </Box>
-                : <></> }
-                <Box sx={{ height: 400, width: '100%' }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        pageSize={5}
-                        rowsPerPageOptions={[5]}
-                        checkboxSelection
-                        disableSelectionOnClick
-                        experimentalFeatures={{ newEditingApi: true }}
-                    />
+                             </div> : <></> } */}
+            {errorValue.result ? 
+                <Box sx={{ border: '3px solid red', borderRadius: 3, background: 'rgba(255, 0, 0, 0.1)', borderColor: 'rgba(255, 0, 0, 0.86)', color: 'red', padding: 2 }}>
+                    <Typography>{errorValue.message}</Typography>
                 </Box>
-                    
-                {/* <TableContainer style={{ width: '90%', marginLeft: isLoggedIn ? '5%' : 0 }}>
-                    <Table stickyHeader>
-                        <TableHead>
-                            <TableRow>
-                                {destinationColumns.map((column) => (
-                                    <TableCell key={column.id} sx={{ color: '#CF7D30'}} align={column.align}>
-                                        {column.label}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {destinationRows.map((row, index1) => {
-                                return(
-                                    <TableRow key={index1} sx={{ width: '100%' }} hover>
-                                        {destinationColumns.map((column, index2) => {
-                                            const value = row[column.id]
-                                            return (
-                                                <TableCell key={index1 + index2} align={column.align}>
-                                                    {value}
-                                                </TableCell>
-                                            )
-                                        })}
-                                        {isLoggedIn ? 
-                                            <Button sx={{ marginTop: 1, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', border: '3px solid orange' }}>
-                                                Add To Poll
-                                            </Button> : <></>}
-                                        
-                                    </TableRow>
-                                )
-                            })}
-                        </TableBody>
-                    </Table>
-                </TableContainer> */}
-        </div>
+            : <></> }
+            <Box sx={{ height: 1152, width: '100%' }}>
+                <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    pageSize={20}
+                    rowsPerPageOptions={[20]}
+                    checkboxSelection={isLoggedIn}
+                    disableSelectionOnClick
+                    experimentalFeatures={{ newEditingApi: true }}
+                    onSelectionModelChange={(ids) => {
+                        const selectedRowsData = ids.map((id) => rows.find((row) => row.id === id));
+                        console.log(selectedRowsData);
+                        }}
+                />
+            </Box>
+    </div>
     )
 }
 
