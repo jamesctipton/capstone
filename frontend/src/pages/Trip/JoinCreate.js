@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Switch from '@mui/material/Switch';
 import { 
     InputAdornment,
     Button,
-    createTheme,
-    Box,
     Typography,
-    Tooltip
 } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { 
     FormControlLabel, 
     FormGroup, 
@@ -22,22 +19,11 @@ import axios from 'axios';
 
 const join_url = 'http://127.0.0.1:5000/join-group'
 const create_url = 'http://127.0.0.1:5000/create-group'
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#CF7D30',
-      darker: '#BE6C20'
-    }
-  }
-});
 
-let user = {};
-const JoinCreate = (isLoggedIn) => {
+const JoinCreate = () => {
 
-    useEffect(() => {
-        user = JSON.parse(localStorage.getItem('user'));
-    }, [])
-
+    const user = JSON.parse(localStorage.getItem('user'));
+    
     const navigate = useNavigate()
     const navigateGroupHome = (groupCode) => {
         navigate('/trip/' + groupCode)
@@ -133,7 +119,7 @@ const JoinCreate = (isLoggedIn) => {
                     helperText={(errorValue.result) ? errorValue.message : ""}
                 ></TextField>
                 <Button 
-                    disabled={(groupCode.length != 4)}
+                    disabled={(groupCode.length !== 4)}
                     type='submit'
                     variant="outlined"
                     sx={{ m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: '50%', height: 50, fontSize: 15, marginTop: '10%' }}
@@ -146,7 +132,7 @@ const JoinCreate = (isLoggedIn) => {
                 <Divider orientation='vertical' variant='middle' flexItem sx={{ background: '#CF7D30' }}></Divider>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant='h3' sx={{ color: '#CF7D30' }}>Create Group</Typography>
-                {(file == null) ?
+                {(file === null) ?
                 <IconButton component="label" >
                     <input hidden accept="image/*" type="file" onChange={(e) => {handleFileChange(e)}} />
                     <PersonPinIcon color='primary' sx={{ width: 90, height: 90 }} />

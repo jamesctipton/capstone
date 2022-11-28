@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   BrowserRouter, 
   Routes, 
@@ -19,20 +19,18 @@ import Search from './pages/Search/Search';
 
 function App() {
 
-  const [loggedIn, setLogin] = useState(false)
-
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<TopNavBar isLoggedIn={loggedIn} setLogin={setLogin} />}>
-          <Route index element={<Home isLoggedIn={loggedIn} />} />
-          <Route path="login" element={<Login setLogin={setLogin} />} />
+        <Route path="/" element={<TopNavBar />}>
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
           <Route path="register" element={<Registration />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="new-password/:hash" element={<NewPassword />} />
           <Route path="trip/:hash" element={<Trip />} />
-          <Route path="join-create" element={<JoinCreate isLoggedIn={loggedIn} />} />
-          <Route path="search" element={<Search isLoggedIn={loggedIn}/>} />
+          <Route path="join-create" element={<JoinCreate />} />
+          <Route path="search" element={<Search />} />
           <Route path="favorites" element={<Typography>Favorites</Typography>} />
           <Route path="friends" element={<Typography>Friends</Typography>} />
           <Route path="profile" element={<Typography>Profile</Typography>} />

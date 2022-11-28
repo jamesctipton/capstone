@@ -1,5 +1,5 @@
 import './Home.css'
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Typography } from '@mui/material';
 import Steps from '../../assets/Steps.png'
 import { Link } from "react-router-dom";
@@ -30,17 +30,11 @@ const items = [
   }
 ]
 
-let user = {};
-
 const Home = (isLoggedIn) => {
-
-  useEffect( () => {
-    user = JSON.parse(localStorage.getItem('user'))
-    console.log(user)
-  },[])
 
   // const trips = (user.groups) ? user.groups.length : 0;
   const trips = items.length
+  const user = JSON.parse(localStorage.getItem('user'))
 
   const pollOptions = [
     {name: 'first', votes: 0},
@@ -48,7 +42,7 @@ const Home = (isLoggedIn) => {
     {name: 'third', votes: 1},
   ]
 
-  let polls = new Array()
+  let polls = []
 
   // if user isn't empty
   if(!(Object.keys(user).length === 0 && user.constructor === Object)) {
@@ -92,7 +86,7 @@ const Home = (isLoggedIn) => {
                 }
               </div>
               <br></br>
-              {(polls.length == 0) ?
+              {(polls.length === 0) ?
               <Poll
                 options={pollOptions}
               ></Poll>
