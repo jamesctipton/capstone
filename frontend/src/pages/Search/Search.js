@@ -249,8 +249,7 @@ const Search = ({ isLoggedIn }) => {
                     <Typography>{errorValue.message}</Typography>
                 </Box>
             : <></> }
-            <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '85%', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 10}}>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', gap: 10, marginBottom: 4}}>
                     {selectedDestinations.map((dest, i) => {
                         return (
                             <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
@@ -258,7 +257,9 @@ const Search = ({ isLoggedIn }) => {
                             </Box>
                         )
                     })}
-                </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '85%', justifyContent: 'space-between' }}>
+                
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, minWidth: 'max-content'}}>
                     <FormControl fullWidth>
                         {(user != undefined) ?
@@ -305,11 +306,12 @@ const Search = ({ isLoggedIn }) => {
                     checkboxSelection
                     isRowSelectable={(p) => selectedDestinations.length < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
                     onSelectionModelChange={(ids) => {
-                        let temp = selectedDestinations
-                        let tempSet = new Set(ids.map((id) => rows.find((row) => row.id === id)))
-                        console.log(temp)
-                        console.log(tempSet)
-                        setSelectedDestinations(temp)
+                        setSelectedDestinations(ids.map((id) => rows.find((row) => row.id === id)))
+                        let temp = ids.map((id) => rows.find((row) => row.id === id))
+                        let tempSet = new Set(selectedDestinations)
+                        let temp2 = Array.from(tempSet)
+                        console.log(temp2.filter(n => !temp.includes(n)))
+                        console.log(selectedDestinations)
                     }}
                     // selectionModel={selectedDestinations}
                 />
