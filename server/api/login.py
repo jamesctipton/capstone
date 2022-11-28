@@ -1,5 +1,5 @@
 import random, string
-from api.models import User
+from api.models import *
 from flask_restful import Resource
 from flask import request, jsonify
 from api.__init__ import db, mail
@@ -25,6 +25,13 @@ class LoginHandler(Resource):
                 'resultStatus': 'FAILURE',
                 'message': "Invalid username or password"
             }
+
+        # group_schema = GroupSchema()
+        # groups_load_data = group_schema.load(user.groups, session=db.session)
+        print("hello world")
+       # groups_test = ([g.__dict__ for g in user.groups])
+        print(user.groups)
+
         
         # send user info and list of groups user is in
         return {
@@ -32,9 +39,9 @@ class LoginHandler(Resource):
             'message': "Successful credentials",
             'name': user.username,
             'firstname': user.firstname,
-            'groups': [g.__dict__ for g in user.groups],
-            'groups_admin': [g.__dict__ for g in user.groups_admin],
-            'polls_created': [p.__dict__ for p in user.polls_created]
+            'groups': user.groups,
+            'groups_admin': user.groups_admin,
+            'polls_created': user.polls_created
         }
 
 # done

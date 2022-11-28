@@ -47,6 +47,7 @@ def get_destinations(keyword):
 #print(get_destinations("Paris"))
 
 # get flights for certain destination
+
 def get_flights(src_airport, dst_airport, start_date, end_date):
     return
 
