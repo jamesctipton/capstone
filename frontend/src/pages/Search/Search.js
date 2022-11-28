@@ -305,8 +305,13 @@ const Search = ({ isLoggedIn }) => {
                     checkboxSelection
                     isRowSelectable={(p) => selectedDestinations.length < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
                     onSelectionModelChange={(ids) => {
-                        setSelectedDestinations(ids.map((id) => rows.find((row) => row.id === id)))
+                        let temp = selectedDestinations
+                        let tempSet = new Set(ids.map((id) => rows.find((row) => row.id === id)))
+                        console.log(temp)
+                        console.log(tempSet)
+                        setSelectedDestinations(temp)
                     }}
+                    // selectionModel={selectedDestinations}
                 />
             </Box>
     </div>
