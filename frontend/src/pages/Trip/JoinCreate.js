@@ -16,12 +16,12 @@ import {
     FormControlLabel, 
     FormGroup, 
     IconButton 
-} from '@material-ui/core';
+} from '@mui/material';
 import axios from 'axios';
 
 
-const join_url = 'http://127.0.0.1:5000/join'
-const create_url = 'http://127.0.0.1:5000/create'
+const join_url = 'http://127.0.0.1:5000/join-group'
+const create_url = 'http://127.0.0.1:5000/create-group'
 const theme = createTheme({
   palette: {
     primary: {
@@ -65,12 +65,13 @@ const JoinCreate = (isLoggedIn) => {
             destination: response['data']['description'],
             summary: response['data']['imgPath']
         });
-        localStorage.setItem(JSON.stringify(temp))
+        localStorage.setItem('user', JSON.stringify(temp))
     }
 
     const verifyGroup = (event) => {
         axios.post(join_url, {
-            hashCode: groupCode
+            groupCode: groupCode,
+            username: user.name
         }).then((response) => {
             if(response['data']['resultStatus'] === 'SUCCESS') {
                 console.log(response)
@@ -152,7 +153,7 @@ const JoinCreate = (isLoggedIn) => {
                 </IconButton>
                 :
                 <div component="label" style={{ display: 'flex', flexDirection: 'column'}}>
-                    <img src={`${file}`} alt="group image" style={{ width: 90, height: 90, overflow: 'hidden', borderRadius: 100 }} />
+                    <img src={`${file}`} alt="group" style={{ width: 90, height: 90, overflow: 'hidden', borderRadius: 100 }} />
                     <Button size='small' component="label">Change
                         <input hidden accept="image/*" type="file" onChange={(e) => {handleFileChange(e)}} />
                     </Button>
@@ -166,9 +167,6 @@ const JoinCreate = (isLoggedIn) => {
                     helperText="*Please enter a name for your group"
                     value={createdGroupValues.name}
                     onChange={(e) => setValues({...createdGroupValues, name: e.target.value})}
-                    InputProps={{
-                        startAdornment: <InputAdornment position='start' sx={{ marginLeft: '35.5%' }}></InputAdornment>
-                    }}
                     FormHelperTextProps={{
                         style: {
                             color: 'black',

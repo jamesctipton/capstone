@@ -1,9 +1,9 @@
 FRONTEND ===================================================
 
-✓ set user data in app.js usestate or localstorage
+✓ set user data in app.js usestate or localstorage:
 - home page:
     ✓ get groups from user
-    - get polls from groups from user
+    ✓ get polls from groups from user
 - trip page:
     ✓ get polls from trip group
     ✓ poll vote handling
@@ -17,11 +17,9 @@ FRONTEND ===================================================
 - navbar:
     ✓ make sign-in button not change size when hovered
     ✓ show tooltips for what buttons do what
-- create poll page/popup
-- get search bar going with amadeus
-    ✓ search page?
-
-- createpoll page
+- get search bar going with amadeus:
+    ✓ search page
+    ✓ create poll page/popup
 
 SERVER SIDE ===================================================
 

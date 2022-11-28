@@ -41,7 +41,7 @@ const TopNavBar = ({isLoggedIn, setLogin}) => {
 
   useEffect( () => {
     user = JSON.parse(localStorage.getItem('user'))
-  },[])
+  })
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
