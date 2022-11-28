@@ -107,11 +107,11 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
     }
 
     return (
-        <div style={{ width: '90%' }}>
+        <div style={{ width: '90%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
             <div style={{width: '80%', marginTop: '2%', marginBottom: '2%'}}>
                 <FormControl fullWidth>
                     <OutlinedInput 
-                        placeholder="Search Desintation"
+                        placeholder="Search Destination"
                         variant="outlined" 
                         sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} 
                         value={input}
@@ -133,8 +133,7 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
                 <Box sx={{ border: '3px solid red', background: 'rgba(255, 0, 0, 0.1)', color: 'red', padding: 2 }}>
                     <Typography>{errorValue.message}</Typography>
                 </Box> : <></> }
-                <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '85%', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 10}}>
+                <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 10, marginBottom: 4}}>
                     {selectedDestinations.map((dest, i) => {
                         return (
                             <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
@@ -143,6 +142,7 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
                         )
                     })}
                 </div>
+                <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '85%', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, minWidth: 'max-content'}}>
                     <FormControl fullWidth>
                         <InputLabel id="select-label">Group</InputLabel>

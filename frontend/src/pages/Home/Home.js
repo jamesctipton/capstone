@@ -58,7 +58,7 @@ const Home = (isLoggedIn) => {
 
   return (
       <>
-        {(isLoggedIn['isLoggedIn']) 
+        {(user) 
           ? 
           <>
           {(trips === 0) ?
