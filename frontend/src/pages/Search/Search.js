@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
     Button, 
     Divider, 
@@ -30,7 +30,9 @@ const theme = createTheme({
 });
 
 const url = 'http://127.0.0.1:5000/search-'
+const pollUrl = 'http://127.0.0.1:5000/create-poll'
 
+let user;
 const Search = ({ isLoggedIn }) => {
 
     const [initCriteria, setInitCriteria] = useState("destination")
@@ -42,6 +44,10 @@ const Search = ({ isLoggedIn }) => {
     const [selectedDestinations, setSelectedDestinations] = useState([])
     const [pollNameValue, setPollName] = useState("")
     const [groupValue, setGroupValue] = useState("")
+
+    useEffect(() => {
+        user = JSON.parse(localStorage.getItem('user'));
+    });
 
     if(document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer') != null) {
         if(selectedDestinations.length === 0) {
@@ -83,6 +89,16 @@ const Search = ({ isLoggedIn }) => {
     }
     const addPoll = (group, pollName, destinations) => {
         console.log(group, pollName, destinations)
+        axios.post(url, {
+            pollname: pollName,
+            user: user.name,
+            groupid: group,
+            options: destinations
+        }).then((response) => {
+            console.log(response)
+        }).catch((error) => {
+            console.log(error)
+        })
     }
 
     const columns = [
@@ -95,21 +111,21 @@ const Search = ({ isLoggedIn }) => {
         {
           field: 'countryCode',
           headerName: 'Country',
-          minWidth: 120,
-          flex: 0.15
+          minWidth: 100,
+          flex: 0.10
         },
         {
           field: 'stateCode',
           headerName: 'State',
-          minWidth: 120,
-          flex: 0.15
+          minWidth: 100,
+          flex: 0.10
         },
         {
           field: 'latitude',
           headerName: 'Latitude',
           type: 'number',
           minWidth: 120,
-          flex: 0.15
+          flex: 0.20
         },
         {
           field: 'longitude',
@@ -117,7 +133,7 @@ const Search = ({ isLoggedIn }) => {
           type: 'number',
         //   description: 'This column has a value getter and is not sortable.',
           minWidth: 120,
-          flex: 0.15
+          flex: 0.20
         },
       ];
     
@@ -245,22 +261,37 @@ const Search = ({ isLoggedIn }) => {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, minWidth: 'max-content'}}>
                     <FormControl fullWidth>
+                        {(user != undefined) ?
+                        // conditional rendering just for testing
+                        <>
+                        <InputLabel id="select-label">Group</InputLabel>
                         <Select
                             id="group"
-                            label="Group"
-                            placeholder="Select Group"
+                            labelId="select-group"
                             value={groupValue}
+                            label="Group"
                             onChange={(e) => setGroupValue(e.target.value)}
                             variant="outlined"
-                            
+                            sx={{ minWidth: '100px' }}
+                            autoWidth
                         >
                             <MenuItem value={1}>Group #1</MenuItem>
                             <MenuItem value={2}>Group #2</MenuItem>
                             <MenuItem value={3}>Group #3</MenuItem>
+                            {user.groups.map((g) => (
+                                <MenuItem value={g.group_id}>{g.name}</MenuItem>
+                            ))}
                         </Select>
+                        </>
+                        :
+                        <></>
+                        }
                     </FormControl>
                     <TextField id='poll_name' label="Poll Name" variant="outlined" onChange={(e) => setPollName(e.target.value)} value={pollNameValue} sx={{ minWidth: 'max-content'}}></TextField>
-                    <Button disabled={!(isLoggedIn || selectedDestinations.length > 5)} sx={{ border: '2px solid orange', borderRadius: 1, padding: 1, whiteSpace: 'no-wrap', minWidth: 'max-content' }} onClick={() => addPoll(groupValue, pollNameValue, selectedDestinations)}>
+                    <Button 
+                        disabled={!(isLoggedIn || selectedDestinations.length > 5) && (selectedDestinations.length === 1 || selectedDestinations.length === 0) || (groupValue === "" || pollNameValue === "")}
+                        sx={{ border: '2px solid orange', borderRadius: 1, padding: 1, whiteSpace: 'no-wrap', minWidth: 'max-content' }} 
+                        onClick={() => addPoll(groupValue, pollNameValue, selectedDestinations)}>
                         Add Poll
                     </Button>
                 </div>
