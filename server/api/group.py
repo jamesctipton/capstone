@@ -34,7 +34,11 @@ class CreateGroupHandler(Resource):
         # commit group to db
         group = Group(groupname=groupname, destination=destination, 
                         groupimage=groupimage, summary=summary, groupCode = groupCode, admin = user)
+        # group_schema = GroupSchema()
         db.session.add(group)
+
+        # dump_data = group_schema.dump(group)
+        # print(dump_data)
 
         user.groups.append(group) # add group to user's group
         user.groups_admin.append(group) # add group to the groups that user is an admin of
@@ -84,8 +88,8 @@ class JoinGroupHandler(Resource):
             'groupCode': group.groupCode,
             'description': group.summary,
             'imgPath': pickle.loads(group.groupimage),
-            'polls': [p.__dict__ for p in group.polls],
-            'users': [u.__dict__ for u in group.users],
+            'polls': group.polls,
+            'users': group.users,
             'group_id': group.id
         }
 

@@ -1,6 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from api.__init__ import db
+from api.__init__ import db, ma
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 # Many to many JOIN table for groups and users
 # Contains users and the respective groups they are in
@@ -38,6 +39,12 @@ class Group(db.Model):
     groupCode = db.Column(db.String(4), unique=True)
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id')) # User who created group
     polls = db.relationship('Poll', backref='group') # polls in the group
+
+# class GroupSchema(SQLAlchemyAutoSchema):
+#     class Meta:
+#         model = Group
+#         include_relationships = True
+#         load_instance = True
 
 class PollOption(object):
     def __init__(self, name, description="", votes=0, image=None) -> None:
