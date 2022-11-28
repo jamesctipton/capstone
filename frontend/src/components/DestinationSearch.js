@@ -11,9 +11,11 @@ import {
     Button,
     OutlinedInput,
     IconButton,
+    Divider
 } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import { useNavigate } from "react-router-dom";
 
 const search_url = 'http://127.0.0.1:5000/search-'
 const create_poll_url = 'http://127.0.0.1:5000/create-poll'
@@ -34,6 +36,10 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
     const [groupValue, setGroupValue] = useState("")
 
     //constant variables for destination table
+    const navigate = useNavigate()
+    const navigateToCreateGroup = () => {
+        navigate('/join-create')
+    }
     const columns = [
         {
             field: 'name',
@@ -162,6 +168,8 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
                                         <MenuItem value={g.group_id}>{g.name}</MenuItem>
                                     )
                                 }): <MenuItem>No groups available</MenuItem>}
+                            <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
+                            <Button sx={{ marginLeft: '12%' }} onClick={() => navigateToCreateGroup()}>Create Group</Button>
                         </Select>
                     </FormControl>
                     <TextField id='poll_name' label="Poll Name" variant="outlined" onChange={(e) => setPollName(e.target.value)} value={pollNameValue} sx={{ minWidth: 'max-content'}}></TextField>

@@ -30,7 +30,7 @@ const items = [
   }
 ]
 
-const Home = (isLoggedIn) => {
+const Home = () => {
 
   // const trips = (user.groups) ? user.groups.length : 0;
   const trips = items.length
@@ -58,7 +58,11 @@ const Home = (isLoggedIn) => {
 
   return (
       <>
+<<<<<<< HEAD
         {(user) 
+=======
+        {user 
+>>>>>>> 405e2ad81b0b8e4e76af82bc563dc1a7777300f6
           ? 
           <>
           {(trips === 0) ?
