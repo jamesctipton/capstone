@@ -11,7 +11,6 @@ mail = Mail(app)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-ma = Marshmallow(app)
 db.init_app(app)
 db.create_all(app=app)
 db.session.commit()

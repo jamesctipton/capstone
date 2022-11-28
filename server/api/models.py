@@ -1,7 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from api.__init__ import db, ma
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from api.__init__ import db
 
 # Many to many JOIN table for groups and users
 # Contains users and the respective groups they are in
