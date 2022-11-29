@@ -170,7 +170,13 @@ const DestinationSearch = ({ hotelSearch }) => {
                     {persistentDest.map((dest, i) => {
                         return (
                             <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
-                                <Typography color='primary'>{dest['name'] + ', ' + (dest['stateCode'] ? dest['stateCode'] : dest['countryCode'])}</Typography>
+                                <Button
+                                    color='primary'
+                                    onClick={() => {
+                                        setPersistentDest(persistentDest)
+                                        persistentDest.splice(i, 1)
+                                    }}
+                                >X {dest['name'] + ', ' + (dest['stateCode'] ? dest['stateCode'] : dest['countryCode'])}</Button>
                             </Box>
                         )
                     })}
@@ -236,6 +242,13 @@ const DestinationSearch = ({ hotelSearch }) => {
                             let remove = t2[t2.length - 1]
                             let j = current.findIndex((y) => y === remove)
                             current.splice(j, 1)
+                        }
+                        if(temp.length === 0 && t2.length === 1) {
+                            if(current.length === 1)
+                                current = []
+                            else {
+                                current.pop()
+                            }
                         }
                         setPersistentDest(current)
                     }}

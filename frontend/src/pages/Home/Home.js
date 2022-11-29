@@ -45,14 +45,16 @@ const Home = () => {
   let polls = []
 
   // if user isn't empty
-  if(!(Object.keys(user).length === 0 && user.constructor === Object)) {
-    for (let i = 0; i < user.groups.length; i++) {
-      const group = user.groups[i];
-      for (let j = 0; j < group.polls.length; j++) {
-        const p = group.polls[j];
-        polls.push(p)
+  if(user) {
+    if(!(Object.keys(user).length === 0 && user.constructor === Object)) {
+      for (let i = 0; i < user.groups.length; i++) {
+        const group = user.groups[i];
+        for (let j = 0; j < group.polls.length; j++) {
+          const p = group.polls[j];
+          polls.push(p)
+        }
+        
       }
-      
     }
   }
 
