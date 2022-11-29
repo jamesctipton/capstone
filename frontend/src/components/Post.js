@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import Paris from '../assets/Paris.jpeg';
+import paris from '../assets/paris.jpeg';
 
 const Post = () => {
   return (
@@ -40,7 +40,7 @@ const Post = () => {
         component="img"
         height="20%"
         width="5%"
-        src = {Paris}
+        src = {paris}
         alt="Paella dish"
       />
       <CardContent>
