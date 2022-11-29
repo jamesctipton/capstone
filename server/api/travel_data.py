@@ -19,11 +19,14 @@ amadeus = Client(
 # returns list of destinations with city name, country, state if USA city, and lat/long
 def get_destinations(keyword):
     try:
+        if((len(keyword) > 50) or (len(keyword) < 3)):
+            return []
+            
         response = amadeus.reference_data.locations.cities.get(keyword=keyword)
-        df = pd.json_normalize(response.data)
-        if(df.empty):
+        if(response.data is None):
             return []
 
+        df = pd.json_normalize(response.data)
         # Create dataframe of cities, rename columns, and convert to dictionary
         df = df[["name", "address.countryCode", "address.stateCode", "geoCode.latitude", "geoCode.longitude"]]
         df.rename(columns = {'address.countryCode':'countryCode', 'address.stateCode':'stateCode', 
@@ -45,7 +48,7 @@ def get_destinations(keyword):
         return error
 
 # Uncomment below to test
-#print(get_destinations("Paris"))
+print(get_destinations("Pennsylvania"))
 
 # get flights for certain destination
 # https://developers.amadeus.com/self-service/category/air/api-doc/flight-availabilities-search 
@@ -59,10 +62,10 @@ def get_flights(src_airport, dst_airport, start_date, end_date):
 def get_hotels(latitude, longitude, radius, city, state, country):
     try:
         response = amadeus.reference_data.locations.hotels.by_geocode.get(longitude=longitude,latitude=latitude,radius=radius,radiusUnit='MILE')
-        df = pd.json_normalize(response.data)
-        if(df.empty):
+        if(response.data is None):
             return []
 
+        df = pd.json_normalize(response.data)
         df = df[["name", "geoCode.latitude", "geoCode.longitude", "distance.value", "distance.unit"]]
         df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
         hotels_dict = df.to_dict('records')
@@ -91,10 +94,10 @@ def get_pois(latitude, longitude, radius_miles, city, state, country):
     radius_kilometers = radius_miles / conversion_factor
     try:
         response = amadeus.reference_data.locations.points_of_interest.get(latitude=latitude, longitude=longitude, radius=radius_kilometers)
-        df = pd.json_normalize(response.data)
-        if(df.empty):
+        if(response.data is None):
             return []
 
+        df = pd.json_normalize(response.data)
         df = df[["name", "category", "geoCode.latitude", "geoCode.longitude"]]
         df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
         pois_dict = df.to_dict('records')
