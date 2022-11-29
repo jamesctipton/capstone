@@ -30,7 +30,7 @@ const HotelSearch = () => {
     })
 
     //variables that will change based on user input
-    const [selectedCity, setSetSelectedCity] = useState({
+    const [selectedCity, setSelectedCity] = useState({
         name: "",
         country: "",
         latitude: 0,
@@ -84,15 +84,15 @@ const HotelSearch = () => {
         }
     ]
 
-    const searchHotels = () => {
+    const searchHotels = (lat, long, cityName, country, state, radius) => {
         setError({ message: "", result: false})
         axios.post(search_url+'hotels', {
-            latitude: selectedCity.latitude,
-            longitude: selectedCity.longitude,
-            radius: 15,
-            city: selectedCity.name,
-            state: "",
-            country: selectedCity.country
+            latitude: lat,
+            longitude: long,
+            radius: radius,
+            city: cityName,
+            state: state,
+            country: country
         }).then((response) => {
             console.log(response)
             const results = response['data']['hotels']
@@ -109,8 +109,13 @@ const HotelSearch = () => {
 
     const initializeTable = (city_params) => {
         console.log(city_params)
-        setSetSelectedCity(city_params)
-        searchHotels()
+        setSelectedCity({
+            name: city_params.name,
+            country: city_params.country,
+            latitude: city_params.latitude,
+            longitude: city_params.longitude
+        })
+        searchHotels(city_params.latitude, city_params.longitude, city_params.name, city_params.country, city_params.state, city_params.radius)
     }
 
     return (
@@ -182,6 +187,9 @@ const HotelSearch = () => {
                                     Add Poll
                                 </Button>
                             </div>
+                        </div>
+                        <div style={{ width: '100%', flexDirection: 'row',justifyContent: 'flex-end', marginTop: '2%' }}>
+                            <Typography variant="h4" sx={{ color: '#CF7D30' }}>{selectedCity.name + ', ' + selectedCity.country}</Typography>
                         </div>
                         <Box sx={{ height: 1152, width: '100%', marginTop: '2%' }}>
                             <DataGrid 
