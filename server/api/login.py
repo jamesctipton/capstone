@@ -29,21 +29,25 @@ class LoginHandler(Resource):
 
         #print("test")
         #groups_test = ([g.__dict__ for g in user.groups])
-        groups_dict = [group.__dict__ for group in user.groups]
-        for group in groups_dict:
-            group.pop('_sa_instance_state')
-
+        
+        
+        groups_dict = [g.__dict__ for g in user.groups]
         print(groups_dict)
-        
-        groups_admin_dict = [group.__dict__ for group in user.groups_admin]
-        for group in groups_admin_dict:
-            group.pop('_sa_instance_state')
+        #for group in groups_dict:
+            #del group["_sa_instance_state"]
+        print(groups_dict)
 
-        
+        # groups_admin_dict = []
+        # if(user.groups_admin != []):
+        #     groups_admin_dict = [ga.__dict__ for ga in user.groups_admin]
+        #     print(groups_admin_dict)
+            #  for group_admin in groups_admin_dict:
+            #     del group_admin["_sa_instance_state"]
 
-        poll_dict = [poll.__dict__ for poll in user.polls_created]
-        for poll in poll_dict:
-            poll.pop('_sa_instance_state')
+        # poll_dict = [p.__dict__ for p in user.polls_created]
+        # for poll in poll_dict:
+        #     if(poll_dict != []):
+        #         poll.pop('_sa_instance_state')
         
         # send user info and list of groups user is in
         return {
@@ -51,9 +55,9 @@ class LoginHandler(Resource):
             'message': "Successful credentials",
             'name': user.username,
             'firstname': user.firstname,
-            'groups': json.dumps(groups_dict),
-            'groups_admin': json.dumps(groups_admin_dict),
-            'polls_created': json.dumps(poll_dict)
+            #'groups': groups_dict,
+            #'groups_admin': groups_admin_dict,
+            # 'polls_created': json.dumps(poll_dict)
         }
 
 # done

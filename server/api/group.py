@@ -2,7 +2,7 @@ from api.__init__ import db
 from flask import request, jsonify
 from flask_restful import Resource
 from api.models import *
-import random, string, pickle, json
+import random, string
 
 # unfinished
 class CreateGroupHandler(Resource):
