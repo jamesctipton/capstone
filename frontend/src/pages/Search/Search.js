@@ -5,14 +5,16 @@ import {
 } from "@mui/material";
 
 import DestinationSearch from "../../components/DestinationSearch";
+import HotelSearch from "../../components/HotelSearch";
 
-const Search = ({ isLoggedIn }) => {
+const Search = () => {
 
     const [initCriteria, setInitCriteria] = useState("destination")
     /*const [errorValue, setError] = useState({
         message: "",
         result: false
     })*/
+    console.log(initCriteria)
     
     const user = JSON.parse(localStorage.getItem('user'))
 
@@ -45,7 +47,9 @@ const Search = ({ isLoggedIn }) => {
             </div>
             <Divider orientation="horizontal" variant="fullwidth" flexItem sx={{ background: '#CF7D30'}}></Divider>
             {initCriteria === "destination" ? 
-                <DestinationSearch isLoggedIn={isLoggedIn} user={user} />:<></>}
+                <DestinationSearch hotelSearch={false} />
+                : (initCriteria === "hotels" ? 
+                    <HotelSearch /> : <></>)}
         </div>
     )
 }

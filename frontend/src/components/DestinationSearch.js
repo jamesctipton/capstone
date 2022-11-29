@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 const search_url = 'http://127.0.0.1:5000/search-'
 const create_poll_url = 'http://127.0.0.1:5000/create-poll'
 
-const DestinationSearch = ({ isLoggedIn, user }) => {
+const DestinationSearch = ({ hotelSearch }) => {
 
     //error handling 
     const [errorValue, setError] = useState({
@@ -36,11 +36,12 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
     const [pollNameValue, setPollName] = useState("")
     const [groupValue, setGroupValue] = useState("")
 
-    //constant variables for destination table
+    //constant variables for component
     const navigate = useNavigate()
     const navigateToCreateGroup = () => {
         navigate('/join-create')
     }
+    const user = JSON.parse(localStorage.getItem('user'))
     const columns = [
         {
             field: 'name',
@@ -75,6 +76,20 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
             flex: 0.2
         }
     ]
+    if(hotelSearch) {
+        columns.push({
+            field: 'searchCityButton',
+            headerName: '',
+            width: 150,
+            flex: 0.2,
+            renderCell: () => {
+                return (
+                    <Button>Test</Button>
+                )
+            }
+
+        })
+    }
 
     if(document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer') != null) {
         if(selectedDestinations.length === 0) {
@@ -185,7 +200,7 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
                     </FormControl>
                     <TextField id='poll_name' label="Poll Name" variant="outlined" onChange={(e) => setPollName(e.target.value)} value={pollNameValue} sx={{ minWidth: 'max-content'}}></TextField>
                     <Button 
-                        disabled={(!(isLoggedIn || selectedDestinations.length > 5) && (selectedDestinations.length === 1 || selectedDestinations.length === 0)) || (groupValue === "" || pollNameValue === "")}
+                        disabled={(!(user || selectedDestinations.length > 5) && (selectedDestinations.length === 1 || selectedDestinations.length === 0)) || (groupValue === "" || pollNameValue === "")}
                         sx={{ border: '2px solid orange', borderRadius: 1, padding: 1, whiteSpace: 'no-wrap', minWidth: 'max-content' }} 
                         onClick={() => createPoll(groupValue, pollNameValue, selectedDestinations)}>
                         Add Poll
@@ -198,7 +213,7 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
                     columns={columns}
                     pageSize={20}
                     rowsPerPageOptions={[20]}
-                    checkboxSelection
+                    checkboxSelection={(hotelSearch ? false : true)}
                     isRowSelectable={(p) => selectedDestinations.length < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
                     onSelectionModelChange={(ids) => {
                         let temp = ids.map((id) => rows.find((row) => row.id === id))
