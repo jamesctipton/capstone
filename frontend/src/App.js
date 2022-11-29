@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { Component, useState } from 'react';
 import { 
   BrowserRouter, 
   Routes, 
@@ -15,9 +15,11 @@ import Trip from './pages/Trip/Trip';
 import JoinCreate from './pages/Trip/JoinCreate';
 import { Typography } from '@mui/material';
 import Search from './pages/Search/Search';
+import Favorites from './pages/Favorites/Favorites';
+import Friends from './pages/friends/Friends';
+// import Sidebar  from './components/Sidebar';
 
-
-function App() {
+function App (){
 
   const [loggedIn, setLogin] = useState(false)
 
@@ -33,8 +35,8 @@ function App() {
           <Route path="trip/:hash" element={<Trip />} />
           <Route path="join-create" element={<JoinCreate isLoggedIn={loggedIn} />} />
           <Route path="search" element={<Search isLoggedIn={loggedIn}/>} />
-          <Route path="favorites" element={<Typography>Favorites</Typography>} />
-          <Route path="friends" element={<Typography>Friends</Typography>} />
+          <Route path="favorites" element={<Favorites />} />
+          <Route path="friends" element={<Friends />} />
           <Route path="profile" element={<Typography>Profile</Typography>} />
         </Route>
       </Routes>

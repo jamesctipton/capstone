@@ -37,7 +37,7 @@ const theme = createTheme({
 });
 
 let user;
-const TopNavBar = ({isLoggedIn, setLogin}) => {
+function TopNavBar ({isLoggedIn, setLogin}){
 
   useEffect( () => {
     user = JSON.parse(localStorage.getItem('user'))
@@ -63,7 +63,7 @@ const TopNavBar = ({isLoggedIn, setLogin}) => {
     navigate('/search')
   }
   const navigateToFavorites = () => {
-    navigate('/favorites')
+    navigate('/Favorites')
   }
   const navigateToFriends = () => {
     navigate('/friends')
@@ -94,7 +94,7 @@ const TopNavBar = ({isLoggedIn, setLogin}) => {
                 </IconButton>
               </Tooltip>
               <Tooltip title="Favorites">
-                <IconButton onClick={() => navigateToFavorites()} edge="end" color="primary" aria-label="favorites">
+                <IconButton onClick={() => navigateToFavorites()} edge="end" color="primary" aria-label="Favorites">
                   <FavoriteBorderOutlinedIcon fontSize="large"/>
                 </IconButton>
               </Tooltip>

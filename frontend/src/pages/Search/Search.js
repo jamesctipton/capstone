@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import axios from "axios";
-import { DataGrid } from '@mui/x-data-grid';
+// import { DataGrid } from '@mui/x-data-grid';
 
 const theme = createTheme({
     palette: {
@@ -265,7 +265,7 @@ const Search = ({ isLoggedIn }) => {
                     </Button>
                 </div>
             </div>
-            <Box sx={{ height: 1152, width: '97%', marginTop: '2%'}}>
+            {/* <Box sx={{ height: 1152, width: '97%', marginTop: '2%'}}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
@@ -277,7 +277,7 @@ const Search = ({ isLoggedIn }) => {
                         setSelectedDestinations(ids.map((id) => rows.find((row) => row.id === id)))
                     }}
                 />
-            </Box>
+            </Box> */}
     </div>
     )
 }
