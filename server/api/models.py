@@ -39,12 +39,7 @@ class Group(db.Model):
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id')) # User who created group
     polls = db.relationship('Poll', backref='group') # polls in the group
 
-# class GroupSchema(SQLAlchemyAutoSchema):
-#     class Meta:
-#         model = Group
-#         include_relationships = True
-#         load_instance = True
-
+# Individual poll option
 class PollOption(object):
     def __init__(self, name, description="", votes=0, image=None) -> None:
         self.name = name

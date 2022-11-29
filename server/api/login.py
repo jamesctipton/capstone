@@ -26,12 +26,9 @@ class LoginHandler(Resource):
                 'message': "Invalid username or password"
             }
 
-        # group_schema = GroupSchema()
-        # groups_load_data = group_schema.load(user.groups, session=db.session)
-        print("hello world")
-       # groups_test = ([g.__dict__ for g in user.groups])
+        #print("test")
+        #groups_test = ([g.__dict__ for g in user.groups])
         print(user.groups)
-
         
         # send user info and list of groups user is in
         return {
