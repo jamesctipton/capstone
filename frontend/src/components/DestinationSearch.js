@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 const search_url = 'http://127.0.0.1:5000/search-'
 const create_poll_url = 'http://127.0.0.1:5000/create-poll'
 
-const DestinationSearch = ({ hotelSearch, setDestination }) => {
+const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
 
     //error handling 
     const [errorValue, setError] = useState({
@@ -77,7 +77,7 @@ const DestinationSearch = ({ hotelSearch, setDestination }) => {
             flex: 0.2
         }
     ]
-    if(hotelSearch) {
+    if(hotelSearch || poiSearch) {
         columns.push({
             field: 'searchCityButton',
             headerName: '',
@@ -97,7 +97,7 @@ const DestinationSearch = ({ hotelSearch, setDestination }) => {
                 }
                 return (
                     <Grid container justifyContent="flex-end">
-                        <Button sx={{ fontSize: 12 }} onClick={() => onClick()}>Search hotels</Button>
+                        <Button sx={{ fontSize: 12 }} onClick={() => onClick()}>{hotelSearch ? 'Search Hotels' : 'Search Landmarks'}</Button>
                     </Grid>
 
                 )
@@ -249,7 +249,7 @@ const DestinationSearch = ({ hotelSearch, setDestination }) => {
                             }
                             let current = persistentDest
                             let x = temp.filter(n => !selectedDestinations.includes(n))
-                            if(x[0] != undefined) {
+                            if(x[0] !== undefined) {
                                 current.push(x[0])
                             }
                             // for deletions

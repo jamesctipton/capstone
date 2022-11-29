@@ -6,6 +6,7 @@ import {
 
 import DestinationSearch from "../../components/DestinationSearch";
 import HotelSearch from "../../components/HotelSearch";
+import POISearch from "../../components/POISearch";
 
 const Search = () => {
 
@@ -40,8 +41,8 @@ const Search = () => {
                 >Flights</Button>
                 <Divider orientation="vertical" variant="middle" flexItem sx={{ background: '#CF7D30', width: 1.5}}></Divider>
                 <Button  
-                    sx={{ backgroundColor: (initCriteria === 'poi') ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }}
-                    onClick={() => setInitCriteria("poi")}
+                    sx={{ backgroundColor: (initCriteria === 'pois') ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }}
+                    onClick={() => setInitCriteria("pois")}
                     fullWidth
                 >Points of Interest</Button>
             </div>
@@ -49,7 +50,9 @@ const Search = () => {
             {initCriteria === "destination" ? 
                 <DestinationSearch hotelSearch={false} />
                 : (initCriteria === "hotels" ? 
-                    <HotelSearch /> : <></>)}
+                    <HotelSearch /> : 
+                    (initCriteria === "pois" ? 
+                        <POISearch /> : <></>))}
         </div>
     )
 }
