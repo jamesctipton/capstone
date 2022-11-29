@@ -42,14 +42,15 @@ const JoinCreate = () => {
 
     const [file, setFile] = useState(null);
 
-    const updateUser = (response) => {
+    const updateUser = (response, create) => {
         var temp = user
         user.groups.push({
-            groupname: response['data']['name'],
-            groupimage: response['data']['destination'],
+            groupname: response['data']['groupname'],
+            groupimage: (create) ? file : response['data']['groupimage'],
             groupCode: response['data']['groupCode'],
-            destination: response['data']['description'],
-            summary: response['data']['imgPath']
+            destination: response['data']['destination'],
+            summary: response['data']['summary'],
+            members: response['data']['usercount']
         });
         localStorage.setItem('user', JSON.stringify(temp))
     }
@@ -62,7 +63,7 @@ const JoinCreate = () => {
             if(response['data']['resultStatus'] === 'SUCCESS') {
                 console.log(response)
                 navigateGroupHome(groupCode)
-                updateUser(response)
+                updateUser(response, false)
             } else {
                 console.log(response)
                 setError({message: response['data']['message'], result: true})
@@ -84,7 +85,7 @@ const JoinCreate = () => {
             if(response['data']['resultStatus'] === 'SUCCESS'){
                 console.log(response)
                 navigateGroupHome(response['data']['groupCode'])
-                updateUser(response)
+                updateUser(response, true)
             }
         }).catch((error) => {
             console.log(error)

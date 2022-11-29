@@ -8,6 +8,7 @@ import {
   ThemeProvider,
   createTheme,
   Button,
+  Divider,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
@@ -36,12 +37,7 @@ const theme = createTheme({
   }
 });
 
-<<<<<<< HEAD
-let user;
-function TopNavBar ({isLoggedIn, setLogin}){
-=======
 const TopNavBar = () => {
->>>>>>> 476b51acf1e75ee7e5d6f15b3d275b5a7c88afb6
 
   const user = JSON.parse(localStorage.getItem('user'))
 
@@ -139,8 +135,11 @@ const TopNavBar = () => {
           sx={{marginTop: 2}}
         >
           <MenuItem onClick={handleClose} component={Link} to="/">Home</MenuItem>
+          <Divider variant="middle" sx={{ width: '80%' }}></Divider>
           <MenuItem onClick={handleClose} component={Link} to="/login">Login</MenuItem>
-          <MenuItem onClick={handleClose} component={Link} to="/join-create">Join a Group</MenuItem>
+          <Divider variant="middle" sx={{ width: '80%' }}></Divider>
+          <MenuItem onClick={handleClose} component={Link} to="/join-create">Join/Create Group</MenuItem>
+          <Divider variant="middle" sx={{ width: '80%' }}></Divider>
           <MenuItem onClick={() => {handleLogout()}} component={Link} to="/">Logout</MenuItem>
         </Menu>
       <Outlet />

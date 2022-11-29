@@ -161,9 +161,9 @@ const POISearch = () => {
                                         autoWidth
                                     >
                                         {user.groups.length > 0 ?
-                                            user.groups.map((g) => {
+                                            user.groups.map((g, i) => {
                                                 return (
-                                                    <MenuItem value={g.group_id}>{g.name}</MenuItem>
+                                                    <MenuItem key={i} value={g.group_id}>{g.name}</MenuItem>
                                                 )
                                             }) : <MenuItem>No groups available</MenuItem>}
                                         <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
@@ -208,6 +208,13 @@ const POISearch = () => {
                                         let remove = t2[t2.length - 1]
                                         let j = current.findIndex((y) => y === remove)
                                         current.splice(j, 1)
+                                    }
+                                    if(temp.length === 0 && t2.length === 1) {
+                                        if(current.length === 1)
+                                            current = []
+                                        else {
+                                            current.pop()
+                                        }
                                     }
                                     setPersistentPOIs(current)
                                 }}

@@ -81,7 +81,7 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
         columns.push({
             field: 'searchCityButton',
             headerName: '',
-            width: 150,
+            minWidth: 150,
             flex: 0.2,
             renderCell: (params) => {
                 const onClick = (e) => {
@@ -141,7 +141,7 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
     const createPoll = (group, pollName, destinations) => {
         console.log(group, pollName, destinations)
         axios.post(create_poll_url, {
-            pollName: pollName,
+            pollname: pollName,
             user: user.name,
             groupid: group,
             options: destinations
@@ -196,31 +196,33 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '85%', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, minWidth: 'max-content'}}>
+                        {(user) ?
                         <FormControl fullWidth>
-                            <InputLabel id="select-label">Group</InputLabel>
-                            <Select
-                                id="group"
-                                labelId="select-group"
-                                value={groupValue}
-                                label="Group"
-                                onChange={(e) => {
-                                    setGroupValue(e.target.value)
-                                    // setSelectedDestinations([])
-                                }}
-                                variant="outlined"
-                                sx={{ minWidth: '100px' }}
-                                autoWidth
-                            >
-                                {user.groups.length > 0 ? 
-                                    user.groups.map((g) => {
-                                        return(
-                                            <MenuItem value={g.group_id}>{g.name}</MenuItem>
-                                        )
-                                    }): <MenuItem>No groups available</MenuItem>}
-                                <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
-                                <Button sx={{ marginLeft: '12%' }} onClick={() => navigateToCreateGroup()}>Create Group</Button>
-                            </Select>
-                        </FormControl>
+                        <InputLabel id="select-label">Group</InputLabel>
+                        <Select
+                            id="group"
+                            labelId="select-group"
+                            value={groupValue}
+                            label="Group"
+                            onChange={(e) => {
+                                setGroupValue(e.target.value)
+                                // setSelectedDestinations([])
+                            }}
+                            variant="outlined"
+                            sx={{ minWidth: '100px' }}
+                            autoWidth
+                        >
+                            {user.groups.length > 0 ? 
+                                user.groups.map((g, i) => {
+                                    return(
+                                        <MenuItem value={g.groupCode}>{g.groupname}</MenuItem>
+                                    )
+                                }): <MenuItem>No groups available</MenuItem>}
+                            <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
+                            <Button sx={{ marginLeft: '8%' }} onClick={() => navigateToCreateGroup()}>Create Group</Button>
+                        </Select>
+                    </FormControl>
+                    : <></>}
                         <TextField id='poll_name' label="Poll Name" variant="outlined" onChange={(e) => setPollName(e.target.value)} value={pollNameValue} sx={{ minWidth: 'max-content'}}></TextField>
                         <Button 
                             disabled={(!(user || selectedDestinations.length > 5) && (selectedDestinations.length === 1 || selectedDestinations.length === 0)) || (groupValue === "" || pollNameValue === "")}
@@ -256,6 +258,13 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
                                 let remove = t2[t2.length - 1]
                                 let j = current.findIndex((y) => y === remove)
                                 current.splice(j, 1)
+                            }
+                            if(temp.length === 0 && t2.length === 1) {
+                                if(current.length === 1)
+                                    current = []
+                                else {
+                                    current.pop()
+                                }
                             }
                             setPersistentDest(current)
                         }}

@@ -60,7 +60,7 @@ const HotelSearch = () => {
             field: 'URL',
             headerName: 'Website',
             renderCell: (params) =>
-                <a href={params.row.URL} target="blank">{params.row.URL}</a>,
+                <a href={params.row.URL + '~hotel'} target="blank">{params.row.URL}</a>,
             minWidth: 200,
             flex: 0.4
         },
@@ -88,6 +88,7 @@ const HotelSearch = () => {
     ]
 
     const searchHotels = (lat, long, cityName, country, state, radius) => {
+        setSelectedHotels([])
         setError({ message: "", result: false})
         axios.post(search_url+'hotels', {
             latitude: lat,
@@ -188,9 +189,9 @@ const HotelSearch = () => {
                                         autoWidth
                                     >
                                         {user.groups.length > 0 ?
-                                            user.groups.map((g) => {
+                                            user.groups.map((g, i) => {
                                                 return (
-                                                    <MenuItem value={g.group_id}>{g.name}</MenuItem>
+                                                    <MenuItem key={i} value={g.group_id}>{g.name}</MenuItem>
                                                 )
                                             }) : <MenuItem>No groups available</MenuItem>}
                                         <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
@@ -235,6 +236,13 @@ const HotelSearch = () => {
                                         let remove = t2[t2.length - 1]
                                         let j = current.findIndex((y) => y === remove)
                                         current.splice(j, 1)
+                                    }
+                                    if(temp.length === 0 && t2.length === 1) {
+                                        if(current.length === 1)
+                                            current = []
+                                        else {
+                                            current.pop()
+                                        }
                                     }
                                     setPersistentHotels(current)
                                 }}

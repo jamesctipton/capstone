@@ -20,6 +20,8 @@ FRONTEND ===================================================
 - get search bar going with amadeus:
     ✓ search page
     ✓ create poll page/popup
+- search:
+    - can't search another POI / hotel location after one is already loaded
 
 SERVER SIDE ===================================================
 
