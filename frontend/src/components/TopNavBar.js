@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { 
   Outlet, 
   Link, 
@@ -36,12 +36,9 @@ const theme = createTheme({
   }
 });
 
-let user;
-const TopNavBar = ({isLoggedIn, setLogin}) => {
+const TopNavBar = () => {
 
-  useEffect( () => {
-    user = JSON.parse(localStorage.getItem('user'))
-  })
+  const user = JSON.parse(localStorage.getItem('user'))
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -54,7 +51,6 @@ const TopNavBar = ({isLoggedIn, setLogin}) => {
 
   const handleLogout = () => {
     setAnchorEl(null);
-    setLogin(false);
     localStorage.removeItem('user');
   }
 
@@ -103,18 +99,14 @@ const TopNavBar = ({isLoggedIn, setLogin}) => {
                   <PeopleAltOutlinedIcon fontSize="large" />
                 </IconButton>
               </Tooltip>
-              {(isLoggedIn) ? 
+              {(user) ? 
                 <>
-                {(user != undefined) ?
                   <Typography sx={{ color: "#CF7D30", textTransform: 'capitalize' }}> Welcome, {user.firstname}</Typography>
-                  :
-                  <></>
-                }
-                <Tooltip title="Profile">
-                  <IconButton onClick={() => navigateToProfile()} edge="end" color="primary" aria-label="messages">
-                    <PersonOutlineOutlinedIcon fontSize="large" />
-                  </IconButton>
-                </Tooltip>
+                  <Tooltip title="Profile">
+                    <IconButton onClick={() => navigateToProfile()} edge="end" color="primary" aria-label="messages">
+                      <PersonOutlineOutlinedIcon fontSize="large" />
+                    </IconButton>
+                  </Tooltip>
                 </>
                  : 
                 <Button 

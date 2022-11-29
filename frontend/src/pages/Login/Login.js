@@ -7,8 +7,6 @@ import {
   Button, 
   createTheme, 
   ThemeProvider, 
-  Box,
-  Typography
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { Link, useNavigate } from "react-router-dom";
@@ -25,7 +23,7 @@ const theme = createTheme({
 });
 
 
-const Login = ({ setLogin }) => {
+const Login = () => {
 
   const navigate = useNavigate()
   const navigateToHome = () => {
@@ -49,13 +47,12 @@ const Login = ({ setLogin }) => {
       password: loginForm.password
     }).then((response) => {
       if(response['data']['resultStatus'] === 'SUCCESS') {
-        setError({message: "", result: false})
-        setLogin(true)
+        setError({message: "", result: false})        
         localStorage.setItem('user', JSON.stringify({
           name: response['data']['name'],
           firstname: response['data']['firstname'],
           groups: response['data']['groups']
-        }))
+        })) 
         navigateToHome()
       }
       else {
