@@ -85,7 +85,6 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
             flex: 0.2,
             renderCell: (params) => {
                 const onClick = (e) => {
-                    console.log(params.row)
                     setDestination({
                         name: params.row['name'],
                         country: params.row['countryCode'],

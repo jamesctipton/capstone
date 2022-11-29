@@ -158,7 +158,7 @@ const HotelSearch = () => {
                             <Box sx={{ border: '3px solid red', background: 'rgba(255, 0, 0, 0.1)', color: 'red', padding: 2 }}>
                                 <Typography>{errorValue.message}</Typography>
                             </Box> : <></>}
-                        <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 10, marginBottom: 8}}>
+                        <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 10, marginBottom: '2%'}}>
                             {persistentHotels.map((hotel, i) => {
                                 return (
                                     <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>

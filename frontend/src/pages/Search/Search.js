@@ -14,9 +14,7 @@ const Search = () => {
     /*const [errorValue, setError] = useState({
         message: "",
         result: false
-    })*/
-    console.log(initCriteria)
-    
+    })*/    
     const user = JSON.parse(localStorage.getItem('user'))
 
     return (

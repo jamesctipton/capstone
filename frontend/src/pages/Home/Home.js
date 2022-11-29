@@ -32,9 +32,11 @@ const items = [
 
 const Home = () => {
 
-  // const trips = (user.groups) ? user.groups.length : 0;
-  const trips = items.length
+  //const trips = (user.groups) ? user.groups.length : 0;
+  const trips = 0
   const user = JSON.parse(localStorage.getItem('user'))
+  user.groups = []
+  console.log(user)
 
   const pollOptions = [
     {name: 'first', votes: 0},
@@ -46,14 +48,17 @@ const Home = () => {
 
   // if user isn't empty
   if(user) {
-    if(!(Object.keys(user).length === 0 && user.constructor === Object)) {
-      for (let i = 0; i < user.groups.length; i++) {
-        const group = user.groups[i];
-        for (let j = 0; j < group.polls.length; j++) {
-          const p = group.polls[j];
-          polls.push(p)
+    if(user.groups.length === 0) {
+      console.log('test')
+    } else {
+      if(!(Object.keys(user).length === 0 && user.constructor === Object)) {
+        for (let i = 0; i < user.groups.length; i++) {
+          const group = user.groups[i];
+          for (let j = 0; j < group.polls.length; j++) {
+            const p = group.polls[j];
+            polls.push(p)
+          } 
         }
-        
       }
     }
   }
@@ -109,11 +114,14 @@ const Home = () => {
             <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>How Frí Works</Typography>
             <img src={Steps} alt="Steps" style={{width: '90%', marginBottom: '5%'}}></img>
             <Typography variant='h6' sx={{color: '#CF7D30'}}>Don't have an account? <a href='/register'>Register</a> or 
-            <span><Button
-            variant='outlined'
-            sx={{m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: 100, height: 40, fontSize: 15}}
-            component={Link} to="/login"
-            >Log In</Button></span></Typography>
+            <span>
+              <Button
+                variant='outlined'
+                sx={{m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: 100, height: 40, fontSize: 15}}
+                component={Link} to="/login"
+                >Log In</Button>
+              </span>
+            </Typography>
           </div> 
         }
       </>

@@ -82,7 +82,6 @@ const POISearch = () => {
             state: state,
             country: country
         }).then((response) => {
-            console.log(response)
             const results = response['data']['pois']
             let temp_array = []
             for(let i = 0; i < results.length; i++) {
@@ -96,7 +95,6 @@ const POISearch = () => {
     }
 
     const initializeTable = (city_params) => {
-        console.log(city_params)
         setSelectedCity({
             name: city_params.name,
             country: city_params.country,
