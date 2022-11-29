@@ -21,7 +21,7 @@ def get_destinations(keyword):
     try:
         if((len(keyword) > 50) or (len(keyword) < 3)):
             return []
-            
+
         response = amadeus.reference_data.locations.cities.get(keyword=keyword)
         if(response.data is None):
             return []
@@ -57,7 +57,7 @@ def get_flights(src_airport, dst_airport, start_date, end_date):
     return
 
 # get hotels for certain latitude/longitude in a certain radius (miles)
-# return list of hotel names with latitude/longtitude, and distance from inputted latitude/longitude 
+# return list of hotel names with latitude/longtitude, distance from inputted latitude/longitude, and URL 
 # https://developers.amadeus.com/self-service/category/hotel/api-doc/hotel-list/api-reference 
 def get_hotels(latitude, longitude, radius, city, state, country):
     try:
@@ -87,7 +87,7 @@ def get_hotels(latitude, longitude, radius, city, state, country):
 #print(get_hotels(48.85693, 2.3412, 50, "madrid", "", "spain"))
 
 # get points of interest for certain destination
-# return poi name, category(sightseeing, restaurant, etc), atitude/longitude, and description tags
+# return poi name, category(sightseeing, restaurant, etc), atitude/longitude, description tags, and URL
 # https://developers.amadeus.com/self-service/category/destination-content/api-doc/points-of-interest/api-reference 
 def get_pois(latitude, longitude, radius_miles, city, state, country):
     conversion_factor = 0.62137119

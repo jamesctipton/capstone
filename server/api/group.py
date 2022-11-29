@@ -2,7 +2,7 @@ from api.__init__ import db
 from flask import request
 from flask_restful import Resource
 from api.models import *
-import random, string, pickle
+import random, string, pickle, json
 
 # unfinished
 class CreateGroupHandler(Resource):
@@ -88,8 +88,8 @@ class JoinGroupHandler(Resource):
             'groupCode': group.groupCode,
             'description': group.summary,
             'imgPath': pickle.loads(group.groupimage),
-            'polls': group.polls,
-            'users': group.users,
+            'polls': json.dumps(group.polls),
+            'users': json.dumps(group.users),
             'group_id': group.id
         }
 

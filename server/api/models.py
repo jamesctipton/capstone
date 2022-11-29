@@ -55,9 +55,9 @@ class Poll(db.Model):
     pollCategory = db.Column(db.String(64))
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id')) # user who created poll
     group_id = db.Column(db.Integer, db.ForeignKey('group.id')) # group poll belongs in
-    option1 = db.Column(db.PickleType())
-    option2 = db.Column(db.PickleType())
-    option3 = db.Column(db.PickleType(), nullable=True) # minimum 2 poll options
-    option4 = db.Column(db.PickleType(), nullable=True)
-    option5 = db.Column(db.PickleType(), nullable=True) # maximum 5
+    option1 = db.Column(db.JSON)
+    option2 = db.Column(db.JSON)
+    option3 = db.Column(db.JSON, nullable=True) # minimum 2 poll options
+    option4 = db.Column(db.JSON, nullable=True)
+    option5 = db.Column(db.JSON, nullable=True) # maximum 5
     totalVotes = db.Column(db.Integer)
