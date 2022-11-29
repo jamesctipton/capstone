@@ -11,7 +11,8 @@ import {
     Button,
     OutlinedInput,
     IconButton,
-    Divider
+    Divider,
+    Grid
 } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -84,7 +85,10 @@ const DestinationSearch = ({ hotelSearch }) => {
             flex: 0.2,
             renderCell: () => {
                 return (
-                    <Button>Test</Button>
+                    <Grid container justifyContent="flex-end">
+                        <Button sx={{ fontSize: 12 }}>Search hotels</Button>
+                    </Grid>
+
                 )
             }
 

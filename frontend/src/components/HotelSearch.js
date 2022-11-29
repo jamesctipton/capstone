@@ -41,9 +41,7 @@ const HotelSearch = () => {
     }
 
     return (
-        <div>
             <DestinationSearch hotelSearch={true} />
-        </div>
     )
 }
 export default HotelSearch
