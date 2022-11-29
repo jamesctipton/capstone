@@ -75,7 +75,10 @@ def get_hotels(latitude, longitude, radius, city, state, country):
                 del record['latitude']
                 del record['longitude']
             separator = '+'
-            params = separator.join([record['name'], city, state, country])
+            if(state == ""):
+                params = separator.join([record['name'], city, country])
+            else:
+                params = separator.join([record['name'], city, state, country])
             url = furl('https://www.google.com/search?').add({'q':params}).url
             record.update({'URL':url})
 
@@ -107,7 +110,10 @@ def get_pois(latitude, longitude, radius_miles, city, state, country):
                 del record['latitude']
                 del record['longitude']
             separator = '+'
-            params = separator.join([record['name'], city, state, country])
+            if(state == ""):
+                params = separator.join([record['name'], city, country])
+            else:
+                params = separator.join([record['name'], city, state, country])
             url = furl('https://www.google.com/search?').add({'q':params}).url
             record.update({'URL':url})
 
