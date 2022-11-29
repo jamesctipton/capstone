@@ -32,11 +32,11 @@ const items = [
 
 const Home = () => {
 
-  //const trips = (user.groups) ? user.groups.length : 0;
-  const trips = 0
+  // const trips = 0
   const user = JSON.parse(localStorage.getItem('user'))
   // user.groups = []
   console.log(user)
+  const trips = (user.groups) ? user.groups.length : 0;
 
   const pollOptions = [
     {name: 'first', votes: 0},
@@ -78,8 +78,8 @@ const Home = () => {
                 <div>
                   <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Your Trips</Typography>
                   <Carousel
-                    // items={user.groups}
-                    items={items}
+                    items={user.groups}
+                    // items={items}
                     user={user}
                   ></Carousel>
                 </div>  

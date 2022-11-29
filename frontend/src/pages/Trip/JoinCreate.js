@@ -73,6 +73,7 @@ const JoinCreate = () => {
     }
 
     const submitNewGroup = (event) => {
+        console.log(file)
         axios.post(create_url, {
             groupname: createdGroupValues.name,
             destination: "",

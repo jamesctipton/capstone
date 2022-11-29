@@ -8,8 +8,8 @@ const url = "http://127.0.0.1:5000/vote-poll"
 var hover = false;
 
 //item:  {
-//     name: string,
-//     description: string,
+//     groupname: string,
+//     summary: string,
 //     imgPath?: string,
 //     groupCode: string,
 //     members: int
@@ -46,8 +46,8 @@ function CarouselItem(props) {
                 />
                 }
                 <CardContent>
-                    <Typography  variant="h5" component='div'>{step.name}</Typography>
-                    <Typography variant='body2'>{step.description}</Typography>
+                    <Typography  variant="h5" component='div'>{step.groupname}</Typography>
+                    <Typography variant='body2'>{step.summary}</Typography>
                 </CardContent>
             </CardActionArea>
         </Card>
