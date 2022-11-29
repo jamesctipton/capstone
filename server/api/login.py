@@ -32,10 +32,14 @@ class LoginHandler(Resource):
         groups_dict = [group.__dict__ for group in user.groups]
         for group in groups_dict:
             group.pop('_sa_instance_state')
+
+        print(groups_dict)
         
         groups_admin_dict = [group.__dict__ for group in user.groups_admin]
         for group in groups_admin_dict:
             group.pop('_sa_instance_state')
+
+        
 
         poll_dict = [poll.__dict__ for poll in user.polls_created]
         for poll in poll_dict:
