@@ -57,7 +57,7 @@ export default function Friends() {
             <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg"></Avatar>
           </Grid>
           <Grid item xs zeroMinWidth>
-            <Typography Wrap>Anti</Typography>
+            <Typography Wrap>Ankit</Typography>
             <Typography></Typography>
             
             {/* <ListItem
