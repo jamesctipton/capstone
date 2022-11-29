@@ -39,15 +39,6 @@ class Group(db.Model):
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id')) # User who created group
     polls = db.relationship('Poll', backref='group') # polls in the group
 
-# Individual poll option
-class PollOption(object):
-    id = db.Column(db.Integer, primary_key=True)
-    optionname = db.Column(db.String(256), index=True, unique=True)
-    description = db.Column(db.String(256), index=True, unique=True)
-    votes = db.Column(db.Integer)
-    image = db.Column(db.Text(4294000000), nullable=True)
-    poll_id = db.Column(db.Integer, db.ForeignKey('poll.id')) # poll that option belongs in
-
 # Polls (voting on a category in a group)
 class Poll(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -57,4 +48,13 @@ class Poll(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id')) # user who created poll
     group_id = db.Column(db.Integer, db.ForeignKey('group.id')) # group poll belongs in
     totalVotes = db.Column(db.Integer)
-    options = db.relationship('PollOption', backref='poll')
+    #options = db.relationship('PollOption', backref='poll')
+
+# Individual poll option
+class PollOption(object):
+    id = db.Column(db.Integer, primary_key=True)
+    optionname = db.Column(db.String(256), index=True)
+    description = db.Column(db.String(256), index=True, nullable=True)
+    votes = db.Column(db.Integer)
+    image = db.Column(db.Text(4294000000), nullable=True)
+    poll_id = db.Column(db.Integer, db.ForeignKey('poll.id')) # poll that option belongs in
