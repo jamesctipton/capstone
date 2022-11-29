@@ -53,6 +53,8 @@ const Login = () => {
           firstname: response['data']['firstname'],
           groups: response['data']['groups']
         })) 
+        console.log(localStorage.getItem('user'))
+        console.log(response['data'])
         navigateToHome()
       }
       else {

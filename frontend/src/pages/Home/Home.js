@@ -32,11 +32,11 @@ const items = [
 
 const Home = () => {
 
-  //const trips = (user.groups) ? user.groups.length : 0;
-  const trips = 0
+  // const trips = 0
   const user = JSON.parse(localStorage.getItem('user'))
-  user.groups = []
+  // user.groups = []
   console.log(user)
+  const trips = (user.groups) ? user.groups.length : 0;
 
   const pollOptions = [
     {name: 'first', votes: 0},
@@ -47,15 +47,17 @@ const Home = () => {
   let polls = []
 
   // if user exists
-  if(user && user.groups.length !== 0 && !(Object.keys(user).length === 0 && user.constructor === Object)) {
-    for (let i = 0; i < user.groups.length; i++) {
-      const group = user.groups[i];
-      if(group.polls) {
-        for (let j = 0; j < group.polls.length; j++) {
-          const p = group.polls[j];
-          polls.push(p)
-        }
-      } 
+  if(user) {
+    if( user.groups.length !== 0 && !(Object.keys(user).length === 0 && user.constructor === Object)) {
+      for (let i = 0; i < user.groups.length; i++) {
+        const group = user.groups[i];
+        if(group.polls) {
+          for (let j = 0; j < group.polls.length; j++) {
+            const p = group.polls[j];
+            polls.push(p)
+          }
+        } 
+      }
     }
   }
 
@@ -76,8 +78,8 @@ const Home = () => {
                 <div>
                   <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Your Trips</Typography>
                   <Carousel
-                    // items={user.groups}
-                    items={items}
+                    items={user.groups}
+                    // items={items}
                     user={user}
                   ></Carousel>
                 </div>  
