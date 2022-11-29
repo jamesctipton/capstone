@@ -30,13 +30,10 @@ class LoginHandler(Resource):
         #print("test")
         #groups_test = ([g.__dict__ for g in user.groups])
         
-        
         groups_dict = [g.__dict__ for g in user.groups]
-        print(groups_dict)
         for group in groups_dict:
             del group["_sa_instance_state"]
-        print(groups_dict)
-
+        
         # groups_admin_dict = []
         # if(user.groups_admin != []):
         #     groups_admin_dict = [ga.__dict__ for ga in user.groups_admin]
