@@ -49,13 +49,15 @@ class CreateGroupHandler(Resource):
         return {
             'resultStatus': 'SUCCESS',
             'message': "Group successfully created",
-            'tripname': groupname,
+            'groupname': groupname,
             'destination': destination,
             'groupCode': groupCode,
             'state': state,
             'group_admin': group.admin_id, 
             'group_id': group.id,
-            'admin_id': group.admin.id
+            'admin_id': group.admin.id,
+            'groupimage': group.groupimage,
+            'usercount': group.user_count
         }
     
 # unfinished
@@ -96,11 +98,11 @@ class JoinGroupHandler(Resource):
         return{
             'resultStatus': 'SUCCESS',
             'message': "Group successfully joined",
-            'name': group.groupname,
+            'groupname': group.groupname,
             'destination': group.destination,
             'groupCode': group.groupCode,
-            'description': group.summary,
-            'imgPath': group.groupimage,
+            'summary': group.summary,
+            'groupimage': group.groupimage,
             'polls': poll_dict,
             'users': user_dict,
             'group_id': group.id

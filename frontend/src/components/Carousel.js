@@ -22,7 +22,7 @@ function CarouselItem(props) {
 
     const navigate = useNavigate()
     const navigateToTrip = (groupCode) => {
-        navigate('trip/' + step.groupCode, { user: props.user, groupCode: groupCode } )
+        navigate('trip/' + props.step.groupCode, { user: props.user, groupCode: props.step.groupCode } )
     }
 
     return (
@@ -168,10 +168,10 @@ export function Carousel(props) {
             console.log(error)
         })
     }
-  
-      return (
+
+    return (
         <div id='car' onMouseOver={() => { hover = true }} onMouseLeave={() => {hover = false}} style={{width: '100%', minHeight: '25rem', display: 'flex', overflowX: 'scroll', scrollSnapType: 'x mandatory', }}>
-            {(items.length === 1) 
+            {(props.items.length === 1) 
             ? 
             <div style={{ marginRight: 'auto', marginLeft: 'auto' }}>
                 <CarouselItem step={items[0]}></CarouselItem>
@@ -179,7 +179,7 @@ export function Carousel(props) {
             :
             <>
             <div className='car-spacer' style={{ backgroundColor: 'white', minWidth: '15%' }} />
-            {items.map((step, index) => (
+            {props.items.map((step, index) => (
                 <div key={index} className='car-item' style={{ backgroundColor: '#ffffff', minWidth: '45%', scrollSnapAlign: 'center', borderRadius: 10, marginRight: 8, marginLeft: 8 }}>
                     {(props.type == 'poll') ? 
                     <PollItem step={step} didVote={didVote} setDidVote={setDidVote} handleVote={handleVote} totalVotes={totalVotes}></PollItem>

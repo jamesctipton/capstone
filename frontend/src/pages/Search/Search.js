@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { 
     Button, 
-    Divider, 
+    Divider,
+    Typography, 
 } from "@mui/material";
 
 import DestinationSearch from "../../components/DestinationSearch";
@@ -48,9 +49,14 @@ const Search = () => {
             {initCriteria === "destination" ? 
                 <DestinationSearch hotelSearch={false} />
                 : (initCriteria === "hotels" ? 
-                    <HotelSearch /> : 
-                    (initCriteria === "pois" ? 
-                        <POISearch /> : <></>))}
+                    <HotelSearch /> 
+                    : (initCriteria === "pois" ? 
+                        <POISearch /> 
+                        :
+                        <>
+                            <Typography>Coming soon</Typography>
+                        </>
+                        ))}
         </div>
     )
 }
