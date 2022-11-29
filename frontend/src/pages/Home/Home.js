@@ -35,12 +35,7 @@ import miami from '../../assets/miami.jpg';
 const Home = () => {
 
   const user = JSON.parse(localStorage.getItem('user'))
-  const trips = (user.groups) ? user.groups.length : 0
-  if(user.name === "test") {
-    user.groups[0].groupimage = vegas
-    user.groups[1].groupimage = miami
-  }
-  console.log(user.groups)
+  const trips = (user) ? ((user.groups) ? user.groups.length : 0) : 0
 
   const pollOptions = [
     {name: 'first', votes: 0},
