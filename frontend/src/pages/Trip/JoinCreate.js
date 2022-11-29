@@ -73,7 +73,6 @@ const JoinCreate = () => {
     }
 
     const submitNewGroup = (event) => {
-        
         axios.post(create_url, {
             groupname: createdGroupValues.name,
             destination: "",
@@ -111,9 +110,6 @@ const JoinCreate = () => {
                     value={groupCode}
                     onChange={(e) => setGroupCode(e.target.value)}
                     sx={{ width: '65%', paddingBottom: 5 }}
-                    InputProps={{
-                        startAdornment: <InputAdornment position="start" sx={{ marginLeft: '42%' }}></InputAdornment>
-                    }}
                     required
                     error={errorValue.result}
                     helperText={(errorValue.result) ? errorValue.message : ""}

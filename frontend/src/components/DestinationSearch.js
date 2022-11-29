@@ -119,6 +119,9 @@ const DestinationSearch = ({ hotelSearch }) => {
                     temp_array.push(results[i])
                 }
                 setRows(temp_array)
+                if(results.length === 0) {
+                    setError({message: "No results found.", result: true})
+                }
             }).catch((error) => {
                 setError({ message: error, result: true })
             })
@@ -173,8 +176,8 @@ const DestinationSearch = ({ hotelSearch }) => {
                                 <Button
                                     color='primary'
                                     onClick={() => {
-                                        setPersistentDest(persistentDest)
-                                        persistentDest.splice(i, 1)
+                                        let temp = persistentDest.splice(i,1)
+                                        setPersistentDest(persistentDest.filter(n => !temp.includes(n)))
                                     }}
                                 >X {dest['name'] + ', ' + (dest['stateCode'] ? dest['stateCode'] : dest['countryCode'])}</Button>
                             </Box>

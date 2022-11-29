@@ -14,9 +14,10 @@ class CreateGroupHandler(Resource):
     def post(self):
         # json_data get
         json_data = request.get_json()
+        print(json_data)
         groupname = json_data['groupname']
         destination = json_data['destination'] # nullable
-        groupimage = pickle.dumps(json_data['groupimage']) # nullable
+        groupimage = json_data['groupimage'] # nullable
         summary = json_data['summary'] # nullable
         state = json_data['groupstate']
         username = json_data['username'] # user who created group
@@ -87,7 +88,7 @@ class JoinGroupHandler(Resource):
             'destination': group.destination,
             'groupCode': group.groupCode,
             'description': group.summary,
-            'imgPath': pickle.loads(group.groupimage),
+            'imgPath': group.groupimage,
             'polls': group.polls,
             'users': group.users,
             'group_id': group.id
