@@ -33,7 +33,7 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     groupname = db.Column(db.String(64))
     destination = db.Column(db.String(64))
-    groupimage = db.Column(db.Text(), nullable=True) # longer than string
+    groupimage = db.Column(db.Text(4294000000), nullable=True) # longer than string
     summary = db.Column(db.String(2048))
     groupCode = db.Column(db.String(4), unique=True)
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id')) # User who created group
