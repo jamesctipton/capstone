@@ -196,31 +196,33 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '85%', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, minWidth: 'max-content'}}>
+                        {(user) ?
                         <FormControl fullWidth>
-                            <InputLabel id="select-label">Group</InputLabel>
-                            <Select
-                                id="group"
-                                labelId="select-group"
-                                value={groupValue}
-                                label="Group"
-                                onChange={(e) => {
-                                    setGroupValue(e.target.value)
-                                    // setSelectedDestinations([])
-                                }}
-                                variant="outlined"
-                                sx={{ minWidth: '100px' }}
-                                autoWidth
-                            >
-                                {user.groups.length > 0 ? 
-                                    user.groups.map((g, i) => {
-                                        return(
-                                            <MenuItem value={g.groupCode}>{g.groupname}</MenuItem>
-                                        )
-                                    }): <MenuItem>No groups available</MenuItem>}
-                                <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
-                                <Button sx={{ marginLeft: '8%' }} onClick={() => navigateToCreateGroup()}>Create Group</Button>
-                            </Select>
-                        </FormControl>
+                        <InputLabel id="select-label">Group</InputLabel>
+                        <Select
+                            id="group"
+                            labelId="select-group"
+                            value={groupValue}
+                            label="Group"
+                            onChange={(e) => {
+                                setGroupValue(e.target.value)
+                                // setSelectedDestinations([])
+                            }}
+                            variant="outlined"
+                            sx={{ minWidth: '100px' }}
+                            autoWidth
+                        >
+                            {user.groups.length > 0 ? 
+                                user.groups.map((g, i) => {
+                                    return(
+                                        <MenuItem value={g.groupCode}>{g.groupname}</MenuItem>
+                                    )
+                                }): <MenuItem>No groups available</MenuItem>}
+                            <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
+                            <Button sx={{ marginLeft: '8%' }} onClick={() => navigateToCreateGroup()}>Create Group</Button>
+                        </Select>
+                    </FormControl>
+                    : <></>}
                         <TextField id='poll_name' label="Poll Name" variant="outlined" onChange={(e) => setPollName(e.target.value)} value={pollNameValue} sx={{ minWidth: 'max-content'}}></TextField>
                         <Button 
                             disabled={(!(user || selectedDestinations.length > 5) && (selectedDestinations.length === 1 || selectedDestinations.length === 0)) || (groupValue === "" || pollNameValue === "")}
