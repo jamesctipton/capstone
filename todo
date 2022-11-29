@@ -24,7 +24,7 @@ FRONTEND ===================================================
 SERVER SIDE ===================================================
 
 ✓ handler for getting group from user
-- amadeus api things
+✓ amadeus api things except flights so far
 - testing
 ✓ are we storing hotels, flights, and other poll results in group data? 
     Yes, storing the final choice of each category

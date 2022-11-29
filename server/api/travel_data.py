@@ -2,6 +2,7 @@ from amadeus import Client, ResponseError
 import ssl, urllib
 import pandas as pd
 import math 
+from furl import furl
 
 def ssl_disabled_urlopen(endpoint):
     context = ssl._create_unverified_context()
@@ -47,14 +48,15 @@ def get_destinations(keyword):
 #print(get_destinations("Paris"))
 
 # get flights for certain destination
-
+# https://developers.amadeus.com/self-service/category/air/api-doc/flight-availabilities-search 
 def get_flights(src_airport, dst_airport, start_date, end_date):
+
     return
 
 # get hotels for certain latitude/longitude in a certain radius (miles)
 # return list of hotel names with latitude/longtitude, and distance from inputted latitude/longitude 
 # https://developers.amadeus.com/self-service/category/hotel/api-doc/hotel-list/api-reference 
-def get_hotels(latitude, longitude, radius):
+def get_hotels(latitude, longitude, radius, city, state, country):
     try:
         response = amadeus.reference_data.locations.hotels.by_geocode.get(longitude=longitude,latitude=latitude,radius=radius,radiusUnit='MILE')
         df = pd.json_normalize(response.data)
@@ -69,18 +71,22 @@ def get_hotels(latitude, longitude, radius):
             if math.isnan(record['latitude']) or math.isnan(record['longitude']):
                 del record['latitude']
                 del record['longitude']
+            separator = '+'
+            params = separator.join([record['name'], city, state, country])
+            url = furl('https://www.google.com/search?').add({'q':params}).url
+            record.update({'URL':url})
 
         return hotels_dict
     except ResponseError as error:
         raise error
 
 # Uncomment below to test
-#print(get_hotels(48.85693, 2.3412, 50))
+#print(get_hotels(48.85693, 2.3412, 50, "madrid", "", "spain"))
 
 # get points of interest for certain destination
 # return poi name, category(sightseeing, restaurant, etc), atitude/longitude, and description tags
 # https://developers.amadeus.com/self-service/category/destination-content/api-doc/points-of-interest/api-reference 
-def get_pois(latitude, longitude, radius_miles):
+def get_pois(latitude, longitude, radius_miles, city, state, country):
     conversion_factor = 0.62137119
     radius_kilometers = radius_miles / conversion_factor
     try:
@@ -97,10 +103,14 @@ def get_pois(latitude, longitude, radius_miles):
             if math.isnan(record['latitude']) or math.isnan(record['longitude']):
                 del record['latitude']
                 del record['longitude']
+            separator = '+'
+            params = separator.join([record['name'], city, state, country])
+            url = furl('https://www.google.com/search?').add({'q':params}).url
+            record.update({'URL':url})
 
         return pois_dict
     except ResponseError as error:
          raise error
 
 # Uncomment below to test
-#print(get_pois(48.85693, 2.3412, 50))
+#print(get_pois(48.85693, 2.3412, 50, "madrid", "", "spain"))

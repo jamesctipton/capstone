@@ -41,8 +41,11 @@ class HotelSearchHandler(Resource):
         latitude = json_data['latitude']
         longitude = json_data['longitude']
         radius = json_data['radius']
+        city = json_data['city']
+        state = json_data['state']
+        country = json_data['country']
 
-        hotels = get_hotels(latitude, longitude, radius)
+        hotels = get_hotels(latitude, longitude, radius, city, state, country)
 
         return{
             'resultStatus': 'SUCCESS',
@@ -63,8 +66,11 @@ class PoiSearchHandler(Resource):
         latitude = json_data['latitude']
         longitude = json_data['longitude']
         radius = json_data['radius']
+        city = json_data['city']
+        state = json_data['state']
+        country = json_data['country']
 
-        pois = get_pois(latitude, longitude, radius)
+        pois = get_pois(latitude, longitude, radius, city, state, country)
 
         return{
             'resultStatus': 'SUCCESS',

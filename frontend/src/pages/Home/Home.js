@@ -58,7 +58,7 @@ const Home = () => {
 
   return (
       <>
-        {user 
+        {(user) 
           ? 
           <>
           {(trips === 0) ?
