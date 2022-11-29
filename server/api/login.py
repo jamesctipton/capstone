@@ -26,13 +26,22 @@ class LoginHandler(Resource):
                 'resultStatus': 'FAILURE',
                 'message': "Invalid username or password"
             }
-
-        #print("test")
-        #groups_test = ([g.__dict__ for g in user.groups])
+        
+        polls_dict = []
+        for group in user.groups:
+            temp_polls_dict = [p.__dict__ for p in group.polls]
+            polls_dict += temp_polls_dict
         
         groups_dict = [g.__dict__ for g in user.groups]
         for group in groups_dict:
             del group["_sa_instance_state"]
+            poll_list = []
+            for poll in polls_dict:
+                del poll["_sa_instance_state"]
+                if poll['group_id'] == group['id']:
+                    poll_list += poll
+            group.update({'polls': poll_list})
+
         
         # groups_admin_dict = []
         # if(user.groups_admin != []):
@@ -41,7 +50,7 @@ class LoginHandler(Resource):
             #  for group_admin in groups_admin_dict:
             #     del group_admin["_sa_instance_state"]
 
-        # poll_dict = [p.__dict__ for p in user.polls_created]
+        # poll_dict = [p.__dict__ for p in user.groups.polls]
         # for poll in poll_dict:
         #     if(poll_dict != []):
         #         poll.pop('_sa_instance_state')
