@@ -1,5 +1,5 @@
 from api.__init__ import db
-from flask import request
+from flask import request, jsonify
 from flask_restful import Resource
 from api.models import *
 import random, string, pickle, json
@@ -82,8 +82,16 @@ class JoinGroupHandler(Resource):
         group.users.append(user)
         db.session.commit()
 
-        print(group.users)
-        print(group.polls)
+        #print(group.users)
+        #print(json.dumps([dict(user) for user in group.users]))
+        #print(group.polls)
+        user_dict = [user.__dict__ for user in group.users]
+        for user in user_dict:
+            user.pop('_sa_instance_state')
+        
+        poll_dict = [poll.__dict__ for poll in group.polls]
+        for poll in poll_dict:
+            poll.pop('_sa_instance_state')
 
         return{
             'resultStatus': 'SUCCESS',
@@ -93,13 +101,14 @@ class JoinGroupHandler(Resource):
             'groupCode': group.groupCode,
             'description': group.summary,
             'imgPath': group.groupimage,
-            'polls': json.dumps(group.polls),
-            'users': json.dumps(group.users),
+            'polls': json.dumps(poll_dict),
+            'users': json.dumps(user_dict),
             'group_id': group.id
         }
 
+
 class EditGroupHandler(Resource):
-    def post(self):
+    def post(self): 
         json_data = request.get_json()
         groupCode = json_data['hashCode']
         group = Group.query.filter_by(groupCode=groupCode).first()
