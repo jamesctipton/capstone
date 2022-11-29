@@ -8,6 +8,7 @@ import {
   ThemeProvider,
   createTheme,
   Button,
+  Divider,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
@@ -134,8 +135,11 @@ const TopNavBar = () => {
           sx={{marginTop: 2}}
         >
           <MenuItem onClick={handleClose} component={Link} to="/">Home</MenuItem>
+          <Divider variant="middle" sx={{ width: '80%' }}></Divider>
           <MenuItem onClick={handleClose} component={Link} to="/login">Login</MenuItem>
-          <MenuItem onClick={handleClose} component={Link} to="/join-create">Join a Group</MenuItem>
+          <Divider variant="middle" sx={{ width: '80%' }}></Divider>
+          <MenuItem onClick={handleClose} component={Link} to="/join-create">Join/Create Group</MenuItem>
+          <Divider variant="middle" sx={{ width: '80%' }}></Divider>
           <MenuItem onClick={() => {handleLogout()}} component={Link} to="/">Logout</MenuItem>
         </Menu>
       <Outlet />

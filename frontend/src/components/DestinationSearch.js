@@ -141,7 +141,7 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
     const createPoll = (group, pollName, destinations) => {
         console.log(group, pollName, destinations)
         axios.post(create_poll_url, {
-            pollName: pollName,
+            pollname: pollName,
             user: user.name,
             groupid: group,
             options: destinations
@@ -214,11 +214,11 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
                                 {user.groups.length > 0 ? 
                                     user.groups.map((g, i) => {
                                         return(
-                                            <MenuItem key={i} value={g.groupCode}>{g.groupname}</MenuItem>
+                                            <MenuItem value={g.groupCode}>{g.groupname}</MenuItem>
                                         )
                                     }): <MenuItem>No groups available</MenuItem>}
                                 <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
-                                <Button sx={{ marginLeft: '12%' }} onClick={() => navigateToCreateGroup()}>Create Group</Button>
+                                <Button sx={{ marginLeft: '8%' }} onClick={() => navigateToCreateGroup()}>Create Group</Button>
                             </Select>
                         </FormControl>
                         <TextField id='poll_name' label="Poll Name" variant="outlined" onChange={(e) => setPollName(e.target.value)} value={pollNameValue} sx={{ minWidth: 'max-content'}}></TextField>
