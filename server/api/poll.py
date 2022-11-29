@@ -3,7 +3,7 @@ from flask import request
 from flask_restful import Resource
 from api.models import Poll
 from api.models import PollOption
-import pickle
+import pickle, json
 import random, string
 
 # unfinished probably
@@ -22,8 +22,9 @@ class CreatePollHandler(Resource):
         options = json_data['options']
         pollItems = []
         for op in options:
-            pollItems.append(pickle.dumps(PollOption(options[op]["name"], options[op]["votes"], options[op]["image"])))
-
+            pollItems.append(json.dumps(PollOption(options[op]["name"], options[op]["votes"], options[op]["image"])))
+            pollItems.append(op)
+        
         # make sure poll code is unique
         pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
         db_pollCode = Poll.query.filter_by(pollCode=pollCode).first()
@@ -32,8 +33,8 @@ class CreatePollHandler(Resource):
 
         # add poll to db, assign creator and group
         poll = Poll(pollCode=pollCode, pollname=pollname, creator_id=creator_id, group_id=group_id,
-                    totalVotes=totalVotes, option1=pollItems[0], option2=pollItems[1],
-                    option3=pollItems[2], option4=pollItems[3], option5=pollItems[4])
+                    totalVotes=totalVotes, option1=json.dumps(pollItems[0]), option2=json.dumps(pollItems[1]),
+                    option3=json.dumps(pollItems[2]), option4=json.dumps(pollItems[3]), option5=json.dumps(pollItems[4]))
         
         db.session.add(poll)
         db.session.commit()   
@@ -81,4 +82,3 @@ class VotePollHandler(Resource):
             'pollID': pollCode,
             'userWhoVoted' : username                
         } 
-

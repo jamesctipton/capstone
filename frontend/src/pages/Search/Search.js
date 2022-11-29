@@ -2,125 +2,27 @@ import React, { useState } from "react";
 import { 
     Button, 
     Divider, 
-    FormControl, 
-    OutlinedInput, 
-    IconButton, 
-    createTheme, 
-    Box, 
-    Typography,
-    TextField,
-    Select,
-    InputLabel,
-    MenuItem
 } from "@mui/material";
+<<<<<<< HEAD
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import axios from "axios";
 // import { DataGrid } from '@mui/x-data-grid';
+=======
+>>>>>>> 476b51acf1e75ee7e5d6f15b3d275b5a7c88afb6
 
-const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#CF7D30',
-        darker: '#BE6C20'
-      },
-      secondary: {
-        main: '#FFFFFF'
-      }
-    }
-});
+import DestinationSearch from "../../components/DestinationSearch";
+import HotelSearch from "../../components/HotelSearch";
+import POISearch from "../../components/POISearch";
 
-const url = 'http://127.0.0.1:5000/search-'
-
-const Search = ({ isLoggedIn }) => {
+const Search = () => {
 
     const [initCriteria, setInitCriteria] = useState("destination")
-    const [input, setInput] = useState("")
-    const [errorValue, setError] = useState({
+    /*const [errorValue, setError] = useState({
         message: "",
         result: false
-    })
-    const [selectedDestinations, setSelectedDestinations] = useState([])
-    const [pollNameValue, setPollName] = useState("")
-    const [groupValue, setGroupValue] = useState("")
+    })*/    
+    const user = JSON.parse(localStorage.getItem('user'))
 
-    if(document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer') != null) {
-        if(selectedDestinations.length === 0) {
-            document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer').style.display = 'none';
-        }
-        else {
-            document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer').style = {display: 'hidden'};
-        }
-    }
-
-    const criteriaDict = {
-        'destination': "Search Countries, Cities or Specific Locations",
-        'hotels': "Search for Hotels",
-        'flights': "Search Flights",
-        'poi': "Search Points of Interest"
-    };
-
-    const [rows, setRows] = useState([])
-
-    const searchdestination = (dest) => {
-        if(dest === "") {
-            setError({message: "Please enter a destination", result: true})
-        } else {
-            setError({message: "", result: false})
-            axios.post(url+'destinations', {
-                keyword: dest
-            }).then((response) => {
-                const results = response['data']['destinations']
-                let temp = []
-                for(let i = 0; i < results.length; i++) {
-                    results[i].id = i
-                    temp.push(results[i])
-                }
-                setRows(temp)
-            }).catch((error) => {
-                console.log(error)
-            })
-        }  
-    }
-    const addPoll = (group, pollName, destinations) => {
-        console.log(group, pollName, destinations)
-    }
-
-    const columns = [
-        { 
-            field: 'name',
-            headerName: 'Name',
-            minWidth: 360,
-            flex: 0.4
-        },
-        {
-          field: 'countryCode',
-          headerName: 'Country',
-          minWidth: 120,
-          flex: 0.15
-        },
-        {
-          field: 'stateCode',
-          headerName: 'State',
-          minWidth: 120,
-          flex: 0.15
-        },
-        {
-          field: 'latitude',
-          headerName: 'Latitude',
-          type: 'number',
-          minWidth: 120,
-          flex: 0.15
-        },
-        {
-          field: 'longitude',
-          headerName: 'Longitude',
-          type: 'number',
-        //   description: 'This column has a value getter and is not sortable.',
-          minWidth: 120,
-          flex: 0.15
-        },
-      ];
-    
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '5%', width: '100%' }}>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginBottom: '1%'}}>
@@ -143,12 +45,13 @@ const Search = ({ isLoggedIn }) => {
                 >Flights</Button>
                 <Divider orientation="vertical" variant="middle" flexItem sx={{ background: '#CF7D30', width: 1.5}}></Divider>
                 <Button  
-                    sx={{ backgroundColor: (initCriteria === 'poi') ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }}
-                    onClick={() => setInitCriteria("poi")}
+                    sx={{ backgroundColor: (initCriteria === 'pois') ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }}
+                    onClick={() => setInitCriteria("pois")}
                     fullWidth
                 >Points of Interest</Button>
             </div>
             <Divider orientation="horizontal" variant="fullwidth" flexItem sx={{ background: '#CF7D30'}}></Divider>
+<<<<<<< HEAD
             <div style={{width: '80%', marginTop: '2%', marginBottom: '2%'}}>
                 <FormControl fullWidth>
                     <OutlinedInput 
@@ -279,6 +182,15 @@ const Search = ({ isLoggedIn }) => {
                 />
             </Box> */}
     </div>
+=======
+            {initCriteria === "destination" ? 
+                <DestinationSearch hotelSearch={false} />
+                : (initCriteria === "hotels" ? 
+                    <HotelSearch /> : 
+                    (initCriteria === "pois" ? 
+                        <POISearch /> : <></>))}
+        </div>
+>>>>>>> 476b51acf1e75ee7e5d6f15b3d275b5a7c88afb6
     )
 }
 

@@ -1,5 +1,9 @@
 import './App.css';
+<<<<<<< HEAD
 import React, { Component, useState } from 'react';
+=======
+import React from 'react';
+>>>>>>> 476b51acf1e75ee7e5d6f15b3d275b5a7c88afb6
 import { 
   BrowserRouter, 
   Routes, 
@@ -21,22 +25,27 @@ import Friends from './pages/friends/Friends';
 
 function App (){
 
-  const [loggedIn, setLogin] = useState(false)
-
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<TopNavBar isLoggedIn={loggedIn} setLogin={setLogin} />}>
-          <Route index element={<Home isLoggedIn={loggedIn} />} />
-          <Route path="login" element={<Login setLogin={setLogin} />} />
+        <Route path="/" element={<TopNavBar />}>
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
           <Route path="register" element={<Registration />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="new-password/:hash" element={<NewPassword />} />
           <Route path="trip/:hash" element={<Trip />} />
+<<<<<<< HEAD
           <Route path="join-create" element={<JoinCreate isLoggedIn={loggedIn} />} />
           <Route path="search" element={<Search isLoggedIn={loggedIn}/>} />
           <Route path="favorites" element={<Favorites />} />
           <Route path="friends" element={<Friends />} />
+=======
+          <Route path="join-create" element={<JoinCreate />} />
+          <Route path="search" element={<Search />} />
+          <Route path="favorites" element={<Typography>Favorites</Typography>} />
+          <Route path="friends" element={<Typography>Friends</Typography>} />
+>>>>>>> 476b51acf1e75ee7e5d6f15b3d275b5a7c88afb6
           <Route path="profile" element={<Typography>Profile</Typography>} />
         </Route>
       </Routes>

@@ -1,9 +1,10 @@
 import random, string
-from api.models import User
+from api.models import *
 from flask_restful import Resource
 from flask import request, jsonify
 from api.__init__ import db, mail
 from flask_mail import Message
+import json
 
 class LoginHandler(Resource):          
     def get(self):
@@ -26,15 +27,43 @@ class LoginHandler(Resource):
                 'message': "Invalid username or password"
             }
         
+        polls_dict = []
+        for group in user.groups:
+            temp_polls_dict = [p.__dict__ for p in group.polls]
+            polls_dict += temp_polls_dict
+        
+        groups_dict = [g.__dict__ for g in user.groups]
+        for group in groups_dict:
+            del group["_sa_instance_state"]
+            poll_list = []
+            for poll in polls_dict:
+                del poll["_sa_instance_state"]
+                if poll['group_id'] == group['id']:
+                    poll_list += poll
+            group.update({'polls': poll_list})
+
+        
+        # groups_admin_dict = []
+        # if(user.groups_admin != []):
+        #     groups_admin_dict = [ga.__dict__ for ga in user.groups_admin]
+        #     print(groups_admin_dict)
+            #  for group_admin in groups_admin_dict:
+            #     del group_admin["_sa_instance_state"]
+
+        # poll_dict = [p.__dict__ for p in user.groups.polls]
+        # for poll in poll_dict:
+        #     if(poll_dict != []):
+        #         poll.pop('_sa_instance_state')
+        
         # send user info and list of groups user is in
         return {
             'resultStatus': 'SUCCESS',
             'message': "Successful credentials",
             'name': user.username,
             'firstname': user.firstname,
-            'groups': [g.__dict__ for g in user.groups],
-            'groups_admin': [g.__dict__ for g in user.groups_admin],
-            'polls_created': [p.__dict__ for p in user.polls_created]
+            'groups': groups_dict,
+            #'groups_admin': groups_admin_dict,
+            # 'polls_created': json.dumps(poll_dict)
         }
 
 # done

@@ -1,43 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Switch from '@mui/material/Switch';
 import { 
     InputAdornment,
     Button,
-    createTheme,
-    Box,
     Typography,
-    Tooltip
 } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { 
     FormControlLabel, 
     FormGroup, 
     IconButton 
-} from '@material-ui/core';
+} from '@mui/material';
 import axios from 'axios';
 
 
-const join_url = 'http://127.0.0.1:5000/join'
-const create_url = 'http://127.0.0.1:5000/create'
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#CF7D30',
-      darker: '#BE6C20'
-    }
-  }
-});
+const join_url = 'http://127.0.0.1:5000/join-group'
+const create_url = 'http://127.0.0.1:5000/create-group'
 
-let user = {};
-const JoinCreate = (isLoggedIn) => {
+const JoinCreate = () => {
 
-    useEffect(() => {
-        user = JSON.parse(localStorage.getItem('user'));
-    }, [])
-
+    const user = JSON.parse(localStorage.getItem('user'));
+    
     const navigate = useNavigate()
     const navigateGroupHome = (groupCode) => {
         navigate('/trip/' + groupCode)
@@ -65,12 +51,13 @@ const JoinCreate = (isLoggedIn) => {
             destination: response['data']['description'],
             summary: response['data']['imgPath']
         });
-        localStorage.setItem(JSON.stringify(temp))
+        localStorage.setItem('user', JSON.stringify(temp))
     }
 
     const verifyGroup = (event) => {
         axios.post(join_url, {
-            hashCode: groupCode
+            groupCode: groupCode,
+            username: user.name
         }).then((response) => {
             if(response['data']['resultStatus'] === 'SUCCESS') {
                 console.log(response)
@@ -86,7 +73,6 @@ const JoinCreate = (isLoggedIn) => {
     }
 
     const submitNewGroup = (event) => {
-        
         axios.post(create_url, {
             groupname: createdGroupValues.name,
             destination: "",
@@ -124,15 +110,12 @@ const JoinCreate = (isLoggedIn) => {
                     value={groupCode}
                     onChange={(e) => setGroupCode(e.target.value)}
                     sx={{ width: '65%', paddingBottom: 5 }}
-                    InputProps={{
-                        startAdornment: <InputAdornment position="start" sx={{ marginLeft: '42%' }}></InputAdornment>
-                    }}
                     required
                     error={errorValue.result}
                     helperText={(errorValue.result) ? errorValue.message : ""}
                 ></TextField>
                 <Button 
-                    disabled={(groupCode.length != 4)}
+                    disabled={(groupCode.length !== 4)}
                     type='submit'
                     variant="outlined"
                     sx={{ m: 1, borderWidth: 3, borderRadius: 30, background: 'rgba(207, 125, 48, 0.31)', fontWeight: 600, whiteSpace: 'nowrap', minWidth: 'maxContent', width: '50%', height: 50, fontSize: 15, marginTop: '10%' }}
@@ -145,14 +128,14 @@ const JoinCreate = (isLoggedIn) => {
                 <Divider orientation='vertical' variant='middle' flexItem sx={{ background: '#CF7D30' }}></Divider>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant='h3' sx={{ color: '#CF7D30' }}>Create Group</Typography>
-                {(file == null) ?
+                {(file === null) ?
                 <IconButton component="label" >
                     <input hidden accept="image/*" type="file" onChange={(e) => {handleFileChange(e)}} />
                     <PersonPinIcon color='primary' sx={{ width: 90, height: 90 }} />
                 </IconButton>
                 :
                 <div component="label" style={{ display: 'flex', flexDirection: 'column'}}>
-                    <img src={`${file}`} alt="group image" style={{ width: 90, height: 90, overflow: 'hidden', borderRadius: 100 }} />
+                    <img src={`${file}`} alt="group" style={{ width: 90, height: 90, overflow: 'hidden', borderRadius: 100 }} />
                     <Button size='small' component="label">Change
                         <input hidden accept="image/*" type="file" onChange={(e) => {handleFileChange(e)}} />
                     </Button>
@@ -166,9 +149,6 @@ const JoinCreate = (isLoggedIn) => {
                     helperText="*Please enter a name for your group"
                     value={createdGroupValues.name}
                     onChange={(e) => setValues({...createdGroupValues, name: e.target.value})}
-                    InputProps={{
-                        startAdornment: <InputAdornment position='start' sx={{ marginLeft: '35.5%' }}></InputAdornment>
-                    }}
                     FormHelperTextProps={{
                         style: {
                             color: 'black',

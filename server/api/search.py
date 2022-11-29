@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from flask import request, jsonify
+from flask import request
 from api.travel_data import *
 
 # Search parameters: Just a keyword
@@ -38,11 +38,15 @@ class HotelSearchHandler(Resource):
         }
     def post(self):
         json_data = request.get_json()
+        print(json_data)
         latitude = json_data['latitude']
         longitude = json_data['longitude']
         radius = json_data['radius']
+        city = json_data['city']
+        state = json_data['state']
+        country = json_data['country']
 
-        hotels = get_hotels(latitude, longitude, radius)
+        hotels = get_hotels(latitude, longitude, radius, city, state, country)
 
         return{
             'resultStatus': 'SUCCESS',
@@ -63,8 +67,11 @@ class PoiSearchHandler(Resource):
         latitude = json_data['latitude']
         longitude = json_data['longitude']
         radius = json_data['radius']
+        city = json_data['city']
+        state = json_data['state']
+        country = json_data['country']
 
-        pois = get_pois(latitude, longitude, radius)
+        pois = get_pois(latitude, longitude, radius, city, state, country)
 
         return{
             'resultStatus': 'SUCCESS',

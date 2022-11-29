@@ -1,5 +1,5 @@
 from api.__init__ import db
-from flask import request
+from flask import request, jsonify
 from flask_restful import Resource
 from api.models import *
 import random, string
@@ -14,6 +14,7 @@ class CreateGroupHandler(Resource):
     def post(self):
         # json_data get
         json_data = request.get_json()
+        print(json_data)
         groupname = json_data['groupname']
         destination = json_data['destination'] # nullable
         groupimage = json_data['groupimage'] # nullable
@@ -24,8 +25,9 @@ class CreateGroupHandler(Resource):
         # make sure group code is unique
         groupCode = ''.join(random.choices(string.ascii_letters + string.digits, k=4))
         db_groupCode = Group.query.filter_by(groupCode=groupCode).first()
-        while(groupCode == db_groupCode.groupCode):
-            groupCode = ''.join(random.choices(string.ascii_letters + string.digits, k=4))
+        if db_groupCode != None:
+            while(groupCode == db_groupCode.groupCode):
+                groupCode = ''.join(random.choices(string.ascii_letters + string.digits, k=4))
 
         # get user who created this group
         user = User.query.filter_by(username=username).first()
@@ -33,7 +35,11 @@ class CreateGroupHandler(Resource):
         # commit group to db
         group = Group(groupname=groupname, destination=destination, 
                         groupimage=groupimage, summary=summary, groupCode = groupCode, admin = user)
+        # group_schema = GroupSchema()
         db.session.add(group)
+
+        # dump_data = group_schema.dump(group)
+        # print(dump_data)
 
         user.groups.append(group) # add group to user's group
         user.groups_admin.append(group) # add group to the groups that user is an admin of
@@ -61,7 +67,8 @@ class JoinGroupHandler(Resource):
         }
     def post(self):
         json_data = request.get_json()
-        groupCode = json_data['hashCode']
+        print(json_data)
+        groupCode = json_data['groupCode']
         username = json_data['username']
         group = Group.query.filter_by(groupCode=groupCode).first()
         if (group is None):
@@ -75,6 +82,21 @@ class JoinGroupHandler(Resource):
         group.users.append(user)
         db.session.commit()
 
+        #print(group.users)
+        #print(json.dumps([dict(user) for user in group.users]))
+        #print(group.polls)
+        user_count = 0
+        user_dict = [user.__dict__ for user in group.users]
+        for user in user_dict:
+            user.pop('_sa_instance_state')
+            user_count += 1
+        
+        poll_count = 0
+        poll_dict = [poll.__dict__ for poll in group.polls]
+        for poll in poll_dict:
+            poll.pop('_sa_instance_state')
+            poll_count += 1
+
         return{
             'resultStatus': 'SUCCESS',
             'message': "Group successfully joined",
@@ -83,13 +105,16 @@ class JoinGroupHandler(Resource):
             'groupCode': group.groupCode,
             'description': group.summary,
             'imgPath': group.groupimage,
-            'polls': [p.__dict__ for p in group.polls],
-            'users': [u.__dict__ for u in group.users],
-            'group_id': group.id
+            'polls': poll_dict,
+            'users': user_dict,
+            'group_id': group.id,
+            'user_count': user_count,
+            'polls_count': poll_count
         }
 
+
 class EditGroupHandler(Resource):
-    def post(self):
+    def post(self): 
         json_data = request.get_json()
         groupCode = json_data['hashCode']
         group = Group.query.filter_by(groupCode=groupCode).first()

@@ -33,12 +33,13 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     groupname = db.Column(db.String(64))
     destination = db.Column(db.String(64))
-    groupimage = db.Column(db.Text(), nullable=True) # longer than string
+    groupimage = db.Column(db.Text(4294000000), nullable=True) # longer than string
     summary = db.Column(db.String(2048))
     groupCode = db.Column(db.String(4), unique=True)
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id')) # User who created group
     polls = db.relationship('Poll', backref='group') # polls in the group
 
+# Individual poll option
 class PollOption(object):
     def __init__(self, name, description="", votes=0, image=None) -> None:
         self.name = name
@@ -54,9 +55,9 @@ class Poll(db.Model):
     pollCategory = db.Column(db.String(64))
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id')) # user who created poll
     group_id = db.Column(db.Integer, db.ForeignKey('group.id')) # group poll belongs in
-    option1 = db.Column(db.PickleType())
-    option2 = db.Column(db.PickleType())
-    option3 = db.Column(db.PickleType(), nullable=True) # minimum 2 poll options
-    option4 = db.Column(db.PickleType(), nullable=True)
-    option5 = db.Column(db.PickleType(), nullable=True) # maximum 5
+    option1 = db.Column(db.JSON)
+    option2 = db.Column(db.JSON)
+    option3 = db.Column(db.JSON, nullable=True) # minimum 2 poll options
+    option4 = db.Column(db.JSON, nullable=True)
+    option5 = db.Column(db.JSON, nullable=True) # maximum 5
     totalVotes = db.Column(db.Integer)

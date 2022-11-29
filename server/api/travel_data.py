@@ -2,6 +2,7 @@ from amadeus import Client, ResponseError
 import ssl, urllib
 import pandas as pd
 import math 
+from furl import furl
 
 def ssl_disabled_urlopen(endpoint):
     context = ssl._create_unverified_context()
@@ -18,11 +19,14 @@ amadeus = Client(
 # returns list of destinations with city name, country, state if USA city, and lat/long
 def get_destinations(keyword):
     try:
-        response = amadeus.reference_data.locations.cities.get(keyword=keyword)
-        df = pd.json_normalize(response.data)
-        if(df.empty):
+        if((len(keyword) > 50) or (len(keyword) < 3)):
             return []
 
+        response = amadeus.reference_data.locations.cities.get(keyword=keyword)
+        if(response.data is None):
+            return []
+
+        df = pd.json_normalize(response.data)
         # Create dataframe of cities, rename columns, and convert to dictionary
         df = df[["name", "address.countryCode", "address.stateCode", "geoCode.latitude", "geoCode.longitude"]]
         df.rename(columns = {'address.countryCode':'countryCode', 'address.stateCode':'stateCode', 
@@ -44,22 +48,24 @@ def get_destinations(keyword):
         return error
 
 # Uncomment below to test
-#print(get_destinations("Paris"))
+print(get_destinations("Pennsylvania"))
 
 # get flights for certain destination
+# https://developers.amadeus.com/self-service/category/air/api-doc/flight-availabilities-search 
 def get_flights(src_airport, dst_airport, start_date, end_date):
+
     return
 
 # get hotels for certain latitude/longitude in a certain radius (miles)
-# return list of hotel names with latitude/longtitude, and distance from inputted latitude/longitude 
+# return list of hotel names with latitude/longtitude, distance from inputted latitude/longitude, and URL 
 # https://developers.amadeus.com/self-service/category/hotel/api-doc/hotel-list/api-reference 
-def get_hotels(latitude, longitude, radius):
+def get_hotels(latitude, longitude, radius, city, state, country):
     try:
         response = amadeus.reference_data.locations.hotels.by_geocode.get(longitude=longitude,latitude=latitude,radius=radius,radiusUnit='MILE')
-        df = pd.json_normalize(response.data)
-        if(df.empty):
+        if(response.data is None):
             return []
 
+        df = pd.json_normalize(response.data)
         df = df[["name", "geoCode.latitude", "geoCode.longitude", "distance.value", "distance.unit"]]
         df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
         hotels_dict = df.to_dict('records')
@@ -68,38 +74,52 @@ def get_hotels(latitude, longitude, radius):
             if math.isnan(record['latitude']) or math.isnan(record['longitude']):
                 del record['latitude']
                 del record['longitude']
+            separator = '+'
+            if(state == ""):
+                params = separator.join([record['name'], city, country])
+            else:
+                params = separator.join([record['name'], city, state, country])
+            url = furl('https://www.google.com/search?').add({'q':params}).url
+            record.update({'URL':url})
 
         return hotels_dict
     except ResponseError as error:
         raise error
 
 # Uncomment below to test
-#print(get_hotels(48.85693, 2.3412, 50))
+#print(get_hotels(48.85693, 2.3412, 50, "madrid", "", "spain"))
 
 # get points of interest for certain destination
-# return poi name, category(sightseeing, restaurant, etc), atitude/longitude, and description tags
+# return poi name, category(sightseeing, restaurant, etc), latitude/longitude, description tags, and URL
 # https://developers.amadeus.com/self-service/category/destination-content/api-doc/points-of-interest/api-reference 
-def get_pois(latitude, longitude, radius_miles):
+def get_pois(latitude, longitude, radius_miles, city, state, country):
     conversion_factor = 0.62137119
     radius_kilometers = radius_miles / conversion_factor
     try:
         response = amadeus.reference_data.locations.points_of_interest.get(latitude=latitude, longitude=longitude, radius=radius_kilometers)
-        df = pd.json_normalize(response.data)
-        if(df.empty):
+        if(response.data is None):
             return []
 
-        df = df[["name", "category", "geoCode.latitude", "geoCode.longitude"]]
-        df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
+        df = pd.json_normalize(response.data)
+        df = df[["name", "category"]]#, "geoCode.latitude", "geoCode.longitude"]]
+        #df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
         pois_dict = df.to_dict('records')
         
         for record in pois_dict:
-            if math.isnan(record['latitude']) or math.isnan(record['longitude']):
-                del record['latitude']
-                del record['longitude']
+            # if math.isnan(record['latitude']) or math.isnan(record['longitude']):
+            #     del record['latitude']
+            #     del record['longitude']
+            separator = '+'
+            if(state == ""):
+                params = separator.join([record['name'], city, country])
+            else:
+                params = separator.join([record['name'], city, state, country])
+            url = furl('https://www.google.com/search?').add({'q':params}).url
+            record.update({'URL':url})
 
         return pois_dict
     except ResponseError as error:
          raise error
 
 # Uncomment below to test
-#print(get_pois(48.85693, 2.3412, 50))
+#print(get_pois(48.85693, 2.3412, 50, "madrid", "", "spain"))
