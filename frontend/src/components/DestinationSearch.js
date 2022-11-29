@@ -217,13 +217,8 @@ const DestinationSearch = ({ hotelSearch }) => {
                     columns={columns}
                     pageSize={20}
                     rowsPerPageOptions={[20]}
-<<<<<<< HEAD
                     checkboxSelection
                     isRowSelectable={(p) => (persistentDest.length) < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
-=======
-                    checkboxSelection={(hotelSearch ? false : true)}
-                    isRowSelectable={(p) => selectedDestinations.length < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
->>>>>>> bb0b906ef87013ca4dde5b30a8172fe59e957a97
                     onSelectionModelChange={(ids) => {
                         let temp = ids.map((id) => rows.find((row) => row.id === id))
                         let t2 = selectedDestinations
