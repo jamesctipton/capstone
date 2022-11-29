@@ -36,12 +36,7 @@ const theme = createTheme({
   }
 });
 
-<<<<<<< HEAD
-let user;
-function TopNavBar ({isLoggedIn, setLogin}){
-=======
 const TopNavBar = () => {
->>>>>>> 476b51acf1e75ee7e5d6f15b3d275b5a7c88afb6
 
   const user = JSON.parse(localStorage.getItem('user'))
 
