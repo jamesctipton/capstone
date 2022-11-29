@@ -67,6 +67,7 @@ class JoinGroupHandler(Resource):
         }
     def post(self):
         json_data = request.get_json()
+        print(json_data)
         groupCode = json_data['groupCode']
         username = json_data['username']
         group = Group.query.filter_by(groupCode=groupCode).first()
@@ -81,6 +82,9 @@ class JoinGroupHandler(Resource):
         group.users.append(user)
         db.session.commit()
 
+        print(group.users)
+        print(group.polls)
+
         return{
             'resultStatus': 'SUCCESS',
             'message': "Group successfully joined",
@@ -88,7 +92,7 @@ class JoinGroupHandler(Resource):
             'destination': group.destination,
             'groupCode': group.groupCode,
             'description': group.summary,
-            'imgPath': pickle.loads(group.groupimage),
+            'imgPath': group.groupimage,
             'polls': json.dumps(group.polls),
             'users': json.dumps(group.users),
             'group_id': group.id
