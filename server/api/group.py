@@ -87,13 +87,17 @@ class JoinGroupHandler(Resource):
         #print(group.users)
         #print(json.dumps([dict(user) for user in group.users]))
         #print(group.polls)
+        user_count = 0
         user_dict = [user.__dict__ for user in group.users]
         for user in user_dict:
             user.pop('_sa_instance_state')
+            user_count += 1
         
+        poll_count = 0
         poll_dict = [poll.__dict__ for poll in group.polls]
         for poll in poll_dict:
             poll.pop('_sa_instance_state')
+            poll_count += 1
 
         return{
             'resultStatus': 'SUCCESS',
@@ -105,7 +109,9 @@ class JoinGroupHandler(Resource):
             'groupimage': group.groupimage,
             'polls': poll_dict,
             'users': user_dict,
-            'group_id': group.id
+            'group_id': group.id,
+            'user_count': user_count,
+            'polls_count': poll_count
         }
 
 
