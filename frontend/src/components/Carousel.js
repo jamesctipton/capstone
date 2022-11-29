@@ -32,7 +32,7 @@ function CarouselItem(props) {
                 <div style={{ position: 'absolute', zIndex: 100, backgroundColor: '#ffffff', opacity: 0.8, borderRadius: 100, width: 'auto', textAlign: 'center', padding: 12, margin: 16, right: 0 }} >
                     {(step.members == 0 || step.members == null) ? '' : step.members + ' people'}
                 </div>
-                {(step.imgPath == '' || step.imgPath == null) ?
+                {(step.groupimage == '' || step.groupimage == null) ?
                 <div
                     style={{ backgroundColor: '#666666', height: '20rem', color: '#dddddd', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', fontSize: 40, }}
                 >No image
@@ -40,7 +40,8 @@ function CarouselItem(props) {
                 :
                 <CardMedia
                     component='img'
-                    height='312rem'
+                    height='320rem'
+                    // src={`data:image/png;base64, ${step.groupimage}`}
                     image={step.groupimage}
                     alt={step.groupname}
                 />
