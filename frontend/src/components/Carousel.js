@@ -10,7 +10,7 @@ var hover = false;
 //item:  {
 //     groupname: string,
 //     summary: string,
-//     imgPath?: string,
+//     groupimage?: string,
 //     groupCode: string,
 //     members: int
 // }
@@ -41,8 +41,8 @@ function CarouselItem(props) {
                 <CardMedia
                     component='img'
                     height='312rem'
-                    image={step.imgPath}
-                    alt={step.name}
+                    image={step.groupimage}
+                    alt={step.groupname}
                 />
                 }
                 <CardContent>
