@@ -32,12 +32,14 @@ class LoginHandler(Resource):
             temp_polls_dict = [p.__dict__ for p in group.polls]
             polls_dict += temp_polls_dict
         
+        for poll in polls_dict:
+            del poll["_sa_instance_state"]
+
         groups_dict = [g.__dict__ for g in user.groups]
         for group in groups_dict:
             del group["_sa_instance_state"]
             poll_list = []
             for poll in polls_dict:
-                del poll["_sa_instance_state"]
                 if poll['group_id'] == group['id']:
                     poll_list += poll
             group.update({'polls': poll_list})

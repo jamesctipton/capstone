@@ -19,23 +19,21 @@ class CreatePollHandler(Resource):
         creator_id = json_data['user']   # need frontend support for this
         group_id = json_data['groupid']  # and this
         totalVotes = 0
-        options = json_data['options']
-        pollItems = []
-        for op in options:
-            pollItems.append(json.dumps(PollOption(options[op]["name"], options[op]["votes"], options[op]["image"])))
-            pollItems.append(op)
-        
+        pollOptions = ['pollOptions']
+
         # make sure poll code is unique
         pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
         db_pollCode = Poll.query.filter_by(pollCode=pollCode).first()
         while(pollCode == db_pollCode.pollCode):
             pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
 
-        # add poll to db, assign creator and group
         poll = Poll(pollCode=pollCode, pollname=pollname, creator_id=creator_id, group_id=group_id,
-                    totalVotes=totalVotes, option1=json.dumps(pollItems[0]), option2=json.dumps(pollItems[1]),
-                    option3=json.dumps(pollItems[2]), option4=json.dumps(pollItems[3]), option5=json.dumps(pollItems[4]))
-        
+                    totalVotes=totalVotes)
+
+        for item in pollOptions:
+            poll.options.append(item)
+
+        # add poll to db, assign creator and group
         db.session.add(poll)
         db.session.commit()   
 

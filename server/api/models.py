@@ -41,11 +41,12 @@ class Group(db.Model):
 
 # Individual poll option
 class PollOption(object):
-    def __init__(self, name, description="", votes=0, image=None) -> None:
-        self.name = name
-        self.description = description
-        self.votes = votes
-        self.image = image
+    id = db.Column(db.Integer, primary_key=True)
+    optionname = db.Column(db.String(256), index=True, unique=True)
+    description = db.Column(db.String(256), index=True, unique=True)
+    votes = db.Column(db.Integer)
+    image = db.Column(db.Text(4294000000), nullable=True)
+    poll_id = db.Column(db.Integer, db.ForeignKey('poll.id')) # poll that option belongs in
 
 # Polls (voting on a category in a group)
 class Poll(db.Model):
@@ -55,9 +56,5 @@ class Poll(db.Model):
     pollCategory = db.Column(db.String(64))
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id')) # user who created poll
     group_id = db.Column(db.Integer, db.ForeignKey('group.id')) # group poll belongs in
-    option1 = db.Column(db.JSON)
-    option2 = db.Column(db.JSON)
-    option3 = db.Column(db.JSON, nullable=True) # minimum 2 poll options
-    option4 = db.Column(db.JSON, nullable=True)
-    option5 = db.Column(db.JSON, nullable=True) # maximum 5
     totalVotes = db.Column(db.Integer)
+    options = db.relationship('PollOption', backref='poll')
