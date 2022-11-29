@@ -48,7 +48,7 @@ class Poll(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id')) # user who created poll
     group_id = db.Column(db.Integer, db.ForeignKey('group.id')) # group poll belongs in
     totalVotes = db.Column(db.Integer)
-    options = db.relationship('PollOption', backref='poll')
+    #options = db.relationship('PollOption', backref='poll')
 
 # Individual poll option
 class PollOption(object):

@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import Paris from '../assets/Paris.jpeg';
+import Paris from '../assets/paris.jpeg';
 
 const Post = () => {
   return (
