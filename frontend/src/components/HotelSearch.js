@@ -48,6 +48,7 @@ const HotelSearch = () => {
         navigate('/join-create')
     }
     const user = JSON.parse(localStorage.getItem('user'))
+
     const columns = [
         {
             field: 'name',
@@ -58,6 +59,8 @@ const HotelSearch = () => {
         {
             field: 'URL',
             headerName: 'Website',
+            renderCell: (params) =>
+                <a href={params.row.URL} target="blank">{params.row.URL}</a>,
             minWidth: 200,
             flex: 0.4
         },
@@ -149,7 +152,13 @@ const HotelSearch = () => {
                             {persistentHotels.map((hotel, i) => {
                                 return (
                                     <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
-                                        <Typography color='primary'>{hotel['name']}</Typography>
+                                        <Button
+                                    color='primary'
+                                    onClick={() => {
+                                        let temp = persistentHotels.splice(i,1)
+                                        setPersistentHotels(persistentHotels.filter(n => !temp.includes(n)))
+                                    }}
+                                >X {hotel['name']}</Button>
                                     </Box>
                                 )
                             })}
@@ -199,7 +208,26 @@ const HotelSearch = () => {
                                 rowsPerPageOptions={[20]}
                                 checkboxSelection
                                 isRowSelectable={(p) => (persistentHotels.length) < 5 || !(selectedHotels.indexOf(p.row) === -1)}
-
+                                onSelectionModelChange={(ids) => {
+                                    let temp = ids.map((id) => rows.find((row) => row.id === id))
+                                    let t2 = selectedHotels
+                                    setSelectedHotels(temp)
+                                    if(persistentHotels.length === 0) {
+                                        setPersistentHotels(temp)
+                                    }
+                                    let current = persistentHotels
+                                    let x = temp.filter(n => !selectedHotels.includes(n))
+                                    if(x[0] != undefined) {
+                                        current.push(x[0])
+                                    }
+                                    // for deletions
+                                    if((temp.length < t2.length) && temp.length > 0) {
+                                        let remove = t2[t2.length - 1]
+                                        let j = current.findIndex((y) => y === remove)
+                                        current.splice(j, 1)
+                                    }
+                                    setPersistentHotels(current)
+                                }}
                             />
                         </Box>
                     </div>
