@@ -90,7 +90,7 @@ def get_hotels(latitude, longitude, radius, city, state, country):
 #print(get_hotels(48.85693, 2.3412, 50, "madrid", "", "spain"))
 
 # get points of interest for certain destination
-# return poi name, category(sightseeing, restaurant, etc), atitude/longitude, description tags, and URL
+# return poi name, category(sightseeing, restaurant, etc), latitude/longitude, description tags, and URL
 # https://developers.amadeus.com/self-service/category/destination-content/api-doc/points-of-interest/api-reference 
 def get_pois(latitude, longitude, radius_miles, city, state, country):
     conversion_factor = 0.62137119
@@ -101,14 +101,14 @@ def get_pois(latitude, longitude, radius_miles, city, state, country):
             return []
 
         df = pd.json_normalize(response.data)
-        df = df[["name", "category", "geoCode.latitude", "geoCode.longitude"]]
-        df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
+        df = df[["name", "category"]]#, "geoCode.latitude", "geoCode.longitude"]]
+        #df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
         pois_dict = df.to_dict('records')
         
         for record in pois_dict:
-            if math.isnan(record['latitude']) or math.isnan(record['longitude']):
-                del record['latitude']
-                del record['longitude']
+            # if math.isnan(record['latitude']) or math.isnan(record['longitude']):
+            #     del record['latitude']
+            #     del record['longitude']
             separator = '+'
             if(state == ""):
                 params = separator.join([record['name'], city, country])
