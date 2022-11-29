@@ -217,15 +217,27 @@ const DestinationSearch = ({ hotelSearch }) => {
                     columns={columns}
                     pageSize={20}
                     rowsPerPageOptions={[20]}
-                    checkboxSelection={(hotelSearch ? false : true)}
-                    isRowSelectable={(p) => selectedDestinations.length < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
+                    checkboxSelection
+                    isRowSelectable={(p) => (persistentDest.length) < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
                     onSelectionModelChange={(ids) => {
                         let temp = ids.map((id) => rows.find((row) => row.id === id))
+                        let t2 = selectedDestinations
                         setSelectedDestinations(temp)
-                        let otherTemp = temp.filter(n => !persistentDest.includes(n))
-                        // let otherTemp = (persistentDest.length === 0) ? ((selectedDestinations.length === 0) ? selectedDestinations : ids.map((id) => rows.find((row) => row.id === id))) : persistentDest
-                        // otherTemp.push(temp.filter(n => !selectedDestinations.includes(n)))
-                        // setPersistentDest(temp)
+                        if(persistentDest.length === 0) {
+                            setPersistentDest(temp)
+                        }
+                        let current = persistentDest
+                        let x = temp.filter(n => !selectedDestinations.includes(n))
+                        if(x[0] != undefined) {
+                            current.push(x[0])
+                        }
+                        // for deletions
+                        if((temp.length < t2.length) && temp.length > 0) {
+                            let remove = t2[t2.length - 1]
+                            let j = current.findIndex((y) => y === remove)
+                            current.splice(j, 1)
+                        }
+                        setPersistentDest(current)
                     }}
                 />
             </Box>
