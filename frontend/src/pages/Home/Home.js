@@ -34,7 +34,6 @@ const Home = () => {
 
   // const trips = 0
   const user = JSON.parse(localStorage.getItem('user'))
-  // user.groups = []
   console.log(user)
   const trips = (user.groups) ? user.groups.length : 0;
 
