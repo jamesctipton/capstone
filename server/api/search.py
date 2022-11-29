@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from flask import request, jsonify
+from flask import request
 from api.travel_data import *
 
 # Search parameters: Just a keyword

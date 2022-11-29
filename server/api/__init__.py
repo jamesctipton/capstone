@@ -3,8 +3,8 @@ from api.config import Config
 from flask_sqlalchemy import SQLAlchemy 
 from flask_migrate import Migrate
 from flask_mail import Mail
-from sqlalchemy import MetaData
-from sqlalchemy_schemadisplay import create_schema_graph
+# from sqlalchemy import MetaData
+# from sqlalchemy_schemadisplay import create_schema_graph
 
 app = Flask(__name__)
 app.config.from_object(Config)
