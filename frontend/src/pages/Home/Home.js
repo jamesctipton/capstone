@@ -58,11 +58,7 @@ const Home = () => {
 
   return (
       <>
-<<<<<<< HEAD
-        {(user) 
-=======
         {user 
->>>>>>> 405e2ad81b0b8e4e76af82bc563dc1a7777300f6
           ? 
           <>
           {(trips === 0) ?

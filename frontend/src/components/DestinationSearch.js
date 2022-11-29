@@ -32,6 +32,7 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
     const [input, setInput] = useState("")
     const [rows, setRows] = useState([])
     const [selectedDestinations, setSelectedDestinations] = useState([])
+    const [persistentDest, setPersistentDest] = useState([])
     const [pollNameValue, setPollName] = useState("")
     const [groupValue, setGroupValue] = useState("")
 
@@ -44,7 +45,7 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
         {
             field: 'name',
             headerName: 'Name',
-            minWidth: 360,
+            minWidth: 260,
             flex: 0.4
         },
         {
@@ -60,11 +61,18 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
             flex: 0.10
         },
         {
+            field: 'latitude',
+            headerName: 'Latitude',
+            type: 'number',
+            minWidth: 120,
+            flex: 0.2
+        },
+        {
             field: 'longitude',
             headerName: 'Longitude',
             type: 'number',
             minWidth: 120,
-            flex: 0.20
+            flex: 0.2
         }
     ]
 
@@ -88,7 +96,7 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
                 const results = response['data']['destinations']
                 let temp_array = []
                 for(let i = 0; i < results.length; i++) {
-                    results[i].id = i
+                    results[i].id = results[i].name + i.toString()
                     temp_array.push(results[i])
                 }
                 setRows(temp_array)
@@ -139,8 +147,8 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
                 <Box sx={{ border: '3px solid red', background: 'rgba(255, 0, 0, 0.1)', color: 'red', padding: 2 }}>
                     <Typography>{errorValue.message}</Typography>
                 </Box> : <></> }
-                <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 10, marginBottom: 4}}>
-                    {selectedDestinations.map((dest, i) => {
+                <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 10, marginBottom: 8}}>
+                    {persistentDest.map((dest, i) => {
                         return (
                             <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
                                 <Typography color='primary'>{dest['name'] + ', ' + (dest['stateCode'] ? dest['stateCode'] : dest['countryCode'])}</Typography>
@@ -157,7 +165,10 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
                             labelId="select-group"
                             value={groupValue}
                             label="Group"
-                            onChange={(e) => setGroupValue(e.target.value)}
+                            onChange={(e) => {
+                                setGroupValue(e.target.value)
+                                // setSelectedDestinations([])
+                            }}
                             variant="outlined"
                             sx={{ minWidth: '100px' }}
                             autoWidth
@@ -181,7 +192,7 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
                     </Button>
                 </div>
             </div>
-            <Box sx={{ height: 1152, width: '97%', marginTop: '2%'}}>
+            <Box sx={{ height: 1152, width: '100%', marginTop: '2%'}}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
@@ -190,7 +201,12 @@ const DestinationSearch = ({ isLoggedIn, user }) => {
                     checkboxSelection
                     isRowSelectable={(p) => selectedDestinations.length < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
                     onSelectionModelChange={(ids) => {
-                        setSelectedDestinations(ids.map((id) => rows.find((row) => row.id === id)))
+                        let temp = ids.map((id) => rows.find((row) => row.id === id))
+                        setSelectedDestinations(temp)
+                        let otherTemp = temp.filter(n => !persistentDest.includes(n))
+                        // let otherTemp = (persistentDest.length === 0) ? ((selectedDestinations.length === 0) ? selectedDestinations : ids.map((id) => rows.find((row) => row.id === id))) : persistentDest
+                        // otherTemp.push(temp.filter(n => !selectedDestinations.includes(n)))
+                        // setPersistentDest(temp)
                     }}
                 />
             </Box>

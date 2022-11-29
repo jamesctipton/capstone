@@ -81,4 +81,3 @@ class VotePollHandler(Resource):
             'pollID': pollCode,
             'userWhoVoted' : username                
         } 
-
