@@ -33,8 +33,8 @@ class LoginHandler(Resource):
         
         groups_dict = [g.__dict__ for g in user.groups]
         print(groups_dict)
-        #for group in groups_dict:
-            #del group["_sa_instance_state"]
+        for group in groups_dict:
+            del group["_sa_instance_state"]
         print(groups_dict)
 
         # groups_admin_dict = []
@@ -55,7 +55,7 @@ class LoginHandler(Resource):
             'message': "Successful credentials",
             'name': user.username,
             'firstname': user.firstname,
-            #'groups': groups_dict,
+            'groups': groups_dict,
             #'groups_admin': groups_admin_dict,
             # 'polls_created': json.dumps(poll_dict)
         }
