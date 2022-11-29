@@ -57,7 +57,7 @@ class CreateGroupHandler(Resource):
             'group_id': group.id,
             'admin_id': group.admin.id,
             'groupimage': group.groupimage,
-            'usercount': group.user_count
+            #'usercount': group.user_count
         }
     
 # unfinished
