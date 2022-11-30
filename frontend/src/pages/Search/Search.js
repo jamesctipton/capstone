@@ -7,6 +7,7 @@ import {
 import DestinationSearch from "../../components/DestinationSearch";
 import HotelSearch from "../../components/HotelSearch";
 import POISearch from "../../components/POISearch";
+import FlightSearch from "../../components/FlightSearch";
 
 const Search = () => {
 
@@ -53,7 +54,7 @@ const Search = () => {
                         <POISearch /> 
                         :
                         <>
-                            <Typography>Coming soon</Typography>
+                            <FlightSearch />
                         </>
                         ))}
         </div>

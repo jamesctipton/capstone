@@ -58,7 +58,7 @@ function CarouselItem(props) {
 
 // poll: {
 //     pollname: string,
-//     pollHash: string,
+//     pollCode: string,
 //     option1-5: pollItem?,
 //     totalVotes: int
 // }

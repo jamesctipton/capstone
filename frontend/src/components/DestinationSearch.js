@@ -179,97 +179,97 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
                 <Box sx={{ border: '3px solid red', background: 'rgba(255, 0, 0, 0.1)', color: 'red', padding: 2 }}>
                     <Typography>{errorValue.message}</Typography>
                 </Box> : <></> }
-                <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 10, marginBottom: 8}}>
-                    {persistentDest.map((dest, i) => {
-                        return (
-                            <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
-                                <Button
-                                    color='primary'
-                                    onClick={() => {
-                                        let temp = persistentDest.splice(i,1)
-                                        setPersistentDest(persistentDest.filter(n => !temp.includes(n)))
-                                    }}
-                                >X {dest['name'] + ', ' + (dest['stateCode'] ? dest['stateCode'] : dest['countryCode'])}</Button>
-                            </Box>
-                        )
-                    })}
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '85%', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, minWidth: 'max-content'}}>
-                        {(user) ?
-                        <FormControl fullWidth>
-                        <InputLabel id="select-label">Group</InputLabel>
-                        <Select
-                            id="group"
-                            labelId="select-group"
-                            value={groupValue}
-                            label="Group"
-                            onChange={(e) => {
-                                setGroupValue(e.target.value)
-                                // setSelectedDestinations([])
-                            }}
-                            variant="outlined"
-                            sx={{ minWidth: '100px' }}
-                            autoWidth
-                        >
-                            {user.groups.length > 0 ? 
-                                user.groups.map((g, i) => {
-                                    return(
-                                        <MenuItem key={i} value={g.groupCode}>{g.groupname}</MenuItem>
-                                    )
-                                }): <MenuItem>No groups available</MenuItem>}
-                            <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
-                            <Button sx={{ marginLeft: '8%' }} onClick={() => navigateToCreateGroup()}>Create Group</Button>
-                        </Select>
-                    </FormControl>
-                    : <></>}
-                        <TextField id='poll_name' label="Poll Name" variant="outlined" onChange={(e) => setPollName(e.target.value)} value={pollNameValue} sx={{ minWidth: 'max-content'}}></TextField>
-                        <Button 
-                            disabled={(!(user || persistentDest.length > 5) && (persistentDest.length === 1 || persistentDest.length === 0)) || (groupValue === "" || pollNameValue === "")}
-                            sx={{ border: '2px solid orange', borderRadius: 1, padding: 1, whiteSpace: 'no-wrap', minWidth: 'max-content' }} 
-                            onClick={() => createPoll(groupValue, pollNameValue, persistentDest)}
-                        >
-                            Add Poll
-                        </Button>
-                    </div>
-                </div>
-                <Box sx={{ height: 1152, width: '100%', marginTop: '2%'}}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        pageSize={20}
-                        rowsPerPageOptions={[20]}
-                        checkboxSelection={!(hotelSearch || poiSearch)}
-                        isRowSelectable={(p) => (persistentDest.length) < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
-                        onSelectionModelChange={(ids) => {
-                            let temp = ids.map((id) => rows.find((row) => row.id === id))
-                            let t2 = selectedDestinations
-                            setSelectedDestinations(temp)
-                            if(persistentDest.length === 0) {
-                                setPersistentDest(temp)
-                            }
-                            let current = persistentDest
-                            let x = temp.filter(n => !selectedDestinations.includes(n))
-                            if(x[0] !== undefined) {
-                                current.push(x[0])
-                            }
-                            // for deletions
-                            if((temp.length < t2.length) && temp.length > 0) {
-                                let remove = t2[t2.length - 1]
-                                let j = current.findIndex((y) => y === remove)
-                                current.splice(j, 1)
-                            }
-                            if(temp.length === 0 && t2.length === 1) {
-                                if(current.length === 1)
-                                    current = []
-                                else {
-                                    current.pop()
-                                }
-                            }
-                            setPersistentDest(current)
+            <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 10, marginBottom: 8}}>
+                {persistentDest.map((dest, i) => {
+                    return (
+                        <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
+                            <Button
+                                color='primary'
+                                onClick={() => {
+                                    let temp = persistentDest.splice(i,1)
+                                    setPersistentDest(persistentDest.filter(n => !temp.includes(n)))
+                                }}
+                            >X {dest['name'] + ', ' + (dest['stateCode'] ? dest['stateCode'] : dest['countryCode'])}</Button>
+                        </Box>
+                    )
+                })}
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '85%', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, minWidth: 'max-content'}}>
+                    {(user) ?
+                    <FormControl fullWidth>
+                    <InputLabel id="select-label">Group</InputLabel>
+                    <Select
+                        id="group"
+                        labelId="select-group"
+                        value={groupValue}
+                        label="Group"
+                        onChange={(e) => {
+                            setGroupValue(e.target.value)
+                            // setSelectedDestinations([])
                         }}
-                    />
-                </Box>
+                        variant="outlined"
+                        sx={{ minWidth: '100px' }}
+                        autoWidth
+                    >
+                        {user.groups.length > 0 ? 
+                            user.groups.map((g, i) => {
+                                return(
+                                    <MenuItem key={i} value={g.groupCode}>{g.groupname}</MenuItem>
+                                )
+                            }): <MenuItem>No groups available</MenuItem>}
+                        <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
+                        <Button sx={{ marginLeft: '8%' }} onClick={() => navigateToCreateGroup()}>Create Group</Button>
+                    </Select>
+                </FormControl>
+                : <></>}
+                    <TextField id='poll_name' label="Poll Name" variant="outlined" onChange={(e) => setPollName(e.target.value)} value={pollNameValue} sx={{ minWidth: 'max-content'}}></TextField>
+                    <Button 
+                        disabled={(!(user || persistentDest.length > 5) && (persistentDest.length === 1 || persistentDest.length === 0)) || (groupValue === "" || pollNameValue === "")}
+                        sx={{ border: '2px solid orange', borderRadius: 1, padding: 1, whiteSpace: 'no-wrap', minWidth: 'max-content' }} 
+                        onClick={() => createPoll(groupValue, pollNameValue, persistentDest)}
+                    >
+                        Add Poll
+                    </Button>
+                </div>
+            </div>
+            <Box sx={{ height: 1152, width: '100%', marginTop: '2%'}}>
+                <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    pageSize={20}
+                    rowsPerPageOptions={[20]}
+                    checkboxSelection={!(hotelSearch || poiSearch)}
+                    isRowSelectable={(p) => (persistentDest.length) < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
+                    onSelectionModelChange={(ids) => {
+                        let temp = ids.map((id) => rows.find((row) => row.id === id))
+                        let t2 = selectedDestinations
+                        setSelectedDestinations(temp)
+                        if(persistentDest.length === 0) {
+                            setPersistentDest(temp)
+                        }
+                        let current = persistentDest
+                        let x = temp.filter(n => !selectedDestinations.includes(n))
+                        if(x[0] !== undefined) {
+                            current.push(x[0])
+                        }
+                        // for deletions
+                        if((temp.length < t2.length) && temp.length > 0) {
+                            let remove = t2[t2.length - 1]
+                            let j = current.findIndex((y) => y === remove)
+                            current.splice(j, 1)
+                        }
+                        if(temp.length === 0 && t2.length === 1) {
+                            if(current.length === 1)
+                                current = []
+                            else {
+                                current.pop()
+                            }
+                        }
+                        setPersistentDest(current)
+                    }}
+                />
+            </Box>
         </div>
     )
 }

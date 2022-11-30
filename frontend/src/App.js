@@ -17,28 +17,31 @@ import { Typography } from '@mui/material';
 import Search from './pages/Search/Search';
 import Favorites from './pages/Favorites/Favorites';
 import Friends from './pages/friends/Friends';
-// import Sidebar  from './components/Sidebar';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
 function App (){
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<TopNavBar />}>
-          <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Registration />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="new-password/:hash" element={<NewPassword />} />
-          <Route path="trip/:hash" element={<Trip />} />
-          <Route path="join-create" element={<JoinCreate />} />
-          <Route path="search" element={<Search />} />
-          <Route path="favorites" element={<Favorites />} />
-          <Route path="friends" element={<Friends />} />
-          <Route path="profile" element={<Typography>Profile</Typography>} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<TopNavBar />}>
+            <Route index element={<Home />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Registration />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="new-password/:hash" element={<NewPassword />} />
+            <Route path="trip/:hash" element={<Trip />} />
+            <Route path="join-create" element={<JoinCreate />} />
+            <Route path="search" element={<Search />} />
+            <Route path="favorites" element={<Favorites />} />
+            <Route path="friends" element={<Friends />} />
+            <Route path="profile" element={<Typography>Profile</Typography>} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </LocalizationProvider>
   );
 }
 
