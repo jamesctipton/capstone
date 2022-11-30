@@ -16,8 +16,8 @@ const Favorite_feed = () => {
 
   return (
 
-      <Box flex = {4} p = { 2}>
-              <Box flex={4} p={{ xs: 0, md: 2 }}>
+      <Box flex = {5} p = { 2}>
+              <Box flex={3} p={{ xs: 0, md: 2 }}>
       {loading ? (
         <Stack spacing={1}>
           <Skeleton variant="text" height={100} />

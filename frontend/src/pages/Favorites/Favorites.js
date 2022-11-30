@@ -7,7 +7,7 @@ import { Box, Container, Stack } from '@mui/material';
 export default function Favorites () {
   return (
             <Box>
-              <Stack direction='row' spacing ={2} justifyContent='space-between'>
+              <Stack direction='row' spacing ={10} justifyContent='space-between'>
 
                 <Sidebar />
                 <Favorite_feed />
