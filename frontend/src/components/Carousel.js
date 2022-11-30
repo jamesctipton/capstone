@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Card, CardActionArea, Divider } from "@mui/material";
+import React, { useEffect } from "react";
+import { Card, CardActionArea } from "@mui/material";
 import { CardContent, CardMedia, Typography } from "@material-ui/core";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const url = "http://127.0.0.1:5000/vote-poll"
 var hover = false;
 
-//item:  {
+//group/trip:  {
 //     groupname: string,
 //     summary: string,
 //     groupimage?: string,
@@ -86,7 +86,7 @@ function PollItem(props) {
                     <div style={{ position: 'absolute', zIndex: 100, backgroundColor: '#ffffff', opacity: 0.8, borderRadius: 100, width: 'auto', textAlign: 'center', padding: 12, margin: 16, right: 0 }} >
                         {(didVote) ? `${((step.votes / props.totalVotes).toFixed(2) * 100)}%` : ''}
                     </div>
-                    {(step.imgPath == '' || step.imgPath == null) ?
+                    {(step.imgage == '' || step.image == null) ?
                     <div
                         style={{ backgroundColor: '#666666', height: '20rem', color: '#dddddd', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', fontSize: 40, }}
                     >No image
@@ -94,8 +94,8 @@ function PollItem(props) {
                     :
                     <CardMedia
                         component='img'
-                        height='312rem'
-                        image={step.imgPath}
+                        height='320rem'
+                        image={step.image}
                         alt={step.name}
                     />
                     }
@@ -173,7 +173,7 @@ export function Carousel(props) {
         <div id='car' onMouseOver={() => { hover = true }} onMouseLeave={() => {hover = false}} style={{width: '100%', minHeight: '25rem', display: 'flex', overflowX: 'scroll', scrollSnapType: 'x mandatory', }}>
             {(props.items.length === 1) 
             ? 
-            <div style={{ marginRight: 'auto', marginLeft: 'auto' }}>
+            <div style={{ marginRight: 'auto', marginLeft: 'auto', minWidth: '45%' }}>
                 <CarouselItem step={items[0]}></CarouselItem>
             </div>
             :

@@ -14,8 +14,8 @@ import {
     Divider,
     Button,
     TextField,
+    Box
 } from '@mui/material';
-import { Box } from "@mui/system";
 import { DataGrid } from "@mui/x-data-grid";
 
 const search_url = 'http://127.0.0.1:5000/search-'

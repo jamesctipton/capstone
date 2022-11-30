@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
-import Switch from '@mui/material/Switch';
 import { 
-    InputAdornment,
     Button,
     Typography,
-} from '@mui/material';
-import Divider from '@mui/material/Divider';
-import TextField from '@mui/material/TextField';
-import PersonPinIcon from '@mui/icons-material/PersonPin';
-import { useNavigate } from "react-router-dom";
-import { 
     FormControlLabel, 
     FormGroup, 
     IconButton 
 } from '@mui/material';
+import Switch from '@mui/material/Switch';
+import Divider from '@mui/material/Divider';
+import TextField from '@mui/material/TextField';
+import PersonPinIcon from '@mui/icons-material/PersonPin';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 

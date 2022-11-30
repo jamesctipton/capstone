@@ -5,15 +5,6 @@ import {
     Box,
     Grid,
     Paper,
-    IconButton,
-
-    Divider,
-    ImageList,
-    ImageListItem,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
     Typography,
   } from "@mui/material";
   import DeleteIcon from '@mui/icons-material/Delete';

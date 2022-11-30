@@ -50,12 +50,15 @@ const TopNavBar = () => {
     setAnchorEl(null);
   };
 
+  const navigate = useNavigate()
+
   const handleLogout = () => {
     setAnchorEl(null);
     localStorage.removeItem('user');
+    navigate('/')
+    window.location.reload();
   }
 
-  const navigate = useNavigate()
   const navigateToSearch = () => {
     navigate('/search')
   }

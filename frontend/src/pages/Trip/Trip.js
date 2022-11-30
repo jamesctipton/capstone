@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { 
   createTheme, Typography, 
 } from '@mui/material';
 import { Box } from '@material-ui/core';
 import { Carousel } from '../../components/Carousel';
 
-const url = 'http://127.0.0.1:5000/trip'
 const theme = createTheme({
   palette: {
     primary: {
@@ -17,44 +16,34 @@ const theme = createTheme({
 
 const Trip = (props) => {
   const user = JSON.parse(localStorage.getItem('user'))
-  console.log(user)
-  let groupIndex;
   let polls;
 
   const groupCode = window.location.href.substr(window.location.href.lastIndexOf('/') + 1) 
-  console.log(groupCode)
 
   const group = user.groups.filter(object => {
     return object.groupCode === groupCode
   })[0]
-  console.log(group, group.groupname)
 
   let samplePoll = [
-    {
-      name: 'option 1',
-      description: "sample",
-      votes: 1,
-      image: ""
-    },
-    {
-      name: 'option 2',
-      description: "",
-      votes: 2,
-      image: ""
-    },
-    {
-      name: 'option 3',
-      description: "another description thats very long another description thats very long another description thats very long another description thats very long another description thats very long another description thats very long",
-      votes: 3,
-      image: ""
-    },
-    {
-      name: 'option 4',
-      description: "",
-      votes: 4,
-      image: ""
-    },
-  ]
+        {
+          name: 'san fran',
+          description: "sample",
+          votes: 1,
+          image: "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60"
+        },
+        {
+          name: 'indonesia',
+          description: "we love oceania",
+          votes: 2,
+          image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250"
+        },
+        {
+          name: 'serbia',
+          description: "getting cold w the boys",
+          votes: 4,
+          image: "https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60"
+        },
+      ]
   
   var totalVotes = 10
 
