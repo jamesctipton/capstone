@@ -225,9 +225,9 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
                     : <></>}
                         <TextField id='poll_name' label="Poll Name" variant="outlined" onChange={(e) => setPollName(e.target.value)} value={pollNameValue} sx={{ minWidth: 'max-content'}}></TextField>
                         <Button 
-                            disabled={(!(user || selectedDestinations.length > 5) && (selectedDestinations.length === 1 || selectedDestinations.length === 0)) || (groupValue === "" || pollNameValue === "")}
+                            disabled={(!(user || persistentDest.length > 5) && (persistentDest.length === 1 || persistentDest.length === 0)) || (groupValue === "" || pollNameValue === "")}
                             sx={{ border: '2px solid orange', borderRadius: 1, padding: 1, whiteSpace: 'no-wrap', minWidth: 'max-content' }} 
-                            onClick={() => createPoll(groupValue, pollNameValue, selectedDestinations)}
+                            onClick={() => createPoll(groupValue, pollNameValue, persistentDest)}
                         >
                             Add Poll
                         </Button>
@@ -239,7 +239,7 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
                         columns={columns}
                         pageSize={20}
                         rowsPerPageOptions={[20]}
-                        checkboxSelection={!hotelSearch}
+                        checkboxSelection={!(hotelSearch || poiSearch)}
                         isRowSelectable={(p) => (persistentDest.length) < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
                         onSelectionModelChange={(ids) => {
                             let temp = ids.map((id) => rows.find((row) => row.id === id))

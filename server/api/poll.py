@@ -19,7 +19,7 @@ class CreatePollHandler(Resource):
         creator_id = json_data['user']   # need frontend support for this
         group_id = json_data['groupid']  # and this
         totalVotes = 0
-        pollOptions = ['pollOptions']
+        pollOptions = ['options']
 
         # make sure poll code is unique
         pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
