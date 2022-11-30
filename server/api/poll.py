@@ -24,8 +24,9 @@ class CreatePollHandler(Resource):
         # make sure poll code is unique
         pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
         db_pollCode = Poll.query.filter_by(pollCode=pollCode).first()
-        while(pollCode == db_pollCode.pollCode):
-            pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+        if db_pollCode:
+            while(pollCode == db_pollCode.pollCode):
+                pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
 
         poll = Poll(pollCode=pollCode, pollname=pollname, creator_id=creator_id, group_id=group_id,
                     totalVotes=totalVotes)
