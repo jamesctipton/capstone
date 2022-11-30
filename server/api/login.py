@@ -27,35 +27,52 @@ class LoginHandler(Resource):
                 'message': "Invalid username or password"
             }
         
-        polls_dict = []
+        
+        groups = []
         for group in user.groups:
-            temp_polls_dict = [p.__dict__ for p in group.polls]
-            polls_dict += temp_polls_dict
+            polls = []
+            for poll in group.polls:
+                options = []
+                for option in poll.options:
+                    option = {'name': option.optionname,
+                              'description': option.description,
+                              'image': option.image,
+                              'votes': option.votes}
+                    options.append(option)
+                poll = {'pollname': poll.pollname,
+                        'pollCode': poll.pollCode,
+                        'pollCategory': poll.pollCategory,
+                        'totalVotes': poll.totalVotes,
+                        'options': options}
+                polls.append(poll)
+            group = {'groupname': group.groupname,
+                    'destination': group.destination,
+                    'groupCode': group.groupCode,
+                    'group_id': group.id,
+                    'admin_id': group.admin.id,
+                    'groupimage': group.groupimage,
+                    'polls': polls}
+            groups.append(group)
+
+
+        # this code works...but it is dogshit
+        # 
+        # polls_dict = []
+        # for group in user.groups:
+        #     temp_polls_dict = [p.__dict__ for p in group.polls]
+        #     polls_dict += temp_polls_dict
         
-        for poll in polls_dict:
-            del poll["_sa_instance_state"]
+        # for poll in polls_dict:
+        #     del poll["_sa_instance_state"]
 
-        groups_dict = [g.__dict__ for g in user.groups]
-        for group in groups_dict:
-            del group["_sa_instance_state"]
-            poll_list = []
-            for poll in polls_dict:
-                if poll['group_id'] == group['id']:
-                    poll_list += poll
-            group.update({'polls': poll_list})
-
-        
-        # groups_admin_dict = []
-        # if(user.groups_admin != []):
-        #     groups_admin_dict = [ga.__dict__ for ga in user.groups_admin]
-        #     print(groups_admin_dict)
-            #  for group_admin in groups_admin_dict:
-            #     del group_admin["_sa_instance_state"]
-
-        # poll_dict = [p.__dict__ for p in user.groups.polls]
-        # for poll in poll_dict:
-        #     if(poll_dict != []):
-        #         poll.pop('_sa_instance_state')
+        # groups_dict = [g.__dict__ for g in user.groups]
+        # for group in groups_dict:
+        #     del group["_sa_instance_state"]
+        #     poll_list = []
+        #     for poll in polls_dict:
+        #         if poll['group_id'] == group['id']:
+        #             poll_list += poll
+        #     group.update({'polls': poll_list})
         
         # send user info and list of groups user is in
         return {
@@ -63,9 +80,7 @@ class LoginHandler(Resource):
             'message': "Successful credentials",
             'name': user.username,
             'firstname': user.firstname,
-            'groups': groups_dict,
-            #'groups_admin': groups_admin_dict,
-            # 'polls_created': json.dumps(poll_dict)
+            'groups': json.dumps(groups)
         }
 
 # done

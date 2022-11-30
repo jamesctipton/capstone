@@ -131,7 +131,6 @@ class EditGroupHandler(Resource):
         group.destination = json_data['destination'] # nullable
         group.groupimage = json_data['groupimage'] # nullable
         group.summary = json_data['summary'] # nullable
-        group.state = json_data['groupstate']
         
         db.session.commit()
 

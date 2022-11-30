@@ -19,6 +19,7 @@ class CreatePollHandler(Resource):
         creator_id = json_data['user']   # need frontend support for this
         group_id = json_data['groupid']  # and this
         totalVotes = 0
+        category = ['category']
         pollOptions = ['pollOptions']
 
         # make sure poll code is unique
@@ -29,10 +30,12 @@ class CreatePollHandler(Resource):
                 pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
 
         poll = Poll(pollCode=pollCode, pollname=pollname, creator_id=creator_id, group_id=group_id,
-                    totalVotes=totalVotes)
+                    totalVotes=totalVotes, pollCategory = category)
 
-        for item in pollOptions:
-            poll.options.append(item)
+        for option in pollOptions:
+            option = PollOption(optionname = option['name'], description = option['description'], 
+                                votes = 0, image = option['image'])
+            poll.options.append(option)
 
         # add poll to db, assign creator and group
         db.session.add(poll)
