@@ -53,6 +53,7 @@ const TopNavBar = () => {
   const handleLogout = () => {
     setAnchorEl(null);
     localStorage.removeItem('user');
+    window.location.reload()
   }
 
   const navigate = useNavigate()
