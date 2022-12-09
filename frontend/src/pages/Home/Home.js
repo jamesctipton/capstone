@@ -59,6 +59,7 @@ const Home = () => {
       }
     }
   }
+  console.log(user)
 
   return (
       <>

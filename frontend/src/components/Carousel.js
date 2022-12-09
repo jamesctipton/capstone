@@ -86,7 +86,7 @@ function PollItem(props) {
                     <div style={{ position: 'absolute', zIndex: 100, backgroundColor: '#ffffff', opacity: 0.8, borderRadius: 100, width: 'auto', textAlign: 'center', padding: 12, margin: 16, right: 0 }} >
                         {(didVote) ? `${((step.votes / props.totalVotes).toFixed(2) * 100)}%` : ''}
                     </div>
-                    {(step.imgPath == '' || step.imgPath == null) ?
+                    {(step.image == '' || step.image == null) ?
                     <div
                         style={{ backgroundColor: '#666666', height: '20rem', color: '#dddddd', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', fontSize: 40, }}
                     >No image
@@ -95,7 +95,7 @@ function PollItem(props) {
                     <CardMedia
                         component='img'
                         height='312rem'
-                        image={step.imgPath}
+                        image={step.image}
                         alt={step.name}
                     />
                     }
