@@ -19,7 +19,7 @@ const Search = () => {
     const user = JSON.parse(localStorage.getItem('user'))
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '5%', width: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '4%', width: '100%' }}>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginBottom: '1%'}}>
                 <Button  
                     sx={{ backgroundColor: (initCriteria === 'destination') ? 'rgba(207, 125, 43, .31)' : 'rgba(0,0,0,0)', marginLeft: 2, marginRight: 2 }} 

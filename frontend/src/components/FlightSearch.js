@@ -14,7 +14,7 @@ import {
     Divider,
     Grid
 } from "@mui/material";
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, gridDensityRowHeightSelector } from '@mui/x-data-grid';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { Form, useNavigate } from "react-router-dom";
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
@@ -33,7 +33,8 @@ const FlightSearch = () => {
     //variables that will change based on user input
     const [to, setTo] = useState("")
     const [from, setFrom] = useState("")
-    const [rows, setRows] = useState([])
+    const [fromRows, setFromRows] = useState([])
+    const [destRows, setDestRows] = useState([])
     const [selectedDestinations, setSelectedDestinations] = useState([])
     const [persistentDest, setPersistentDest] = useState([])
     const [pollNameValue, setPollName] = useState("")
@@ -77,7 +78,7 @@ const FlightSearch = () => {
         }
     }
 
-    const searchDestination = (dest) => {
+    const searchDestination = (dest, from) => {
         if(dest === "") {
             setError({ message: "Please enter a destination", result: true })
         } else {
@@ -91,7 +92,11 @@ const FlightSearch = () => {
                     results[i].id = results[i].name + i.toString()
                     temp_array.push(results[i])
                 }
-                setRows(temp_array)
+                if(from) {
+                    setFromRows(temp_array)
+                } else {
+                    setDestRows(temp_array)
+                }
                 if(results.length === 0) {
                     setError({message: "No results found.", result: true})
                 }
@@ -116,49 +121,29 @@ const FlightSearch = () => {
     }
 
     return (
-        <div style={{ width: '90%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <div style={{width: '80%', marginTop: '2%', marginBottom: '2%'}}>
-                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                    <FormControl fullWidth flex={0.5} sx={{ paddingRight: 1, flex: 0.5 }}>
+        <div id='outer-container' style={{ width: '90%'}}>
+            <div id='search-container' style={{ width: '100%', display: 'flex', marginTop: '2%', marginBottom: '2%', justifyContent: 'space-between' }}>
+                <div id='start-search' style={{ width: '40%', display: 'flex', justifyContent: 'flex-start', flexDirection: 'column' }}>
+                    <Typography color="primary" sx={{ marginBottom: 1, textAlign: 'center' }}>Departure Location</Typography>
+                    <FormControl fullWidth flex={0.5} sx={{ marginBottom: 2 }}>
                         <OutlinedInput 
                             placeholder="Where from?"
                             variant="outlined" 
                             sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} 
-                            value={to}
-                            onChange={(e) => setTo(e.target.value)}
-                            fullWidth
-                            onKeyPress={event => {
-                                if (event.key === 'Enter') {
-                                    searchDestination(to)
-                                }
-                                }}
-                            endAdornment={
-                            <IconButton aria-label='search' onClick={() => searchDestination(to)} onMouseDown={() => {}} edge="end">
-                                <SearchOutlinedIcon fontSize="large" color="primary"/>
-                            </IconButton>}>
-                        </OutlinedInput>
-                    </FormControl>
-                    <FormControl fullWidth sx={{ paddingLeft: 1, flex: 0.5 }}>
-                        <OutlinedInput 
-                            placeholder="Where to?"
-                            variant="outlined" 
-                            sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 250}} 
                             value={from}
                             onChange={(e) => setFrom(e.target.value)}
                             fullWidth
                             onKeyPress={event => {
                                 if (event.key === 'Enter') {
-                                    searchDestination(from)
+                                    searchDestination(from, true)
                                 }
                                 }}
                             endAdornment={
-                            <IconButton aria-label='search' onClick={() => searchDestination(from)} onMouseDown={() => {}} edge="end">
+                            <IconButton aria-label='search' onClick={() => searchDestination(from, true)} onMouseDown={() => {}} edge="end">
                                 <SearchOutlinedIcon fontSize="large" color="primary"/>
                             </IconButton>}>
                         </OutlinedInput>
                     </FormControl>
-                </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 2}}>
                     <DesktopDatePicker
                         label="Departure Date"
                         inputFormat="MM/DD/YYYY"
@@ -170,10 +155,34 @@ const FlightSearch = () => {
                                 sx={{ 
                                     input: { color: '#CF7D30'}, 
                                     svg: { color: '#CF7D30'}, 
-                                    label: { color: '#CF7D30'} 
+                                    label: { color: '#CF7D30'},
+                                    width: '80%',
+                                    marginLeft: 6 
                                 }} 
                             />}
                     />
+                </div>
+                <div id='dest-search' style={{ width: '40%', display: 'flex', justifyContent: 'flex-end', flexDirection: 'column' }}>
+                    <Typography color="primary" sx={{ marginBottom: 1, textAlign: 'center' }}>Destination Location</Typography>
+                    <FormControl fullWidth flex={0.5} sx={{ marginBottom: 2 }}>
+                        <OutlinedInput 
+                            placeholder="Where to?"
+                            variant="outlined" 
+                            sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} 
+                            value={to}
+                            onChange={(e) => setTo(e.target.value)}
+                            fullWidth
+                            onKeyPress={event => {
+                                if (event.key === 'Enter') {
+                                    searchDestination(to, false)
+                                }
+                                }}
+                            endAdornment={
+                            <IconButton aria-label='search' onClick={() => searchDestination(to, false)} onMouseDown={() => {}} edge="end">
+                                <SearchOutlinedIcon fontSize="large" color="primary"/>
+                            </IconButton>}>
+                        </OutlinedInput>
+                    </FormControl>
                     <DesktopDatePicker
                         label="Arrival Date"
                         inputFormat="MM/DD/YYYY"
@@ -185,80 +194,24 @@ const FlightSearch = () => {
                                 sx={{ 
                                     input: { color: '#CF7D30'}, 
                                     svg: { color: '#CF7D30'}, 
-                                    label: { color: '#CF7D30'} 
+                                    label: { color: '#CF7D30'},
+                                    width: '80%',
+                                    marginLeft: 6 
                                 }} 
                             />}
                     />
-                </Box>
-            </div> 
-            { errorValue.result ? 
-                <Box sx={{ border: '3px solid red', background: 'rgba(255, 0, 0, 0.1)', color: 'red', padding: 2 }}>
-                    <Typography>{errorValue.message}</Typography>
-                </Box> : <></> }
-            <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 10, marginBottom: 8}}>
-                {persistentDest.map((dest, i) => {
-                    return (
-                        <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
-                            <Button
-                                color='primary'
-                                onClick={() => {
-                                    let temp = persistentDest.splice(i,1)
-                                    setPersistentDest(persistentDest.filter(n => !temp.includes(n)))
-                                }}
-                            >X {dest['name'] + ', ' + (dest['stateCode'] ? dest['stateCode'] : dest['countryCode'])}</Button>
-                        </Box>
-                    )
-                })}
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '85%', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, minWidth: 'max-content'}}>
-                    {(user) ?
-                    <FormControl fullWidth>
-                    <InputLabel id="select-label">Group</InputLabel>
-                    <Select
-                        id="group"
-                        labelId="select-group"
-                        value={groupValue}
-                        label="Group"
-                        onChange={(e) => {
-                            setGroupValue(e.target.value)
-                            // setSelectedDestinations([])
-                        }}
-                        variant="outlined"
-                        sx={{ minWidth: '100px' }}
-                        autoWidth
-                    >
-                        {user.groups.length > 0 ? 
-                            user.groups.map((g, i) => {
-                                return(
-                                    <MenuItem key={i} value={g.groupCode}>{g.groupname}</MenuItem>
-                                )
-                            }): <MenuItem>No groups available</MenuItem>}
-                        <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
-                        <Button sx={{ marginLeft: '8%' }} onClick={() => navigateToCreateGroup()}>Create Group</Button>
-                    </Select>
-                </FormControl>
-                : <></>}
-                    <TextField id='poll_name' label="Poll Name" variant="outlined" onChange={(e) => setPollName(e.target.value)} value={pollNameValue} sx={{ minWidth: 'max-content'}}></TextField>
-                    <Button 
-                        disabled={(!(user || persistentDest.length > 5) && (persistentDest.length === 1 || persistentDest.length === 0)) || (groupValue === "" || pollNameValue === "")}
-                        sx={{ border: '2px solid orange', borderRadius: 1, padding: 1, whiteSpace: 'no-wrap', minWidth: 'max-content' }} 
-                        onClick={() => createPoll(groupValue, pollNameValue, persistentDest)}
-                    >
-                        Add Poll
-                    </Button>
                 </div>
             </div>
-            <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', gap: 2 }}>
-                <Box sx={{ height: 1152, width: '100%', marginTop: '2%'}}>
+            <div id='results-container' style={{ width: '100%', display: 'flex', marginTop: '2%', marginBottom: '2%', justifyContent: 'space-between' }}>                
+                <div id='start-flight-results' style={{ width: '48%', display: 'flex', justifyContent: 'flex-start', flexDirection: 'column', height: 475 }}>
                     <DataGrid
-                        rows={rows}
+                        rows={fromRows}
                         columns={columns}
-                        pageSize={20}
-                        rowsPerPageOptions={[20]}
+                        pageSize={7}
+                        rowsPerPageOptions={[7]}
                         isRowSelectable={(p) => (persistentDest.length) < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
                         onSelectionModelChange={(ids) => {
-                            let temp = ids.map((id) => rows.find((row) => row.id === id))
+                            let temp = ids.map((id) => fromRows.find((row) => row.id === id))
                             let t2 = selectedDestinations
                             setSelectedDestinations(temp)
                             if(persistentDest.length === 0) {
@@ -285,16 +238,16 @@ const FlightSearch = () => {
                             setPersistentDest(current)
                         }}
                     />
-                </Box>
-                <Box sx={{ height: 1152, width: '100%', marginTop: '2%'}}>
+                </div>
+                <div id='end-flight-results' style={{ width: '48%', display: 'flex', justifyContent: 'flex-end', flexDirection: 'column', height: 475 }}>
                     <DataGrid
-                        rows={rows}
+                        rows={destRows}
                         columns={columns}
-                        pageSize={20}
-                        rowsPerPageOptions={[20]}
+                        pageSize={7}
+                        rowsPerPageOptions={[7]}
                         isRowSelectable={(p) => (persistentDest.length) < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
                         onSelectionModelChange={(ids) => {
-                            let temp = ids.map((id) => rows.find((row) => row.id === id))
+                            let temp = ids.map((id) => destRows.find((row) => row.id === id))
                             let t2 = selectedDestinations
                             setSelectedDestinations(temp)
                             if(persistentDest.length === 0) {
@@ -321,8 +274,13 @@ const FlightSearch = () => {
                             setPersistentDest(current)
                         }}
                     />
-                </Box>
-            </Box>
+                </div>
+            </div>
+            <Button 
+                type='button'
+                variant="outlined"
+                sx={{m: 1, borderWidth: 3, borderRadius: 30, borderColor: 'primary', whiteSpace: 'nowrap', minWidth: 'maxcontent', '&:hover': { borderWidth: 3 }, marginLeft: '41%', width: 200, height: 50, fontSize: 20 }}
+            >Search Flights</Button>
         </div>
     )
 }
