@@ -212,12 +212,12 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
                         sx={{ minWidth: '100px' }}
                         autoWidth
                     >
-                        {user.groups.length > 0 ? 
-                            user.groups.map((g, i) => {
-                                return(
-                                    <MenuItem key={i} value={g.groupCode}>{g.groupname}</MenuItem>
-                                )
-                            }): <MenuItem>No groups available</MenuItem>}
+                    {(user.groups.length > 0) ? 
+                        user.groups.map((g, i) => {
+                            return(
+                                <MenuItem key={i} value={g.groupCode}>{g.groupname}</MenuItem>
+                            )
+                        }): <MenuItem>No groups available</MenuItem>}
                         <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
                         <Button sx={{ marginLeft: '8%' }} onClick={() => navigateToCreateGroup()}>Create Group</Button>
                     </Select>
