@@ -196,7 +196,7 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
             </div>
             <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '85%', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, minWidth: 'max-content'}}>
-                    {(user) ?
+                    {user != undefined ?
                     <FormControl fullWidth>
                     <InputLabel id="select-label">Group</InputLabel>
                     <Select
