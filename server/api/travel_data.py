@@ -110,7 +110,7 @@ def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, depart
     except ResponseError as error:
         return error
 
-get_flights(51.507351, -0.127758, 52.520008, 13.404954, "2023-03-01")
+#get_flights(51.507351, -0.127758, 52.520008, 13.404954, "2023-03-01")
 
 
 
