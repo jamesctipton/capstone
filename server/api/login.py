@@ -66,8 +66,9 @@ class LoginHandler(Resource):
             'message': "Successful credentials",
             'name': user.username,
             'firstname': user.firstname,
+            'lastname': user.lastname,
+            'email': user.email,
             'groups': json.dumps(groups)
-            
         }
 
 # done

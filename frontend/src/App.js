@@ -17,6 +17,7 @@ import { Typography } from '@mui/material';
 import Search from './pages/Search/Search';
 import Favorites from './pages/Favorites/Favorites';
 import Friends from './pages/friends/Friends';
+import Profile from './pages/Profile/Profile';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
@@ -37,7 +38,7 @@ function App (){
             <Route path="search" element={<Search />} />
             <Route path="favorites" element={<Favorites />} />
             <Route path="friends" element={<Friends />} />
-            <Route path="profile" element={<Typography>Profile</Typography>} />
+            <Route path="profile" element={<Profile />} />
           </Route>
         </Routes>
       </BrowserRouter>
