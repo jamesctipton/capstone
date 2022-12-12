@@ -28,14 +28,19 @@ class LoginHandler(Resource):
             }
         
         groups = []
+        # Group population
         for group in user.groups:
             polls = []
+            # Poll population
             for poll in group.polls:
                 options = []
+                # Option population
                 for option in poll.options:
                     option = {'name': option.optionname,
-                              'description': option.description,
-                              'image': option.image,
+                              'latitude': option.latitude,
+                              'longitude': option.longitude,
+                              'country_code': option.countryCode,
+                              #'image': option.image,
                               'votes': option.votes}
                     options.append(option)
                 poll = {'pollname': poll.pollname,
@@ -44,15 +49,24 @@ class LoginHandler(Resource):
                         'totalVotes': poll.totalVotes,
                         'options': options}
                 polls.append(poll)
+            # Group population continued
             members = 0
             for user in group.users:
                 members += 1
+            if(group.start_month is None or group.start_day is None or group.start_year is None):
+                start_date = ""
+            else:
+                start_date = group.start_month + " " + group.start_day + ", " + group.start_year
+            if(group.end_month is None or group.end_day is None or group.end_year is None):
+                end_date = ""
+            else:
+                end_date = group.end_month + " " + group.end_day + ", " + group.end_year
+                  
             group = {'groupname': group.groupname,
                     'destination': group.destination,
                     'groupCode': group.groupCode,
-                    'day': group.day,
-                    'month': group.month,
-                    'year': group.year,
+                    'start_date': start_date,
+                    'end_date': end_date,
                     'group_id': group.id,
                     'admin_id': group.admin.id,
                     'groupimage': group.groupimage,
@@ -67,7 +81,6 @@ class LoginHandler(Resource):
             'name': user.username,
             'firstname': user.firstname,
             'groups': json.dumps(groups)
-            
         }
 
 # done

@@ -84,7 +84,9 @@ def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, depart
             return []
 
         df = pd.json_normalize(response.data)
-        
+        df[["segments.departure.iataCode", "segments.departure.at", "segments.arrival.iataCode", "segments.arrival.at", 
+        ]]
+        print(df)
 
         return
     
