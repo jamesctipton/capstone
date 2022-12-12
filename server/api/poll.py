@@ -1,7 +1,7 @@
 from api.__init__ import db
 from flask import request
 from flask_restful import Resource
-from api.models import Poll
+from api.models import Poll, User, Group 
 from api.models import PollOption
 import random, string
 
@@ -15,11 +15,17 @@ class CreatePollHandler(Resource):
     def post(self):
         json_data = request.get_json()
         pollname = json_data['pollname']
-        creator_id = json_data['user']   # need frontend support for this
-        group_id = json_data['groupid']  # and this
+        username = json_data['user']   # need frontend support for this
+        group_code = json_data['groupid']  # and this
         totalVotes = 0
         category = json_data['category']
         pollOptions = json_data['pollOptions']
+
+        # find id of user by username
+        creator_id = User.query.filter_by(username=username).first().id
+
+        # find id of group by group code 
+        group_id = Group.query.filter_by(groupCode=group_code).first().id
 
         # make sure poll code is unique
         pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
