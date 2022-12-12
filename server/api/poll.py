@@ -33,9 +33,9 @@ class CreatePollHandler(Resource):
 
         for num in pollOptions:
             for option in num:
-                option = PollOption(optionname = option['name'], latitude = option['description'], 
+                op = PollOption(optionname = option['name'], latitude = option['description'], 
                                 longitude = option['longitude'], votes = 0)
-                poll.options.append(option)
+                poll.options.append(op)
 
         # add poll to db, assign creator and group
         db.session.add(poll)
