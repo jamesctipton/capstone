@@ -108,7 +108,7 @@ const POISearch = () => {
             //if dont have city, destination search
             <>
                 {!selectedCity.name ? 
-                    <DestinationSearch hotelSearch={false} poiSearch={true} setDestination={initializeTable} />
+                    <DestinationSearch type={'poi'} setDestination={initializeTable} />
                     : 
                     <div style={{ width: '90%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <div style={{width: '80%', marginTop: '2%', marginBottom: '2%'}}>

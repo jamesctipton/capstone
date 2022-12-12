@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 const search_url = 'http://127.0.0.1:5000/search-'
 const create_poll_url = 'http://127.0.0.1:5000/create-poll'
 
-const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
+const DestinationSearch = ({ type, setDestination }) => {
 
     //error handling 
     const [errorValue, setError] = useState({
@@ -77,7 +77,7 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
             flex: 0.2
         }
     ]
-    if(hotelSearch || poiSearch) {
+    if(type == 'hotel' || type == 'poi') {
         columns.push({
             field: 'searchCityButton',
             headerName: '',
@@ -96,7 +96,7 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
                 }
                 return (
                     <Grid container justifyContent="flex-end">
-                        <Button sx={{ fontSize: 12 }} onClick={() => onClick()}>{hotelSearch ? 'Search Hotels' : 'Search Landmarks'}</Button>
+                        <Button sx={{ fontSize: 12 }} onClick={() => onClick()}>{type == 'hotel' ? 'Search Hotels' : 'Search Landmarks'}</Button>
                     </Grid>
 
                 )
@@ -144,7 +144,8 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
             pollname: pollName,
             user: user.name,
             groupid: group,
-            options: destinations
+            pollOptions: destinations,
+            category: "destination"
         }).then((response) => {
             console.log(response)
         }).catch((error) => {
@@ -239,7 +240,7 @@ const DestinationSearch = ({ hotelSearch, poiSearch, setDestination }) => {
                     columns={columns}
                     pageSize={20}
                     rowsPerPageOptions={[20]}
-                    checkboxSelection={!(hotelSearch || poiSearch)}
+                    checkboxSelection={type != 'hotel' && type != 'poi'}
                     isRowSelectable={(p) => (persistentDest.length) < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
                     onSelectionModelChange={(ids) => {
                         let temp = ids.map((id) => rows.find((row) => row.id === id))
