@@ -23,6 +23,7 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import Tooltip from '@mui/material/Tooltip';
+import Cookies from 'universal-cookie';
 
 
 const theme = createTheme({
@@ -53,6 +54,8 @@ const TopNavBar = () => {
   const handleLogout = () => {
     setAnchorEl(null);
     localStorage.removeItem('user');
+    const cookies = new Cookies();
+    cookies.remove('user')
     navigate('/')
     window.location.reload()
   }
