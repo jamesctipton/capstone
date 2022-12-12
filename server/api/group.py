@@ -17,6 +17,9 @@ class CreateGroupHandler(Resource):
         # print(json_data)
         groupname = json_data['groupname']
         destination = json_data['destination'] # nullable
+        day = json_data['day'] # nullable
+        month = json_data['month'] # nullable
+        year = json_data['year'] # nullable
         groupimage = json_data['groupimage'] # nullable
         summary = json_data['summary'] # nullable
         state = json_data['groupstate']
@@ -33,7 +36,7 @@ class CreateGroupHandler(Resource):
         user = User.query.filter_by(username=username).first()
 
         # commit group to db
-        group = Group(groupname=groupname, destination=destination, 
+        group = Group(groupname=groupname, destination=destination, day = day, month = month, year = year,
                         groupimage=groupimage, summary=summary, groupCode = groupCode, admin = user)
         # group_schema = GroupSchema()
         db.session.add(group)
@@ -51,6 +54,9 @@ class CreateGroupHandler(Resource):
             'message': "Group successfully created",
             'groupname': groupname,
             'destination': destination,
+            'day': day,
+            'month': month,
+            'year': year,
             'groupCode': groupCode,
             'state': state,
             'group_admin': group.admin_id, 
@@ -105,6 +111,9 @@ class JoinGroupHandler(Resource):
             'groupname': group.groupname,
             'destination': group.destination,
             'groupCode': group.groupCode,
+            'day': group.day,
+            'month': group.month,
+            'year': group.year,
             'summary': group.summary,
             'groupimage': group.groupimage,
             'polls': poll_dict,

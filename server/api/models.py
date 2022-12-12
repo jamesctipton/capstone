@@ -32,6 +32,9 @@ class User(UserMixin, db.Model):
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     groupname = db.Column(db.String(64))
+    day = db.Column(db.Integer)
+    month = db.Column(db.Integer)
+    year = db.Column(db.Integer)
     destination = db.Column(db.String(64))
     groupimage = db.Column(db.Text(4294000000), nullable=True) # longer than string
     summary = db.Column(db.String(2048))

@@ -27,7 +27,6 @@ class LoginHandler(Resource):
                 'message': "Invalid username or password"
             }
         
-        
         groups = []
         for group in user.groups:
             polls = []
@@ -48,32 +47,15 @@ class LoginHandler(Resource):
             group = {'groupname': group.groupname,
                     'destination': group.destination,
                     'groupCode': group.groupCode,
+                    'day': group.day,
+                    'month': group.month,
+                    'year': group.year,
                     'group_id': group.id,
                     'admin_id': group.admin.id,
                     'groupimage': group.groupimage,
                     # 'members' : group.user_count,
                     'polls': polls}
             groups.append(group)
-
-
-        # this code works...but it is dogshit
-        #
-        # polls_dict = []
-        # for group in user.groups:
-        #     temp_polls_dict = [p.__dict__ for p in group.polls]
-        #     polls_dict += temp_polls_dict
-        
-        # for poll in polls_dict:
-        #     del poll["_sa_instance_state"]
-
-        # groups_dict = [g.__dict__ for g in user.groups]
-        # for group in groups_dict:
-        #     del group["_sa_instance_state"]
-        #     poll_list = []
-        #     for poll in polls_dict:
-        #         if poll['group_id'] == group['id']:
-        #             poll_list += poll
-        #     group.update({'polls': poll_list})
         
         # send user info and list of groups user is in
         return {
