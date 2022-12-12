@@ -56,7 +56,7 @@ class LoginHandler(Resource):
 
 
         # this code works...but it is dogshit
-        # 
+        #
         # polls_dict = []
         # for group in user.groups:
         #     temp_polls_dict = [p.__dict__ for p in group.polls]
