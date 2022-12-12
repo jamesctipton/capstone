@@ -154,7 +154,7 @@ class ForgotPasswordHandler(Resource):
         msg.body = "Hello,\nWe've received a request to reset your password. If you want to reset your password, click the link below and enter your new password\n http://127.0.0.1:3000/new-password/" + user.hashCode
         mail.send(msg)
 
-        print(json_data)
+        # print(json_data)
         return jsonify(email = email, hashCode=hashCode)
 
 # done
