@@ -71,12 +71,14 @@ const Home = () => {
               {(polls.length === 0) ?
               <Poll
                 options={pollOptions}
+                title="Active Polls"
               ></Poll>
               :
               <>
                 {polls.map(p => (
                 <Poll
                   options={p.options}
+                  title="Active Polls"
                 ></Poll> 
                 ))} 
               </>

@@ -142,11 +142,11 @@ export function Carousel(props) {
         var votedChoice = items.findIndex( (item) => {
             return item.name === choice
         });
+        setTotalVotes(totalVotes + 1)
         var temp = items
         temp[votedChoice].votes++;
         
         setItems(temp)
-        setTotalVotes(totalVotes + 1)
 
         // do server stuff
         axios.post(url, {

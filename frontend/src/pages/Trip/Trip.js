@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import { Box, CardContent, CardMedia } from '@material-ui/core';
 import { Carousel } from '../../components/Carousel';
+import { Poll } from '../../components/Poll';
 
 const url = 'http://127.0.0.1:5000/trip'
 const theme = createTheme({
@@ -41,11 +42,18 @@ const Trip = (props) => {
           {(polls) ?
           <>
             {polls.map((poll) => (
-            <Carousel 
-              type="poll"
-              items={poll}
+            // <Carousel 
+            //   type="poll"
+            //   items={poll}
+            //   totalVotes={poll.totalVotes}
+            // ></Carousel>
+            <Poll
+              options={poll}
               totalVotes={poll.totalVotes}
-            ></Carousel>
+              title={poll.pollname}
+              category={poll.category}
+              user={user}
+            />
           ))}
           </>
           : <Typography variant='h6' sx={{ width: '100%', textAlign: 'center', color: '#CF7D30' }}>You have no polls</Typography>

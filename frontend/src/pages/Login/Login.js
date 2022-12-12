@@ -56,6 +56,8 @@ const Login = () => {
         let user = {
           name: response['data']['name'],
           firstname: response['data']['firstname'],
+          lastname: response['data']['lastname'],
+          email: response['data']['email'],
           groups: JSON.parse(response['data']['groups'])
         }  
         localStorage.setItem('user', JSON.stringify(user)) 
