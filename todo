@@ -1,34 +1,35 @@
-FRONTEND ===================================================
+FRONTEND =====================================================
 
-✓ set user data in app.js usestate or localstorage:
 - home page:
-    ✓ get groups from user
-    ✓ get polls from groups from user
+    - show member count on carousel
 - trip page:
-    ✓ get polls from trip group
-    ✓ poll vote handling
-    ✓ location poll
     - flight poll - may need rework
     - hotel poll - may need rework
     - match figma
-- join/create page:
-    ✓ group photo upload
-    ✓ make it more clear that its an upload button
-- navbar:
-    ✓ make sign-in button not change size when hovered
-    ✓ show tooltips for what buttons do what
-- get search bar going with amadeus:
-    ✓ search page
-    ✓ create poll page/popup
+    - delete trip
+    - voting
+    - finalized trip plan display
+        - summary
+        - members
 - search:
     - can't search another POI / hotel location after one is already loaded
+    - vote create
+    - handle errors from backend (search st. louis)
+- favorites and friends:
+    - backend?
+
+- implement admin privileges:
+- profile page:
+- "remember me" login functionality:
+    - cookies i guess
 
 SERVER SIDE ===================================================
 
-✓ handler for getting group from user
-✓ amadeus api things except flights so far
 - testing
-✓ are we storing hotels, flights, and other poll results in group data? 
-    Yes, storing the final choice of each category
-✓ logout handler
-- vote poll handler: handle only one person voting at a time
+- flights
+- vote poll handler: 
+    - handle only one person voting at a time
+    
+GENERAL POLISH ================================================
+
+- stuff to do after testing
