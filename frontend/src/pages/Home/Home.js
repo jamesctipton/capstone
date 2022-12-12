@@ -32,12 +32,8 @@ import { Poll } from '../../components/Poll';
 
 const Home = () => {
 
-  let user = null;
-  try {
-    user = JSON.parse(localStorage.getItem('user'))
-  } catch {
+  const user = JSON.parse(localStorage.getItem('user'))
 
-  }
   const trips = (user) ? ((user.groups) ? user.groups.length : 0) : 0
 
   const pollOptions = [
@@ -49,17 +45,21 @@ const Home = () => {
   let polls = []
 
   // if user exists
-  if(user !== null) {
-    if( user.groups.length !== 0 && !(Object.keys(user).length === 0 && user.constructor === Object)) {
-      for (let i = 0; i < user.groups.length; i++) {
-        const group = user.groups[i];
-        if(group.polls) {
-          for (let j = 0; j < group.polls.length; j++) {
-            const p = group.polls[j];
-            polls.push(p)
-          }
-        } 
+  if(user != null) {
+    try {
+      if( user.groups.length !== 0 && !(Object.keys(user).length === 0 && user.constructor === Object)) {
+        for (let i = 0; i < user.groups.length; i++) {
+          const group = user.groups[i];
+          if(group.polls) {
+            for (let j = 0; j < group.polls.length; j++) {
+              const p = group.polls[j];
+              polls.push(p)
+            }
+          } 
+        }
       }
+    } catch {
+      
     }
   }
 

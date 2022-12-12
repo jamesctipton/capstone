@@ -110,7 +110,7 @@ const TopNavBar = () => {
                   <PeopleAltOutlinedIcon fontSize="large" />
                 </IconButton>
               </Tooltip>
-              {(user) ? 
+              {(user === null) ? 
                 <>
                   <Typography sx={{ color: "#CF7D30", textTransform: 'capitalize' }}> Welcome, {user.firstname}</Typography>
                   <Tooltip title="Profile">

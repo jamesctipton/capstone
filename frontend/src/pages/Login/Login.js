@@ -41,6 +41,10 @@ const Login = () => {
     result: false
   })
 
+  useEffect(() => {
+    handleCookies()
+  }, []);
+
   const handleSubmit = (event) => {
     event.preventDefault()
     axios.post(url, {
