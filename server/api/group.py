@@ -14,7 +14,7 @@ class CreateGroupHandler(Resource):
     def post(self):
         # json_data get
         json_data = request.get_json()
-        print(json_data)
+        # print(json_data)
         groupname = json_data['groupname']
         destination = json_data['destination'] # nullable
         groupimage = json_data['groupimage'] # nullable
@@ -69,7 +69,7 @@ class JoinGroupHandler(Resource):
         }
     def post(self):
         json_data = request.get_json()
-        print(json_data)
+        # print(json_data)
         groupCode = json_data['groupCode']
         username = json_data['username']
         group = Group.query.filter_by(groupCode=groupCode).first()
