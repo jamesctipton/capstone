@@ -76,11 +76,11 @@ const Login = () => {
     if (user === null) {
       let user = cookies.get('user')
       localStorage.setItem('user', JSON.stringify(user))
-      navigateToHome()
+      if (user != null) {
+        navigateToHome()
+      }
     }
   }
-
-  handleCookies(null);
 
     return (
       <ThemeProvider theme={theme}>
