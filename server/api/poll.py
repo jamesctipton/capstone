@@ -3,7 +3,6 @@ from flask import request
 from flask_restful import Resource
 from api.models import Poll
 from api.models import PollOption
-import pickle, json
 import random, string
 
 # unfinished probably
@@ -70,7 +69,7 @@ class VotePollHandler(Resource):
 
         # need to make sure user only votes once 
         
-        poll.option[option].votes += 1
+        #poll.option[option].votes += 1
         poll.totalVotes += 1
 
         # update db

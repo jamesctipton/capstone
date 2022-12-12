@@ -1,5 +1,5 @@
 from api.__init__ import db
-from flask import request, jsonify
+from flask import request
 from flask_restful import Resource
 from api.models import *
 import random, string
