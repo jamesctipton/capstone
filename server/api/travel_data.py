@@ -50,6 +50,23 @@ def get_destinations(keyword):
 # Uncomment below to test
 #print(get_destinations("Pennsylvania"))
 
+# get most relevant airport near a given set of coordinates
+def get_airport_code(latitude, longitude):
+    try:
+        response = amadeus.reference_data.locations.airports.get(longitude=longitude, latitude=latitude)
+        if(response.data is None):
+            return ""
+
+        df = pd.json_normalize(response.data)
+        df = df[["iataCode", "relevance"]]
+        df = (df[df.relevance == df.relevance.max()])
+        airport = df.iloc[0]['iataCode']
+        return airport
+
+    except ResponseError as error:
+        return error
+
+
 # get flights for certain destination
 # https://developers.amadeus.com/self-service/category/air/api-doc/flight-availabilities-search 
 def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, departure_date):
@@ -84,8 +101,8 @@ def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, depart
             return []
 
         df = pd.json_normalize(response.data)
-        df[["segments.departure.iataCode", "segments.departure.at", "segments.arrival.iataCode", "segments.arrival.at", 
-        ]]
+        #df[["segments.departure.iataCode", "segments.departure.at", "segments.arrival.iataCode", "segments.arrival.at", 
+        #]]
         print(df)
 
         return
@@ -93,21 +110,9 @@ def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, depart
     except ResponseError as error:
         return error
 
-# get most relevant airport near a given set of coordinates
-def get_airport_code(latitude, longitude):
-    try:
-        response = amadeus.reference_data.locations.airports.get(longitude=longitude, latitude=latitude)
-        if(response.data is None):
-            return ""
+get_flights(51.507351, -0.127758, 52.520008, 13.404954, "2023-03-01")
 
-        df = pd.json_normalize(response.data)
-        df = df[["iataCode", "relevance"]]
-        df = (df[df.relevance == df.relevance.max()])
-        airport = df.iloc[0]['iataCode']
-        return airport
 
-    except ResponseError as error:
-        return error
 
 # get hotels for certain latitude/longitude in a certain radius (miles)
 # return list of hotel names with latitude/longtitude, distance from inputted latitude/longitude, and URL 

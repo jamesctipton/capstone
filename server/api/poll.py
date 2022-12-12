@@ -31,6 +31,7 @@ class CreatePollHandler(Resource):
         poll = Poll(pollCode=pollCode, pollname=pollname, creator_id=creator_id, group_id=group_id,
                     totalVotes=totalVotes, pollCategory = category)
 
+        print(pollOptions)
         for num in pollOptions:
             for option in num:
                 op = PollOption(optionname = option['name'], latitude = option['description'], 
