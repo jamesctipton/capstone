@@ -52,36 +52,60 @@ def get_destinations(keyword):
 
 # get flights for certain destination
 # https://developers.amadeus.com/self-service/category/air/api-doc/flight-availabilities-search 
-def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, start_date, end_date):
-    response = amadeus.reference_data.locations.airports.get(longitude=src_longitude, latitude=src_latitude)
-    if(response.data is None):
+def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, departure_date):
+    src_airport = get_airport_code(src_latitude, src_longitude)
+    dst_airport = get_airport_code(dst_latitude, dst_longitude)
+    try:
+        body = {
+            "originDestinations": [
+                {
+                    "id": "1",
+                    "originLocationCode": src_airport,
+                    "destinationLocationCode": dst_airport,
+                    "departureDateTime": {
+                        #"date": "2022-11-01"
+                        "date": departure_date
+                    }
+                }
+            ],
+            "travelers": [
+                {
+                    "id": "1",
+                    "travelerType": "ADULT"
+                }
+            ],
+            "sources": [
+                "GDS"
+            ]
+        }
+
+        response = amadeus.shopping.availability.flight_availabilities.post(body)
+        if(response.data is None):
             return []
 
-    df = pd.json_normalize(response.data)
-    df = df["iataCode", "relevance"]
-    df = (df[df.relevance == df.relevance.max()])
+        df = pd.json_normalize(response.data)
+        
 
+        return
+    
+    except ResponseError as error:
+        return error
 
-
-    return
-
-#response = amadeus.reference_data.locations.get(keyword='r', subType=AIRPORT)
-# response = amadeus.reference_data.locations.airports.get(longitude=-0.44161, latitude= 51.57285)
-# df = pd.json_normalize(response.data)
-# df = df["iataCode", "relevance"]
-# df = (df[df.relevance == df.relevance.max()])
-# print(df)
-
+# get most relevant airport near a given set of coordinates
 def get_airport_code(latitude, longitude):
-    response = amadeus.reference_data.locations.airports.get(longitude=longitude, latitude=latitude)
-    if(response.data is None):
-        return []
+    try:
+        response = amadeus.reference_data.locations.airports.get(longitude=longitude, latitude=latitude)
+        if(response.data is None):
+            return ""
 
-    df = pd.json_normalize(response.data)
-    df = df["iataCode", "relevance"]
-    df = (df[df.relevance == df.relevance.max()])
-    return
+        df = pd.json_normalize(response.data)
+        df = df[["iataCode", "relevance"]]
+        df = (df[df.relevance == df.relevance.max()])
+        airport = df.iloc[0]['iataCode']
+        return airport
 
+    except ResponseError as error:
+        return error
 
 # get hotels for certain latitude/longitude in a certain radius (miles)
 # return list of hotel names with latitude/longtitude, distance from inputted latitude/longitude, and URL 

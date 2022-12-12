@@ -44,6 +44,9 @@ class LoginHandler(Resource):
                         'totalVotes': poll.totalVotes,
                         'options': options}
                 polls.append(poll)
+            members = 0
+            for user in group.users:
+                members += 1
             group = {'groupname': group.groupname,
                     'destination': group.destination,
                     'groupCode': group.groupCode,
@@ -53,7 +56,7 @@ class LoginHandler(Resource):
                     'group_id': group.id,
                     'admin_id': group.admin.id,
                     'groupimage': group.groupimage,
-                    # 'members' : group.user_count,
+                    'members' : members,
                     'polls': polls}
             groups.append(group)
         
@@ -64,6 +67,7 @@ class LoginHandler(Resource):
             'name': user.username,
             'firstname': user.firstname,
             'groups': json.dumps(groups)
+            
         }
 
 # done
