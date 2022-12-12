@@ -16,7 +16,7 @@ FRONTEND =====================================================
     - vote create
     - handle errors from backend (search st. louis)
     - flights
-        - fix searchbar(s)
+        ✓ fix searchbar(s)
 - favorites and friends:
     - backend?
 

@@ -21,7 +21,10 @@
     "react-scripts": "^5.0.1",
     "react-swipeable-views": "^0.14.0",
     "styled-components": "^5.3.6",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@mui/x-date-pickers": "^5.0.9",
+    "moment": "^2.29.4",
+    "universal-cookie": "^4.0.4"
   },
   "scripts": {
     "start": "HOST=127.0.0.1 PORT=3000 react-scripts start",

@@ -1,5 +1,5 @@
 import './Login.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Checkbox, 
   FormControlLabel, 
@@ -10,7 +10,8 @@ import {
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios'
+import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 const url = 'http://127.0.0.1:5000/login'
 const theme = createTheme({
@@ -34,11 +35,13 @@ const Login = () => {
     username: "",
     password: ""
   })
+  const [remember, setRemember] = useState(false)
   const [errorValue, setError] = useState({
     message: "",
     result: false
   })
 
+  handleCookies(null);
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -47,12 +50,14 @@ const Login = () => {
       password: loginForm.password
     }).then((response) => {
       if(response['data']['resultStatus'] === 'SUCCESS') {
-        setError({message: "", result: false})        
-        localStorage.setItem('user', JSON.stringify({
+        setError({message: "", result: false})      
+        let user = {
           name: response['data']['name'],
           firstname: response['data']['firstname'],
           groups: JSON.parse(response['data']['groups'])
-        })) 
+        }  
+        localStorage.setItem('user', JSON.stringify(user)) 
+        handleCookies(user)
         navigateToHome()
       }
       else {
@@ -63,6 +68,19 @@ const Login = () => {
       console.log(error)
     })
   };
+
+  const handleCookies = (user) => {
+    const cookies = new Cookies();
+
+    if (remember) {
+      cookies.set('user', user, { path: '/' , maxAge: 4294967296});
+    }
+    if (user === null) {
+      let user = cookies.get('user')
+      localStorage.setItem('user', JSON.stringify(user))
+      navigateToHome()
+    }
+  }
 
     return (
       <ThemeProvider theme={theme}>
@@ -100,7 +118,7 @@ const Login = () => {
               ></TextField>
 
               <p>Don't have an account? <a href='/register'>Register</a></p>
-              <FormControlLabel id='checkbox' control={<Checkbox color='primary' />} label="Remember me" />
+              <FormControlLabel id='checkbox' control={<Checkbox color='primary' />} label="Remember me" onChange={setRemember} value={remember} />
 
             </FormGroup>
             <div id='buttons-login'>

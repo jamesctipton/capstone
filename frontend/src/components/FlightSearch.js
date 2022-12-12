@@ -125,7 +125,7 @@ const FlightSearch = () => {
                             variant="outlined" 
                             sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} 
                             value={to}
-                            onChange={(e) => setFrom(e.target.value)}
+                            onChange={(e) => setTo(e.target.value)}
                             fullWidth
                             onKeyPress={event => {
                                 if (event.key === 'Enter') {
@@ -144,7 +144,7 @@ const FlightSearch = () => {
                             variant="outlined" 
                             sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 250}} 
                             value={from}
-                            onChange={(e) => setTo(e.target.value)}
+                            onChange={(e) => setFrom(e.target.value)}
                             fullWidth
                             onKeyPress={event => {
                                 if (event.key === 'Enter') {
