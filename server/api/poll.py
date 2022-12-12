@@ -22,10 +22,12 @@ class CreatePollHandler(Resource):
         pollOptions = json_data['pollOptions']
 
         # find id of user by username
-        creator_id = User.query.filter_by(username=username).first().id
+        creator = User.query.filter_by(username=username).first()
+        creator_id = creator.id
 
         # find id of group by group code 
-        group_id = Group.query.filter_by(groupCode=group_code).first().id
+        group = Group.query.filter_by(groupCode=group_code).first()
+        group_id = group.id
 
         # make sure poll code is unique
         pollCode = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
