@@ -7,18 +7,9 @@ import { useNavigate } from "react-router-dom";
 const url = "http://127.0.0.1:5000/vote-poll"
 var hover = false;
 
-//item:  {
-//     groupname: string,
-//     summary: string,
-//     groupimage?: string,
-//     groupCode: string,
-//     members: int
-// }
-
 function CarouselItem(props) {
 
     var step = props.step // item type
-    console.log(props)
 
     const navigate = useNavigate()
     const navigateToTrip = (groupCode) => {
