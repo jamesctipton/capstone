@@ -41,8 +41,6 @@ const Login = () => {
     result: false
   })
 
-  handleCookies(null);
-
   const handleSubmit = (event) => {
     event.preventDefault()
     axios.post(url, {
@@ -82,6 +80,8 @@ const Login = () => {
     }
   }
 
+  handleCookies(null);
+
     return (
       <ThemeProvider theme={theme}>
         <div id='flexbox-login'> 
@@ -118,7 +118,7 @@ const Login = () => {
               ></TextField>
 
               <p>Don't have an account? <a href='/register'>Register</a></p>
-              <FormControlLabel id='checkbox' control={<Checkbox color='primary' />} label="Remember me" onChange={setRemember} value={remember} />
+              <FormControlLabel id='checkbox' control={<Checkbox color='primary' />} label="Remember me" onChange={(e) => setRemember(e.target.value)} value={remember} />
 
             </FormGroup>
             <div id='buttons-login'>

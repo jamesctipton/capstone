@@ -39,8 +39,13 @@ const theme = createTheme({
 });
 
 const TopNavBar = () => {
+  
+  let user;
+  try {
+    user = JSON.parse(localStorage.getItem('user'))
+  } catch {
 
-  const user = JSON.parse(localStorage.getItem('user'))
+  }
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
