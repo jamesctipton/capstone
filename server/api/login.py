@@ -51,6 +51,7 @@ class LoginHandler(Resource):
                     'group_id': group.id,
                     'admin_id': group.admin.id,
                     'groupimage': group.groupimage,
+                    # 'members' : group.user_count,
                     'polls': polls}
             groups.append(group)
 
