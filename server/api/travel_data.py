@@ -48,13 +48,29 @@ def get_destinations(keyword):
         return error
 
 # Uncomment below to test
-print(get_destinations("Pennsylvania"))
+#print(get_destinations("Pennsylvania"))
 
 # get flights for certain destination
 # https://developers.amadeus.com/self-service/category/air/api-doc/flight-availabilities-search 
-def get_flights(src_airport, dst_airport, start_date, end_date):
+def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, start_date, end_date):
+    response = amadeus.reference_data.locations.airports.get(longitude=src_longitude, latitude=src_latitude)
+    if(response.data is None):
+            return []
+
+    df = pd.json_normalize(response.data)
+    df = df["iataCode", "relevance"]
+    df = (df[df.relevance == df.relevance.max()])
+
+
 
     return
+
+#response = amadeus.reference_data.locations.get(keyword='r', subType=AIRPORT)
+#response = amadeus.reference_data.locations.airports.get(longitude=-0.44161, latitude= 51.57285)
+#df = pd.json_normalize(response.data)
+# df = df["iataCode", "relevance"]
+# df = (df[df.relevance == df.relevance.max()])
+#print(response.data)
 
 # get hotels for certain latitude/longitude in a certain radius (miles)
 # return list of hotel names with latitude/longtitude, distance from inputted latitude/longitude, and URL 
@@ -87,7 +103,7 @@ def get_hotels(latitude, longitude, radius, city, state, country):
         raise error
 
 # Uncomment below to test
-#print(get_hotels(48.85693, 2.3412, 50, "madrid", "", "spain"))
+print(get_hotels(48.85693, 2.3412, 50, "madrid", "", "spain"))
 
 # get points of interest for certain destination
 # return poi name, category(sightseeing, restaurant, etc), latitude/longitude, description tags, and URL
