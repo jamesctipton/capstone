@@ -15,6 +15,8 @@ FRONTEND =====================================================
     - can't search another POI / hotel location after one is already loaded
     - vote create
     - handle errors from backend (search st. louis)
+    - flights
+        - fix searchbar(s)
 - favorites and friends:
     - backend?
 
