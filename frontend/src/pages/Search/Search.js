@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { 
     Button, 
     Divider,
-    Typography, 
 } from "@mui/material";
 import DestinationSearch from "../../components/DestinationSearch";
 import HotelSearch from "../../components/HotelSearch";
@@ -16,7 +15,7 @@ const Search = () => {
         message: "",
         result: false
     })*/    
-    const user = JSON.parse(localStorage.getItem('user'))
+    // const user = JSON.parse(localStorage.getItem('user'))
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '3%', width: '100%' }}>

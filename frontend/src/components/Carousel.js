@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Card, CardActionArea, Divider } from "@mui/material";
+import React, { useEffect } from "react";
+import { Card, CardActionArea } from "@mui/material";
 import { CardContent, CardMedia, Typography } from "@material-ui/core";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -46,20 +46,6 @@ function CarouselItem(props) {
     </>
     );
 }
-
-// poll: {
-//     pollname: string,
-//     pollCode: string,
-//     option1-5: pollItem?,
-//     totalVotes: int
-// }
-
-// pollItem: {
-//     name: string
-//     description: string
-//     votes: int
-//     imgPath: string
-// }
 
 function PollItem(props) {
     var step = props.step;
@@ -164,7 +150,7 @@ export function Carousel(props) {
         <div id='car' onMouseOver={() => { hover = true }} onMouseLeave={() => {hover = false}} style={{width: '100%', minHeight: '25rem', display: 'flex', overflowX: 'scroll', scrollSnapType: 'x mandatory', }}>
             {(props.items.length === 1) 
             ? 
-            <div style={{ marginRight: 'auto', marginLeft: 'auto' }}>
+            <div style={{ marginRight: 'auto', marginLeft: 'auto', minWidth: '45%' }}>
                 <CarouselItem step={items[0]}></CarouselItem>
             </div>
             :

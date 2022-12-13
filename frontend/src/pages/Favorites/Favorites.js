@@ -1,6 +1,6 @@
 import React from 'react'
 import { Favorite, FavoriteBorder, LocationCity, Hotel, Flight, Grade } from "@mui/icons-material";
-import { Box, Divider, Stack, Card, CardActions, CardContent, CardHeader, CardMedia, Checkbox, IconButton, Typography, List, ListItem, ListItemButton, ListItemIcon } from "@mui/material";
+import { Box, Divider, Stack, Card, CardActions, CardContent, CardHeader, Checkbox, IconButton, Typography, List, ListItem, ListItemButton, ListItemIcon } from "@mui/material";
 
 // required
 let menuItems = [

@@ -1,6 +1,7 @@
 FRONTEND =====================================================
 - home page:
-    - spruce up polls
+    ✓ show member count on carousel
+    ✓ spruce up polls
 - trip page:
     - delete trip
     - voting
@@ -9,7 +10,7 @@ FRONTEND =====================================================
         - members
 - search:
     - can't search another POI / hotel location after one is already loaded
-    - vote create
+    ✓ vote create
     - handle errors from backend (search st. louis)
     - flights
         - one user has all info put, send post request and display results
@@ -18,7 +19,10 @@ FRONTEND =====================================================
     - backend?
 
 - implement admin privileges:
-- spruce up profile page you lazy asses
+✓ profile page:
+✓ "remember me" login functionality:
+    ✓ cookies i guess
+✓ spruce up profile page you lazy asses
 - jest unit testing
 
 SERVER SIDE ===================================================
@@ -29,3 +33,5 @@ SERVER SIDE ===================================================
     - handle only one person voting at a time
     
 GENERAL POLISH ================================================
+
+- get rid of warnings

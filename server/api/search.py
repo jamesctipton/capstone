@@ -62,13 +62,14 @@ class HotelSearchHandler(Resource):
         }
     def post(self):
         json_data = request.get_json()
-        #print(json_data)
         latitude = json_data['latitude']
         longitude = json_data['longitude']
         radius = json_data['radius']
         city = json_data['city']
         state = json_data['state']
         country = json_data['country']
+        startDate = json_data['startDate']
+        endDate = json_data['endDate']
 
         hotels = get_hotels(latitude, longitude, radius, city, state, country)
 

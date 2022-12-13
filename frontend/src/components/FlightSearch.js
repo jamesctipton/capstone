@@ -65,14 +65,18 @@ const FlightSearch = () => {
 
     ]
 
-    if(document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer') != null) {
-        if(selectedDeparture.length === 0) {
-            document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer').style.display = 'none';
+    setTimeout(() => {
+        if(document.querySelectorAll('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer')[1] != null) {
+            if(selectedDeparture.length === 0 || selectedArrival.length === 0) {
+                document.querySelectorAll('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer')[0].style.display = 'none';
+                document.querySelectorAll('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer')[1].style.display = 'none';
+            }
+            else {
+                document.querySelectorAll('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer')[0].style = {display: 'hidden'};
+                document.querySelectorAll('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer')[1].style = {display: 'hidden'};
+            }
         }
-        else {
-            document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer').style = {display: 'hidden'};
-        }
-    }
+    }, [100]);
 
     const searchDestination = (dest, from) => {
         if(dest === "") {
@@ -108,7 +112,8 @@ const FlightSearch = () => {
             pollname: pollName,
             user: user.name,
             groupid: group,
-            options: destinations
+            options: destinations,
+            category: 'flight'
         }).then((response) => {
             console.log(response)
         }).catch((error) => {
@@ -134,11 +139,11 @@ const FlightSearch = () => {
 
     return (
         <div id='outer-container' style={{ width: '90%'}}>
-            <div id='search-container' style={{ width: '100%', display: 'flex', marginTop: '2%', marginBottom: '2%', justifyContent: 'space-between' }}>
-                <div id='start-search' style={{ width: '40%', display: 'flex', justifyContent: 'flex-start', flexDirection: 'column' }}>
+            <div id='search-container' style={{ width: '100%', display: 'flex', marginTop: '2%', marginBottom: '2%', justifyContent: 'center' }}>
+                <div id='start-search' flex={0.5} style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'column', width: '80%' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
                         <Typography color="primary" sx={{ marginBottom: 1, textAlign: 'center' }}>Departure Location</Typography>
-                        <FormControl fullWidth flex={0.5} sx={{ marginBottom: 2 }}>
+                        <FormControl fullWidth sx={{ marginBottom: 2 }}>
                             <OutlinedInput 
                                 placeholder="Where from?"
                                 variant="outlined" 
@@ -175,8 +180,8 @@ const FlightSearch = () => {
                             />}
                     />
                 </div>
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="275" height="93" viewBox="0 0 275 93" fill="none">
+                <div flex={0.1}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="93" viewBox="0 0 275 93" fill="none">
                         <g filter="url(#filter0_d_462_291)">
                         <path d="M206.832 68.135L212.463 73.3822L233.159 62.0905L240.304 66.3881C241.832 67.3099 243.588 67.893 245.447 68.0956C247.306 68.2983 249.221 68.1157 251.058 67.5606C252.189 67.2202 253.186 66.5322 253.874 65.6165C254.561 64.7009 254.897 63.6155 254.822 62.5492C254.703 60.8181 254.168 59.1618 253.257 57.6983C252.345 56.2348 251.078 55.0001 249.547 54.082L242.402 49.7845L246.27 28.3718L238.714 25.6875L229.391 42.0196L220.797 37.9302L222.948 29.1516L216.364 25.1916L197.878 49.8036L204.462 53.7637L212.734 48.6658L220.211 54.2428L206.832 68.135ZM204.685 49.4316L203.355 48.6313L217.219 30.1723L218.55 30.9725L216.337 40.0032L227.711 45.4152L230.712 47.2201L240.394 30.2588L241.908 30.7967L238.135 51.6841L247.237 57.1585C248.303 57.7979 249.185 58.6579 249.82 59.6772C250.455 60.6965 250.827 61.8501 250.91 63.0557C250.926 63.2839 250.854 63.5162 250.707 63.7121C250.56 63.9081 250.347 64.0553 250.105 64.1281C248.826 64.5146 247.491 64.6419 246.197 64.5007C244.902 64.3596 243.679 63.9536 242.615 63.3116L233.513 57.8371L213.324 68.8519L212.196 67.8005L226.091 53.3731L223.09 51.5682L213.194 44.1876L204.685 49.4316Z" fill="#747474"/>
                         <line y1="-4" x2="32.7442" y2="-4" transform="matrix(0.883757 0.467947 -0.551573 0.834127 174.18 21.0146)" stroke="#747474" strokeWidth="8"/>
@@ -199,10 +204,10 @@ const FlightSearch = () => {
                         </defs>
                     </svg>
                 </div>
-                <div id='dest-search' style={{ width: '40%', display: 'flex', justifyContent: 'flex-end', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'column' }}>
-                        <Typography color="primary" sx={{ marginBottom: 1, textAlign: 'center' }}>Destination Location</Typography>
-                        <FormControl fullWidth flex={0.5} sx={{ marginBottom: 2 }}>
+                <div id='dest-search' flex={0.5} style={{ display: 'flex', justifyContent: 'flex-end', flexDirection: 'column', width: '80%' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'column', width: '100%' }}>
+                        <Typography color="primary" sx={{ marginBottom: 1, textAlign: 'center' }}>Arrival Location</Typography>
+                        <FormControl fullWidth sx={{ marginBottom: 2 }}>
                             <OutlinedInput 
                                 placeholder="Where to?"
                                 variant="outlined" 
@@ -276,13 +281,15 @@ const FlightSearch = () => {
                     />
                 </div>
             </div>
+            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
             <Button 
                 type='button'
                 variant="outlined"
-                sx={{m: 1, borderWidth: 3, borderRadius: 30, borderColor: 'primary', whiteSpace: 'nowrap', minWidth: 'maxcontent', '&:hover': { borderWidth: 3 }, marginLeft: '41%', width: 200, height: 50, fontSize: 20 }}
+                sx={{ m: 1, borderWidth: 3, borderRadius: 30, borderColor: 'primary', whiteSpace: 'nowrap', minWidth: 'maxcontent', '&:hover': { borderWidth: 3 }, width: 200, height: 50, fontSize: 20 }}
                 disabled={(from === "" || to === "" || departDate === "" || returnDate === "" || selectedDeparture === [] || selectedArrival === [])}
                 onClick={() => searchFlights(departDate.toString(), returnDate.toString(), selectedDeparture[0].latitude, selectedDeparture[0].longitude, selectedArrival[0].latitude, selectedArrival[0].longitude)}
             >Search Flights</Button>
+            </div>
         </div>
     )
 }

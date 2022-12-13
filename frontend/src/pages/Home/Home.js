@@ -12,12 +12,6 @@ const Home = () => {
 
   const trips = (user) ? ((user.groups) ? user.groups.length : 0) : 0
 
-  const pollOptions = [
-    {name: 'first', votes: 0},
-    {name: 'second', votes: 1},
-    {name: 'third', votes: 1},
-  ]
-
   let polls = []
 
   // if user exists
@@ -27,6 +21,10 @@ const Home = () => {
         for (let i = 0; i < user.groups.length; i++) {
           const group = user.groups[i];
           if(group.polls) {
+            group.polls.sort(function(a, b) {
+              var x = a['pollCategory']; var y = b['pollCategory'];
+              return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            })
             for (let j = 0; j < group.polls.length; j++) {
               const p = group.polls[j];
               polls.push(p)
@@ -69,16 +67,18 @@ const Home = () => {
               </div>
               <br></br>
               {(polls.length === 0) ?
-              <Poll
-                options={pollOptions}
-                title="Active Polls"
-              ></Poll>
+              <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>No Active Polls</Typography>
               :
               <>
-                {polls.map(p => (
+                <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Active Polls</Typography>
+                {polls.map((p, i) => (
                 <Poll
+                  key={i}
+                  title={p.pollname}
                   options={p.options}
-                  title="Active Polls"
+                  totalVotes={p.totalVotes}
+                  pollCode={p.pollCode}
+                  category={p.pollCategory}
                 ></Poll> 
                 ))} 
               </>

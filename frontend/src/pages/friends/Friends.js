@@ -1,31 +1,14 @@
 import React from 'react'
-import {
-    Avatar,
-    AvatarGroup,
-    Box,
-    Grid,
-    Paper,
-    IconButton,
-
-    Divider,
-    ImageList,
-    ImageListItem,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-    Typography,
-  } from "@mui/material";
-  import DeleteIcon from '@mui/icons-material/Delete';
-  import { styled } from '@mui/material/styles';
+import { Avatar, AvatarGroup, Box, Grid, Paper, Typography, } from "@mui/material";
+import { styled } from '@mui/material/styles';
   
-  const StyledPaper = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(2),
-    maxWidth: 600,
-    color: theme.palette.text.primary,
-  }));
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(2),
+  maxWidth: 600,
+  color: theme.palette.text.primary,
+}));
 
 
 
