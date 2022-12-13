@@ -270,32 +270,38 @@ const FlightSearch = () => {
             </div>
             <div id='results-container' style={{ width: '100%', display: 'flex', marginTop: '2%', marginBottom: '2%', justifyContent: 'space-between' }}>                
                 <div id='start-flight-results' style={{ width: '48%', display: 'flex', justifyContent: 'flex-start', flexDirection: 'column', height: 475 }}>
-                    <DataGrid
-                        rows={fromRows}
-                        columns={columns}
-                        pageSize={7}
-                        rowsPerPageOptions={[7]}
-                        checkboxSelection
-                        isRowSelectable={(p) => (selectedDeparture < 2 || !(selectedDeparture.indexOf(p.row) === -1))}
-                        onSelectionModelChange={(ids) => {
-                            let temp = ids.map((id) => fromRows.find((row) => row.id === id))
-                            setSelectedDeparture(temp)
-                        }}
-                    />
+                    {fromRows.length > 0 ?
+                        <DataGrid
+                            rows={fromRows}
+                            columns={columns}
+                            pageSize={7}
+                            rowsPerPageOptions={[7]}
+                            checkboxSelection
+                            isRowSelectable={(p) => (selectedDeparture < 2 || !(selectedDeparture.indexOf(p.row) === -1))}
+                            onSelectionModelChange={(ids) => {
+                                let temp = ids.map((id) => fromRows.find((row) => row.id === id))
+                                setSelectedDeparture(temp)
+                            }}
+                        />
+                    :<></>}
+                    
                 </div>
                 <div id='end-flight-results' style={{ width: '48%', display: 'flex', justifyContent: 'flex-end', flexDirection: 'column', height: 475 }}>
-                    <DataGrid
-                        rows={destRows}
-                        columns={columns}
-                        pageSize={7}
-                        rowsPerPageOptions={[7]}
-                        checkboxSelection
-                        isRowSelectable={(p) => (selectedArrival < 2) || !(selectedArrival.indexOf(p.row) === -1)}
-                        onSelectionModelChange={(ids) => {
-                            let temp = ids.map((id) => destRows.find((row) => row.id === id))
-                            setSelectedArrival(temp)
-                        }}
-                    />
+                    {destRows.length > 0 ?
+                        <DataGrid
+                            rows={destRows}
+                            columns={columns}
+                            pageSize={7}
+                            rowsPerPageOptions={[7]}
+                            checkboxSelection
+                            isRowSelectable={(p) => (selectedArrival < 2) || !(selectedArrival.indexOf(p.row) === -1)}
+                            onSelectionModelChange={(ids) => {
+                                let temp = ids.map((id) => destRows.find((row) => row.id === id))
+                                setSelectedArrival(temp)
+                            }}
+                        />
+                    :<></>}
+                    
                 </div>
             </div>
             <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
