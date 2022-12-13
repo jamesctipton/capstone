@@ -41,19 +41,22 @@ class FlightSearchHandler(Resource):
         abbr_to_num = {name: num for num, name in enumerate(calendar.month_abbr) if num}
 
         begin_date = begin_date.split(" ")
-        formatted_begin_date = begin_date[3] + "-" + abbr_to_num[begin_date[2]] + "-" + begin_date[1]
+        print(begin_date)
+        print(begin_date[3])
+        print(begin_date[2])
+        print(begin_date[1])
+        #print("month number: " + abbr_to_num[begin_date[2]])
+        formatted_begin_date = begin_date[3] + "-" + str(list(calendar.month_abbr).index(begin_date[1])) + "-" + begin_date[2]
         print(formatted_begin_date)
 
         end_date = end_date.split(" ")
-        formatted_end_date = end_date[3] + "-" + abbr_to_num[end_date[2]] + "-" + end_date[1]
+        formatted_end_date = end_date[3] + "-" + str(list(calendar.month_abbr).index(end_date[1])) + "-" + end_date[2]
 
-        begin_flights = get_flights_v2(src_latitude, src_longitude, dst_latitude, dst_longitude, formatted_begin_date)
-        end_flights = get_flights_v2(dst_latitude, dst_longitude, src_latitude, src_longitude, formatted_end_date)
+        flights = get_flights_v2(src_latitude, -1 * src_longitude, dst_latitude, -1 * dst_longitude, formatted_begin_date, formatted_end_date)
         return{
             'resultStatus': 'SUCCESS',
             'message': "Flight search successful",
-            'flights_to_destination': begin_flights,
-            'flights_from_destination': end_flights
+            'flights': flights
         }
 
 # Search parameters: lat/long and radius in miles
