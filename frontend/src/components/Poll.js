@@ -18,13 +18,13 @@ export function Poll(props) {
     const [totalVotes, setTotalVotes] = React.useState(0);
     const [hp, setHP] = React.useState(true);
 
-    if(props.totalVotes && (totalVotes != props.totalVotes)) {
+    if(props.totalVotes && (totalVotes !== props.totalVotes)) {
         setTotalVotes(props.totalVotes);
     }
     
     if(user.votedPolls) {
       if(hp === true) {
-        if(user.votedPolls.findIndex((element) => element === props.pollCode) != -1) {
+        if(user.votedPolls.findIndex((element) => element === props.pollCode) !== -1) {
           setHP(false);
         }
       }
@@ -71,6 +71,7 @@ export function Poll(props) {
     return (
       <Card>
         <CardContent>
+          <div style={{ display: 'flex' }}>
           {(props.category === 'destination') ?
           <PublicIcon fontSize='large' /> : <>
           {(props.category === 'flight') ?
@@ -80,6 +81,8 @@ export function Poll(props) {
           <PlaceIcon fontSize='large' /> }</>
           }</>
           }
+          <Typography variant='h4' sx={{ width: '100%', textAlign: 'center', color: '#CF7D30', mb: 2 }}>{props.title}</Typography>
+          </div>
           {options.map((item, i) => (              
             <Box key={item.name + i} sx={{display: 'grid', gridTemplateColumns: hp ? '1fr' : '1fr 8fr 35px', alignItems: 'center', columnGap: 1, mb: 1}}>
               <Button

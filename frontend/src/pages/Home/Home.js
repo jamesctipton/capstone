@@ -12,12 +12,6 @@ const Home = () => {
 
   const trips = (user) ? ((user.groups) ? user.groups.length : 0) : 0
 
-  const pollOptions = [
-    {name: 'first', votes: 0},
-    {name: 'second', votes: 1},
-    {name: 'third', votes: 1},
-  ]
-
   let polls = []
 
   // if user exists
@@ -73,16 +67,14 @@ const Home = () => {
               </div>
               <br></br>
               {(polls.length === 0) ?
-              <Poll
-                options={pollOptions}
-                title="Active Polls"
-              ></Poll>
+              <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>No Active Polls</Typography>
               :
               <>
                 <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Active Polls</Typography>
                 {polls.map((p, i) => (
                 <Poll
                   key={i}
+                  title={p.pollname}
                   options={p.options}
                   totalVotes={p.totalVotes}
                   pollCode={p.pollCode}

@@ -13,7 +13,6 @@ import Registration from './pages/Registration/Registration';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import Trip from './pages/Trip/Trip';
 import JoinCreate from './pages/Trip/JoinCreate';
-import { Typography } from '@mui/material';
 import Search from './pages/Search/Search';
 import Favorites from './pages/Favorites/Favorites';
 import Friends from './pages/friends/Friends';

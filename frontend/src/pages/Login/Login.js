@@ -43,7 +43,7 @@ const Login = () => {
 
   useEffect(() => {
     handleCookies()
-  }, []);
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -59,7 +59,7 @@ const Login = () => {
           lastname: response['data']['lastname'],
           email: response['data']['email'],
           groups: JSON.parse(response['data']['groups']),
-          votedPolls: new Array()
+          votedPolls: []
         }  
         localStorage.setItem('user', JSON.stringify(user)) 
         handleCookies(user)
