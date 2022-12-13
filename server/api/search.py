@@ -1,6 +1,8 @@
 from flask_restful import Resource
 from flask import request
 from api.travel_data import *
+from time import strptime
+import calendar
 
 # Search parameters: Just a keyword
 class DestinationSearchHandler(Resource):          
@@ -36,8 +38,16 @@ class FlightSearchHandler(Resource):
         begin_date = json_data['begin_date']
         end_date = json_data['end_date']
 
-        begin_flights = get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, begin_date)
-        end_flights = get_flights(dst_latitude, dst_longitude, src_latitude, src_longitude, end_date)
+        abbr_to_num = {name: num for num, name in enumerate(calendar.month_abbr) if num}
+        begin_date = begin_date.split(" ")
+        formatted_begin_date = begin_date[3] + "-" + begin_date[1] + "-" + abbr_to_num[begin_date[2]]
+        print(formatted_begin_date)
+
+        end_date = end_date.split(" ")
+        formatted_end_date = end_date[3] + "-" + end_date[1] + "-" + abbr_to_num[end_date[2]]
+
+        begin_flights = get_flights_v2(src_latitude, src_longitude, dst_latitude, dst_longitude, formatted_begin_date)
+        end_flights = get_flights_v2(dst_latitude, dst_longitude, src_latitude, src_longitude, formatted_end_date)
         return{
             'resultStatus': 'SUCCESS',
             'message': "Flight search successful",
@@ -55,7 +65,6 @@ class HotelSearchHandler(Resource):
         }
     def post(self):
         json_data = request.get_json()
-        print(json_data)
         latitude = json_data['latitude']
         longitude = json_data['longitude']
         radius = json_data['radius']

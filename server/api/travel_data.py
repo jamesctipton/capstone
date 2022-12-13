@@ -4,6 +4,10 @@ import pandas as pd
 import math, json
 from furl import furl
 from dateutil import parser
+import logging
+
+logger = logging.getLogger('your_logger')
+logger.setLevel(logging.DEBUG)
 
 def ssl_disabled_urlopen(endpoint):
     context = ssl._create_unverified_context()
@@ -12,10 +16,12 @@ def ssl_disabled_urlopen(endpoint):
 amadeus = Client(
     client_id='TrbS8LuYPPmDZ9sZy0eExuT3vuFmag0I',
     client_secret='e5GdBCa02F58PrHe',
-    http=ssl_disabled_urlopen
+    http=ssl_disabled_urlopen,
+    logger=logger
 )
 
 pd.set_option('display.max_columns', None)
+
 
 # get city destination by search term
 # search term needs to be between 3 and 50 characters
@@ -67,7 +73,7 @@ def get_airline_name(iata_code):
 def get_airport_code(latitude, longitude):
     try:
         response = amadeus.reference_data.locations.airports.get(longitude=longitude, latitude=latitude)
-        if(response.data is None):
+        if(response.data == []):
             return ""
 
         df = pd.json_normalize(response.data)
@@ -85,7 +91,10 @@ def get_airport_code(latitude, longitude):
 def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, departure_date):
     src_airport = get_airport_code(src_latitude, src_longitude)
     dst_airport = get_airport_code(dst_latitude, dst_longitude)
+
+    
     try:
+        '''
         body = {
             "originDestinations": [
                 {
@@ -110,10 +119,13 @@ def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, depart
         }
 
         response = amadeus.shopping.availability.flight_availabilities.post(body)
+        '''
+        response = amadeus.shopping.flight_offers_search.get(originLocationCode=src_airport, destinationLocationCode=dst_airport,
+                                                        departureDate=departure_date, adults=1).data
         if(response.data is None):
             return []
 
-        df = pd.json_normalize(response.data, record_path=['segments'], meta='duration')
+        df = pd.json_normalize(response.data, record_path=['itineraries'], meta='duration')
         df = df[["numberOfStops", "departure.iataCode", "carrierCode", "departure.at", "arrival.iataCode", "arrival.at", "duration"]]
         df.rename(columns = {'departure.iataCode':'departure_airport', 'arrival.iataCode': 'arrival_airport'}, inplace = True)
         flights_dict = df.to_dict('records')
@@ -189,8 +201,8 @@ def get_pois(latitude, longitude, radius_miles, city, state, country):
             return []
 
         df = pd.json_normalize(response.data)
-        df = df[["name", "category"]]#, "geoCode.latitude", "geoCode.longitude"]]
-        #df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
+        df = df[["name", "category", "geoCode.latitude", "geoCode.longitude"]]
+        df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
         pois_dict = df.to_dict('records')
         
         for record in pois_dict:
@@ -204,10 +216,97 @@ def get_pois(latitude, longitude, radius_miles, city, state, country):
                 params = separator.join([record['name'], city, state, country])
             url = furl('https://www.google.com/search?').add({'q':params}).url
             record.update({'URL':url})
+            record.update({'countryCode':country})
 
         return pois_dict
     except ResponseError as error:
          raise error
 
 # Uncomment below to test
-#print(get_pois(48.85693, 2.3412, 50, "madrid", "", "spain"))
+#print(get_pois(38.951561,  -92.328636, 50, "columbia", "", "missouri"))
+
+def get_flights_v2(src_latitude, src_longitude, dst_latitude, dst_longitude, start_date, end_date):
+    src_airport = get_airport_code(src_latitude, src_longitude)
+    dst_airport = get_airport_code(dst_latitude, dst_longitude)
+
+    body = {
+            "currencyCode": "USD",
+            "originDestinations": [
+                {
+                    "id": "1",
+                    "originLocationCode": src_airport,
+                    "destinationLocationCode": dst_airport,
+                    "departureDateTimeRange": {
+                        #"date": "2022-11-01"
+                        "date": start_date
+                    }
+                },
+                    {
+                        "id": "2",
+                        "originLocationCode": dst_airport,
+                        "destinationLocationCode": src_airport,
+                        "departureDateTimeRange": {
+                            "date": end_date
+                        }
+                }
+            ],
+            "travelers": [
+                {
+                    "id": "1",
+                    "travelerType": "ADULT"
+                }
+            ],
+            "sources": [
+                "GDS"
+            ],
+        }
+    response = amadeus.shopping.flight_offers_search.post(body)
+
+    if(response.data is None):
+        return []
+
+    df = pd.json_normalize(response.data)
+    df = df[["itineraries", "price.grandTotal"]]
+    df.rename(columns = {'price.grandTotal':'price'}, inplace = True)
+    # print(df.head())
+    flights_dict = df.to_dict('records')
+    #print(flights_dict)
+
+    for record in flights_dict:
+        for itinerary in record['itineraries']:
+            for segment in itinerary['segments']:
+                del segment['aircraft']
+                del (segment['id'])
+                del (segment['numberOfStops'])
+                del (segment['blacklistedInEU'])
+                segment["duration"] = segment["duration"][2:]
+
+    return flights_dict
+#get_flights_v2(38.9517, -92.3341, 41.8781, -87.6298, "2022-12-18", "2022-12-25")
+
+def get_hotels_v2(latitude, longitude, radius, city, state, country, start_date, end_date):
+    try:
+        response = amadeus.reference_data.locations.hotels.by_geocode.get(longitude=longitude,latitude=latitude,radius=radius,radiusUnit='MILE')
+        if(response.data is None):
+            return []
+
+        df = pd.json_normalize(response.data)
+        df = df[["name", "geoCode.latitude", "geoCode.longitude", "distance.value", "distance.unit"]]
+        df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
+        hotels_dict = df.to_dict('records')
+        
+        for record in hotels_dict:
+            if math.isnan(record['latitude']) or math.isnan(record['longitude']):
+                del record['latitude']
+                del record['longitude']
+            separator = '+'
+            if(state == ""):
+                params = separator.join([record['name'], city, country])
+            else:
+                params = separator.join([record['name'], city, state, country])
+            url = furl('https://www.google.com/search?').add({'q':params}).url
+            record.update({'URL':url})
+
+        return hotels_dict
+    except ResponseError as error:
+        raise error
