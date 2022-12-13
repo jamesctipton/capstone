@@ -139,7 +139,7 @@ const DestinationSearch = ({ type, setDestination }) => {
     }
 
     const createPoll = (group, pollName, destinations) => {
-        console.log(group, pollName, destinations)
+        console.log(user.name, group, pollName, destinations)
         axios.post(create_poll_url, {
             pollname: pollName,
             user: user.name,

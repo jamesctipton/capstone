@@ -1,11 +1,7 @@
 FRONTEND =====================================================
-
 - home page:
-    - show member count on carousel
+    - spruce up polls
 - trip page:
-    - flight poll - may need rework
-    - hotel poll - may need rework
-    - match figma
     - delete trip
     - voting
     - finalized trip plan display
@@ -16,22 +12,20 @@ FRONTEND =====================================================
     - vote create
     - handle errors from backend (search st. louis)
     - flights
-        ✓ fix searchbar(s)
+        - one user has all info put, send post request and display results
+        - error handle if user has not put in all necessary information
 - favorites and friends:
     - backend?
 
 - implement admin privileges:
-- profile page:
-- "remember me" login functionality:
-    - cookies i guess
+- spruce up profile page you lazy asses
+- jest unit testing
 
 SERVER SIDE ===================================================
 
 - testing
-- flights
+- finish get flights
 - vote poll handler: 
     - handle only one person voting at a time
     
 GENERAL POLISH ================================================
-
-- stuff to do after testing
