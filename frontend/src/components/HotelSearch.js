@@ -14,9 +14,11 @@ import {
     Divider,
     Button,
     TextField,
+    Grid
 } from '@mui/material';
 import { Box } from "@mui/system";
 import { DataGrid } from "@mui/x-data-grid";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 const search_url = 'http://127.0.0.1:5000/search-'
 const create_poll_url = 'http://127.0.0.1:5000/create-poll'
@@ -36,11 +38,17 @@ const HotelSearch = () => {
         latitude: 0,
         longitude: 0
     })
-    const [rows, setRows] = useState([])
+    const [input, setInput] = useState("")
+
+    const [cityRows, setCityRows] = useState([])
+    const [hotelRows, setHotelRows] = useState([])
+
     const [selectedHotels, setSelectedHotels] = useState([])
     const [persistentHotels, setPersistentHotels] = useState([])
     const [pollNameValue, setPollName] = useState("")
     const [groupValue, setGroupValue] = useState("")
+    const [arrivalDate, setArrivalDate] = useState("")
+    const [returnDate, setReturnDate] = useState("")
 
     //constant variables for component
     const navigate = useNavigate()
@@ -49,7 +57,65 @@ const HotelSearch = () => {
     }
     const user = JSON.parse(localStorage.getItem('user'))
 
-    const columns = [
+    const cityColumns = [
+        {
+            field: 'name',
+            headerName: 'Name',
+            minWidth: 260,
+            flex: 0.4
+        },
+        {
+            field: 'countryCode',
+            headerName: 'Country',
+            minWidth: 100,
+            flex: 0.10
+        },
+        {
+            field: 'stateCode',
+            headerName: 'State',
+            minWidth: 100,
+            flex: 0.10
+        },
+        {
+            field: 'latitude',
+            headerName: 'Latitude',
+            type: 'number',
+            minWidth: 120,
+            flex: 0.2
+        },
+        {
+            field: 'longitude',
+            headerName: 'Longitude',
+            type: 'number',
+            minWidth: 120,
+            flex: 0.2
+        },
+        {
+            field: 'searchCityButton',
+            headerName: '',
+            minWidth: 150,
+            flex: 0.2,
+            renderCell: (params) => {
+                const onClick = (e) => {
+                    let stateCode
+                    if(params.row['stateCode'] === undefined) {
+                        stateCode = ""
+                    } else {
+                        stateCode = params.row['stateCode']
+                    }
+                    searchHotels(params.row['name'], params.row['countryCode'], stateCode, params.row['latitude'], params.row['longitude'], 15, arrivalDate.toString(), returnDate.toString())
+                }
+                return (
+                    <Grid container justifyContent="flex-end">
+                        <Button sx={{ fontSize: 12 }} onClick={() => onClick()}>Search Hotels</Button>
+                    </Grid>
+
+                )
+            }
+        }
+    ]
+
+    const hotelColumns = [
         {
             field: 'name',
             headerName: 'Name',
@@ -72,31 +138,52 @@ const HotelSearch = () => {
             flex: 0.2
         },
         {
-            field: 'latitude',
-            headerName: 'Latitude',
+            field: 'price',
+            headerName: 'Price per Night',
             type: 'number',
-            minWidth: 120,
-            flex: 0.2
-        },
-        {
-            field: 'longitude',
-            headerName: 'Longitude',
-            type: 'number',
-            minWidth: 120,
+            minWidth: 150,
             flex: 0.2
         }
     ]
 
-    const searchHotels = (lat, long, cityName, country, state, radius) => {
+    const searchCities = (dest) => {
+        if(dest.length < 3) {
+            setError({ message: "Please enter more than 3 characters to search for a city", result: true })
+        } else {
+            setError({ message: "", result: false })
+            axios.post(search_url+'destinations', {
+                keyword: dest
+            }).then((response) => {
+                const results = response['data']['destinations']
+                if(results.length === 0){
+                    setError({ message: "No results found.", result: true })
+                }
+
+                let temp_array = []
+                for(let i = 0; i < results.length; i++){
+                    results[i].id = results[i].name + i.toString()
+                    temp_array.push(results[i])
+                }
+                setCityRows(temp_array)
+            }).catch((error) => {
+                setError({ message: error, result: true })
+            })
+        }
+    }
+
+    const searchHotels = (name, country, state, latitude, longitude, radius, start, end) => {
+        console.log(name, country, state, latitude, longitude, radius, start, end)
         setSelectedHotels([])
         setError({ message: "", result: false})
         axios.post(search_url+'hotels', {
-            latitude: lat,
-            longitude: long,
-            radius: radius,
-            city: cityName,
+            city: name,
+            country: country,
             state: state,
-            country: country
+            latitude: latitude,
+            longitude: longitude,
+            radius: radius,
+            startDate: start,
+            endDate: end
         }).then((response) => {
             console.log(response)
             const results = response['data']['hotels']
@@ -105,7 +192,7 @@ const HotelSearch = () => {
                 results[i].id = results[i].name + i.toString()
                 temp_array.push(results[i])
             }
-            setRows(temp_array)
+            setHotelRows(temp_array)
         }).catch((error) => {
             console.log(error)
         })
@@ -121,106 +208,83 @@ const HotelSearch = () => {
         })
     }
 
-    const initializeTable = (city_params) => {
-        console.log(city_params)
-        setSelectedCity({
-            name: city_params.name,
-            country: city_params.country,
-            latitude: city_params.latitude,
-            longitude: city_params.longitude
-        })
-        searchHotels(city_params.latitude, city_params.longitude, city_params.name, city_params.country, city_params.state, city_params.radius)
-    }
-
     return (
-            //if dont have city, destination search
-            <>
-                {!selectedCity.name ? 
-                    <DestinationSearch type={'hotel'} setDestination={initializeTable} />
+            //search cities first
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '90%', marginTop: '2%' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', width: '80%' }}>
+                    <FormControl fullWidth>
+                        <OutlinedInput 
+                            placeholder="Search Destination"
+                            variant="outlined" 
+                            sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} 
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            fullWidth
+                            endAdornment={
+                                <IconButton aria-label='search' onClick={() => searchCities(input)} onMouseDown={() => {}} edge="end">
+                                    <SearchOutlinedIcon fontSize="large" color="primary"/>
+                                </IconButton>}>
+                        </OutlinedInput>
+                    </FormControl>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '2%', width: '80%'}}>
+                    <DesktopDatePicker 
+                        label="Arrival Date"
+                        inputFormat="MM/DD/YYYY"
+                        value={arrivalDate}
+                        onChange={setArrivalDate}
+                        renderInput={(params) =>
+                            <TextField {...params}
+                                error={false}
+                                sx={{
+                                    input: { color: '#CF7D30'}, 
+                                    svg: { color: '#CF7D30'}, 
+                                    label: { color: '#CF7D30'},
+                                    width: '40%',
+                                }}
+                        />}
+                    />
+                    <DesktopDatePicker 
+                        label="Return Date"
+                        inputFormat="MM/DD/YYYY"
+                        value={returnDate}
+                        onChange={setReturnDate}
+                        renderInput={(params) =>
+                            <TextField {...params}
+                                error={false}
+                                sx={{
+                                    input: { color: '#CF7D30'}, 
+                                    svg: { color: '#CF7D30'}, 
+                                    label: { color: '#CF7D30'},
+                                    width: '40%',
+                                }}
+                        />}
+                    />
+                </div>
+                {hotelRows.length === 0 ? 
+                    <Box width='100%' height={1000} marginTop='2%'>
+                        {cityRows.length > 0 ?
+                            <DataGrid
+                                rows={cityRows}
+                                columns={cityColumns}
+                                pageSize={20}
+                                rowsPerPageOptions={[20]}
+                            />
+                        : <></>}
+                        
+                    </Box>
                     : 
-                    <div style={{ width: '90%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                        <div style={{width: '80%', marginTop: '2%', marginBottom: '2%'}}>
-                            <FormControl fullWidth>
-                                <OutlinedInput 
-                                    placeholder="Search Destination"
-                                    variant="outlined" 
-                                    sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} 
-                                    //value={input}
-                                    //onChange={(e) => setInput(e.target.value)}
-                                    fullWidth
-                                    endAdornment={
-                                        <IconButton aria-label='search' onClick={() => {}} onMouseDown={() => {}} edge="end">
-                                            <SearchOutlinedIcon fontSize="large" color="primary"/>
-                                        </IconButton>}>
-                                </OutlinedInput>
-                            </FormControl>
-                        </div> 
-                        { errorValue.result ? 
-                            <Box sx={{ border: '3px solid red', background: 'rgba(255, 0, 0, 0.1)', color: 'red', padding: 2 }}>
-                                <Typography>{errorValue.message}</Typography>
-                            </Box> : <></>}
-                        <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 10, marginBottom: '2%'}}>
-                            {persistentHotels.map((hotel, i) => {
-                                return (
-                                    <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
-                                        <Button
-                                    color='primary'
-                                    onClick={() => {
-                                        let temp = persistentHotels.splice(i,1)
-                                        setPersistentHotels(persistentHotels.filter(n => !temp.includes(n)))
-                                    }}
-                                >X {hotel['name']}</Button>
-                                    </Box>
-                                )
-                            })}
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '85%', justifyContent: 'space-between' }}>
-                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, minWidth: 'max-content'}}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="select-label">Group</InputLabel>
-                                    <Select
-                                        id="group"
-                                        labelId="select-group"
-                                        //value={}
-                                        label="Group"
-                                        onChange={(e) => {}}
-                                        variant="outlined"
-                                        sx={{ minWidth: '100px' }}
-                                        autoWidth
-                                    >
-                                        {user.groups.length > 0 ?
-                                            user.groups.map((g, i) => {
-                                                return (
-                                                    <MenuItem key={i} value={g.group_id}>{g.name}</MenuItem>
-                                                )
-                                            }) : <MenuItem>No groups available</MenuItem>}
-                                        <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
-                                        <Button sx={{ marginLeft: '12%' }} onClick={() => {}}>Create Group</Button>
-                                    </Select>
-                                </FormControl>
-                                <TextField id='poll_name' label='Poll Name' variant="outlined" onChange={() => {}} sx={{ minWidth: 'max-content'}}></TextField>
-                                <Button 
-                                    disabled={(!(user || selectedHotels.length > 5) && (selectedHotels.length === 1 || selectedHotels.length === 0)) /*|| (groupValue === "" || pollNameValue === "")*/}
-                                    sx={{ border: '2px solid orange', borderRadius: 1, padding: 1, whiteSpace: 'no-wrap', minWidth: 'max-content' }} 
-                                    onClick={() => searchHotels()}
-                                >
-                                    Add Poll
-                                </Button>
-                            </div>
-                        </div>
-                        <div style={{ width: '100%', flexDirection: 'row',justifyContent: 'flex-end', marginTop: '2%' }}>
-                            <Typography variant="h4" sx={{ color: '#CF7D30' }}>{selectedCity.name + ', ' + selectedCity.country}</Typography>
-                        </div>
-                        <Box sx={{ height: 1152, width: '100%', marginTop: '2%' }}>
+                    <Box width='100%' height={1000} marginTop='2%'>
+                        {hotelRows.length > 0 ?
                             <DataGrid 
-                                rows={rows}
-                                columns={columns}
+                                rows={hotelRows}
+                                columns={hotelColumns}
                                 pageSize={20}
                                 rowsPerPageOptions={[20]}
                                 checkboxSelection
                                 isRowSelectable={(p) => (persistentHotels.length) < 5 || !(selectedHotels.indexOf(p.row) === -1)}
                                 onSelectionModelChange={(ids) => {
-                                    let temp = ids.map((id) => rows.find((row) => row.id === id))
+                                    let temp = ids.map((id) => hotelRows.find((row) => row.id === id))
                                     let t2 = selectedHotels
                                     setSelectedHotels(temp)
                                     if(persistentHotels.length === 0) {
@@ -247,11 +311,11 @@ const HotelSearch = () => {
                                     setPersistentHotels(current)
                                 }}
                             />
-                        </Box>
-                    </div>
+                        :<></>}
+                        
+                    </Box>               
                 }
-            </>
-            
+            </div>
     )
 }
 export default HotelSearch
