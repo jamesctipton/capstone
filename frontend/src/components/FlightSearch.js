@@ -121,14 +121,19 @@ const FlightSearch = () => {
         })
     }
 
-    const searchFlights = (departCity, arriveCity, startDate, endDate) => {
-        console.log(departCity, arriveCity, startDate, endDate)
+    const searchFlights = (startDate, endDate, srcLat, srcLong, destLat, destLong) => {
+        console.log(startDate, endDate, srcLat, srcLong, destLat, destLong)
         axios.post(search_url+'flights', {
-            src_latitude: departCity.latitude,
-            src_longitude: departCity.longitude,
-            dst_latitude: arriveCity.latitude,
-            dst_longitude: arriveCity.longitude,
-            departure_date: startDate
+            src_latitude: srcLat,
+            src_longitude: srcLong,
+            dst_latitude: srcLat,
+            dst_longitude: srcLong,
+            begin_date: startDate,
+            end_date: endDate
+        }).then((response) => {
+            console.log(response)
+        }).catch((error) => {
+            console.log(error)
         })
     }
 
@@ -275,7 +280,7 @@ const FlightSearch = () => {
                 variant="outlined"
                 sx={{m: 1, borderWidth: 3, borderRadius: 30, borderColor: 'primary', whiteSpace: 'nowrap', minWidth: 'maxcontent', '&:hover': { borderWidth: 3 }, marginLeft: '41%', width: 200, height: 50, fontSize: 20 }}
                 disabled={(from === "" || to === "" || departDate === "" || returnDate === "" || selectedDeparture === [] || selectedArrival === [])}
-                onClick={() => searchFlights(departDate, returnDate, selectedDeparture[0], selectedArrival[0])}
+                onClick={() => searchFlights(departDate.toString(), returnDate.toString(), selectedDeparture[0].latitude, selectedDeparture[0].longitude, selectedArrival[0].latitude, selectedArrival[0].longitude)}
             >Search Flights</Button>
         </div>
     )
