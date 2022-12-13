@@ -1,29 +1,35 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import DestinationSearch from "./DestinationSearch";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import {
     FormControl,
     OutlinedInput,
     IconButton,
+    Button,
+    TextField,
+    Grid,
     Typography,
     InputLabel,
     Select,
     MenuItem,
     Divider,
-    Button,
-    TextField,
-    Grid
+
 } from '@mui/material';
 import { Box } from "@mui/system";
 import { DataGrid } from "@mui/x-data-grid";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { useNavigate } from "react-router-dom";
+
 
 const search_url = 'http://127.0.0.1:5000/search-'
 const create_poll_url = 'http://127.0.0.1:5000/create-poll'
 
 const HotelSearch = () => {
+
+    const navigate = useNavigate()
+    const navigateToCreateGroup = () => {
+        navigate('/join-create')
+    }
      
     //error handling
     const [errorValue, setError] = useState({
@@ -32,29 +38,17 @@ const HotelSearch = () => {
     })
 
     //variables that will change based on user input
-    const [selectedCity, setSelectedCity] = useState({
-        name: "",
-        country: "",
-        latitude: 0,
-        longitude: 0
-    })
     const [input, setInput] = useState("")
-
     const [cityRows, setCityRows] = useState([])
     const [hotelRows, setHotelRows] = useState([])
-
     const [selectedHotels, setSelectedHotels] = useState([])
     const [persistentHotels, setPersistentHotels] = useState([])
-    const [pollNameValue, setPollName] = useState("")
-    const [groupValue, setGroupValue] = useState("")
     const [arrivalDate, setArrivalDate] = useState("")
     const [returnDate, setReturnDate] = useState("")
 
-    //constant variables for component
-    const navigate = useNavigate()
-    const navigateToCreateGroup = () => {
-        navigate('/join-create')
-    }
+    const [pollNameValue, setPollName] = useState("")
+    const [groupValue, setGroupValue] = useState("")
+
     const user = JSON.parse(localStorage.getItem('user'))
 
     const cityColumns = [
@@ -146,7 +140,17 @@ const HotelSearch = () => {
         }
     ]
 
+    if(document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer') != null) {
+        if(selectedHotels.length === 0) {
+            document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer').style.display = 'none';
+        }
+        else {
+            document.querySelector('.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer').style = {display: 'hidden'};
+        }
+    }
+
     const searchCities = (dest) => {
+        setHotelRows([])
         if(dest.length < 3) {
             setError({ message: "Please enter more than 3 characters to search for a city", result: true })
         } else {
@@ -172,7 +176,6 @@ const HotelSearch = () => {
     }
 
     const searchHotels = (name, country, state, latitude, longitude, radius, start, end) => {
-        console.log(name, country, state, latitude, longitude, radius, start, end)
         setSelectedHotels([])
         setError({ message: "", result: false})
         axios.post(search_url+'hotels', {
@@ -185,7 +188,6 @@ const HotelSearch = () => {
             startDate: start,
             endDate: end
         }).then((response) => {
-            console.log(response)
             const results = response['data']['hotels']
             let temp_array = []
             for(let i = 0; i < results.length; i++) {
@@ -198,13 +200,18 @@ const HotelSearch = () => {
         })
     }
 
-    const createHotelPoll = (name, country, state) => {
+    const createPoll = (group, name, options) => {
+        console.log(group, name, options)
         axios.post(create_poll_url, {
-            test: name
+            user: user.name,
+            groupid: group,
+            pollname: name,
+            pollOptions: options,
+            category: "hotels"
         }).then((response) => {
             console.log(response)
         }).catch((error) => {
-            console.log(error)
+            setError({ message: error, result: true })
         })
     }
 
@@ -227,6 +234,11 @@ const HotelSearch = () => {
                         </OutlinedInput>
                     </FormControl>
                 </div>
+                {/* { errorValue.result ? 
+                    <Box sx={{ border: '3px solid red', background: 'rgba(255, 0, 0, 0.1)', color: 'red', padding: 2 }}>
+                        <Typography>{errorValue.message}</Typography>
+                    </Box> 
+                : <></> } */}
                 <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '2%', width: '80%'}}>
                     <DesktopDatePicker 
                         label="Arrival Date"
@@ -261,6 +273,63 @@ const HotelSearch = () => {
                         />}
                     />
                 </div>
+                {persistentHotels.length > 0 ?
+                    <div styled={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: '3%', marginBottom: '2%' }}>
+                            {persistentHotels.map((dest, i) => {
+                                return (
+                                    <Box key={i} sx={{ border: '2px solid orange', borderRadius: 5, background: 'rgba(207, 125, 48, 0.21)', padding: 1 }}>
+                                        <Button
+                                            color='primary'
+                                            onClick={() => {
+                                                let temp = persistentHotels.splice(i,1)
+                                                setPersistentHotels(persistentHotels.filter(n => !temp.includes(n)))
+                                            }}
+                                        >x {dest['name']}</Button>
+                                    </Box>
+                                )
+                            })}
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}>
+                            <div style={{ display: 'flex', gap: 10, minWidth: 'max-content'}}>
+                                {user != undefined ?
+                                <FormControl fullWidth>
+                                <InputLabel id="select-label">Group</InputLabel>
+                                <Select
+                                    id="group"
+                                    labelId="select-group"
+                                    value={groupValue}
+                                    label="Group"
+                                    onChange={(e) => {
+                                        setGroupValue(e.target.value)
+                                    }}
+                                    variant="outlined"
+                                    sx={{ minWidth: '100px' }}
+                                    autoWidth
+                                >
+                                {(user.groups.length > 0) ? 
+                                    user.groups.map((g, i) => {
+                                        return(
+                                            <MenuItem key={i} value={g.groupCode}>{g.groupname}</MenuItem>
+                                        )
+                                    }): <MenuItem>No groups available</MenuItem>}
+                                    <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
+                                    <Button sx={{ marginLeft: '8%' }} onClick={() => navigateToCreateGroup()}>Create Group</Button>
+                                </Select>
+                            </FormControl>
+                            : <></>}
+                                <TextField id='poll_name' label="Poll Name" variant="outlined" onChange={(e) => setPollName(e.target.value)} value={pollNameValue} sx={{ minWidth: 'max-content'}}></TextField>
+                                <Button 
+                                    disabled={(!(user || persistentHotels.length > 5) && (persistentHotels.length === 1 || persistentHotels.length === 0)) || (groupValue === "" || pollNameValue === "")}
+                                    sx={{ border: '2px solid orange', borderRadius: 1, padding: 1, whiteSpace: 'no-wrap', minWidth: 'max-content' }} 
+                                    onClick={() => createPoll(groupValue, pollNameValue, persistentHotels)}
+                                >
+                                    Add Poll
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                :<></>}
                 {hotelRows.length === 0 ? 
                     <Box width='100%' height={1000} marginTop='2%'>
                         {cityRows.length > 0 ?
@@ -312,8 +381,7 @@ const HotelSearch = () => {
                                 }}
                             />
                         :<></>}
-                        
-                    </Box>               
+                    </Box>
                 }
             </div>
     )

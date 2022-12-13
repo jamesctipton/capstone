@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 const search_url = 'http://127.0.0.1:5000/search-'
 const create_poll_url = 'http://127.0.0.1:5000/create-poll'
 
-const DestinationSearch = ({ type, setDestination, setArrival, setReturn }) => {
+const DestinationSearch = ({ type, setDestination }) => {
 
     //error handling 
     const [errorValue, setError] = useState({
