@@ -1,22 +1,17 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { 
-    Box, 
     Typography,
     FormControl,
-    MenuItem,
     TextField,
-    Select,
-    InputLabel,
     Button,
     OutlinedInput,
     IconButton,
-    Divider,
-    Grid
+    Box
 } from "@mui/material";
-import { DataGrid, gridDensityRowHeightSelector } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import { Form, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 const search_url = 'http://127.0.0.1:5000/search-'
@@ -141,26 +136,28 @@ const FlightSearch = () => {
         <div id='outer-container' style={{ width: '90%'}}>
             <div id='search-container' style={{ width: '100%', display: 'flex', marginTop: '2%', marginBottom: '2%', justifyContent: 'space-between' }}>
                 <div id='start-search' style={{ width: '40%', display: 'flex', justifyContent: 'flex-start', flexDirection: 'column' }}>
-                    <Typography color="primary" sx={{ marginBottom: 1, textAlign: 'center' }}>Departure Location</Typography>
-                    <FormControl fullWidth flex={0.5} sx={{ marginBottom: 2 }}>
-                        <OutlinedInput 
-                            placeholder="Where from?"
-                            variant="outlined" 
-                            sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} 
-                            value={from}
-                            onChange={(e) => setFrom(e.target.value)}
-                            fullWidth
-                            onKeyPress={event => {
-                                if (event.key === 'Enter') {
-                                    searchDestination(from, true)
-                                }
-                                }}
-                            endAdornment={
-                            <IconButton aria-label='search' onClick={() => searchDestination(from, true)} onMouseDown={() => {}} edge="end">
-                                <SearchOutlinedIcon fontSize="large" color="primary"/>
-                            </IconButton>}>
-                        </OutlinedInput>
-                    </FormControl>
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+                        <Typography color="primary" sx={{ marginBottom: 1, textAlign: 'center' }}>Departure Location</Typography>
+                        <FormControl fullWidth flex={0.5} sx={{ marginBottom: 2 }}>
+                            <OutlinedInput 
+                                placeholder="Where from?"
+                                variant="outlined" 
+                                sx={{borderWidth: 3, borderRadius: 30, whiteSpace: 'nowrap', minWidth: 334}} 
+                                value={from}
+                                onChange={(e) => setFrom(e.target.value)}
+                                fullWidth
+                                onKeyPress={event => {
+                                    if (event.key === 'Enter') {
+                                        searchDestination(from, true)
+                                    }
+                                    }}
+                                endAdornment={
+                                <IconButton aria-label='search' onClick={() => searchDestination(from, true)} onMouseDown={() => {}} edge="end">
+                                    <SearchOutlinedIcon fontSize="large" color="primary"/>
+                                </IconButton>}>
+                            </OutlinedInput>
+                        </FormControl>
+                    </div>
                     <DesktopDatePicker
                         label="Departure Date"
                         inputFormat="MM/DD/YYYY"
@@ -225,6 +222,10 @@ const FlightSearch = () => {
                             </OutlinedInput>
                         </FormControl>
                     </div>
+                    { errorValue.result ? 
+                        <Box sx={{ border: '3px solid red', background: 'rgba(255, 0, 0, 0.1)', color: 'red', padding: 2 }}>
+                            <Typography>{errorValue.message}</Typography>
+                        </Box> : <></> }
                     <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
                         <DesktopDatePicker
                             label="Arrival Date"
