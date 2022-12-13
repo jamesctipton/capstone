@@ -201,8 +201,8 @@ def get_pois(latitude, longitude, radius_miles, city, state, country):
             return []
 
         df = pd.json_normalize(response.data)
-        df = df[["name", "category"]]#, "geoCode.latitude", "geoCode.longitude"]]
-        #df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
+        df = df[["name", "category", "geoCode.latitude", "geoCode.longitude"]]
+        df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
         pois_dict = df.to_dict('records')
         
         for record in pois_dict:
@@ -216,13 +216,14 @@ def get_pois(latitude, longitude, radius_miles, city, state, country):
                 params = separator.join([record['name'], city, state, country])
             url = furl('https://www.google.com/search?').add({'q':params}).url
             record.update({'URL':url})
+            record.update({'countryCode':country})
 
         return pois_dict
     except ResponseError as error:
          raise error
 
 # Uncomment below to test
-#print(get_pois(48.85693, 2.3412, 50, "madrid", "", "spain"))
+#print(get_pois(38.951561,  -92.328636, 50, "columbia", "", "missouri"))
 
 def get_flights_v2(src_latitude, src_longitude, dst_latitude, dst_longitude, start_date, end_date):
     src_airport = get_airport_code(src_latitude, src_longitude)
@@ -282,3 +283,30 @@ def get_flights_v2(src_latitude, src_longitude, dst_latitude, dst_longitude, sta
 
     return flights_dict
 #get_flights_v2(38.9517, -92.3341, 41.8781, -87.6298, "2022-12-18", "2022-12-25")
+
+def get_hotels_v2(latitude, longitude, radius, city, state, country, start_date, end_date):
+    try:
+        response = amadeus.reference_data.locations.hotels.by_geocode.get(longitude=longitude,latitude=latitude,radius=radius,radiusUnit='MILE')
+        if(response.data is None):
+            return []
+
+        df = pd.json_normalize(response.data)
+        df = df[["name", "geoCode.latitude", "geoCode.longitude", "distance.value", "distance.unit"]]
+        df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
+        hotels_dict = df.to_dict('records')
+        
+        for record in hotels_dict:
+            if math.isnan(record['latitude']) or math.isnan(record['longitude']):
+                del record['latitude']
+                del record['longitude']
+            separator = '+'
+            if(state == ""):
+                params = separator.join([record['name'], city, country])
+            else:
+                params = separator.join([record['name'], city, state, country])
+            url = furl('https://www.google.com/search?').add({'q':params}).url
+            record.update({'URL':url})
+
+        return hotels_dict
+    except ResponseError as error:
+        raise error

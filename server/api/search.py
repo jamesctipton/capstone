@@ -39,6 +39,7 @@ class FlightSearchHandler(Resource):
 
         begin_date = begin_date.split(" ")
         formatted_begin_date = begin_date[3] + "-" + begin_date[1] + "-" + strptime('Feb','%b').begin_date[2]
+        print(formatted_begin_date)
 
         end_date = end_date.split(" ")
         formatted_end_date = end_date[3] + "-" + end_date[1] + "-" + strptime('Feb','%b').end_date[2]
