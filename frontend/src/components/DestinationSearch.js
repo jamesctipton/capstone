@@ -78,7 +78,7 @@ const DestinationSearch = ({ type, setDestination }) => {
             flex: 0.2
         }
     ]
-    if(type == 'hotel' || type == 'poi') {
+    if(type == 'poi') {
         columns.push({
             field: 'searchCityButton',
             headerName: '',
