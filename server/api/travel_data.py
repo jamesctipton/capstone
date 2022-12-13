@@ -1,8 +1,9 @@
 from amadeus import Client, ResponseError
 import ssl, urllib
 import pandas as pd
-import math 
+import math, json
 from furl import furl
+from dateutil import parser
 
 def ssl_disabled_urlopen(endpoint):
     context = ssl._create_unverified_context()
@@ -13,6 +14,8 @@ amadeus = Client(
     client_secret='e5GdBCa02F58PrHe',
     http=ssl_disabled_urlopen
 )
+
+pd.set_option('display.max_columns', None)
 
 # get city destination by search term
 # search term needs to be between 3 and 50 characters
@@ -49,6 +52,15 @@ def get_destinations(keyword):
 
 # Uncomment below to test
 #print(get_destinations("Pennsylvania"))
+
+# get airline name given an airline iata code
+def get_airline_name(iata_code):
+    f = open('airlines.json')
+    codes = json.load(f)
+    for code in codes:
+        if iata_code == code["code"]:
+            return code["name"]
+
 
 # get most relevant airport near a given set of coordinates
 def get_airport_code(latitude, longitude):
@@ -100,17 +112,35 @@ def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, depart
         if(response.data is None):
             return []
 
-        df = pd.json_normalize(response.data)
-        #df[["segments.departure.iataCode", "segments.departure.at", "segments.arrival.iataCode", "segments.arrival.at", 
-        #]]
-        print(df)
+        df = pd.json_normalize(response.data, record_path=['segments'], meta='duration')
+        df = df[["numberOfStops", "departure.iataCode", "carrierCode", "departure.at", "arrival.iataCode", "arrival.at", "duration"]]
+        df.rename(columns = {'departure.iataCode':'departure_airport', 'arrival.iataCode': 'arrival_airport'}, inplace = True)
+        flights_dict = df.to_dict('records')
+
+        for record in flights_dict:
+            record['departure.at'] = parser.parse(record['departure.at'])
+            record["departure_date"] = (record['departure.at'].strftime('%B')) + " " + str(record['departure.at'].day) + ", " + str(record['departure.at'].year)
+            record["departure_time"] = record['departure.at'].strftime("%I:%M %p")
+            del record['departure.at']
+
+            record['arrival.at'] = parser.parse(record['arrival.at'])
+            record["arrival_date"] = (record['arrival.at'].strftime('%B')) + " " + str(record['arrival.at'].day) + ", " + str(record['arrival.at'].year)
+            record["departure_time"] = record['arrival.at'].strftime("%I:%M %p")
+            del record['arrival.at']
+
+            record["airline"] = get_airline_name(record["carrierCode"])
+            del record['carrierCode']
+
+            record["duration"] = record["duration"][2:]
+
+        print(flights_dict[0])
 
         return
     
     except ResponseError as error:
         return error
 
-#get_flights(51.507351, -0.127758, 52.520008, 13.404954, "2023-03-01")
+get_flights(51.507351, -0.127758, 52.520008, 13.404954, "2022-12-15")
 
 
 
