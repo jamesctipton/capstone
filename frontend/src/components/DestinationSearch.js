@@ -235,43 +235,46 @@ const DestinationSearch = ({ type, setDestination }) => {
                     </Button>
                 </div>
             </div>
-            <Box sx={{ height: 1152, width: '100%', marginTop: '2%'}}>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    pageSize={20}
-                    rowsPerPageOptions={[20]}
-                    checkboxSelection={type != 'hotel' && type != 'poi'}
-                    isRowSelectable={(p) => (persistentDest.length) < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
-                    onSelectionModelChange={(ids) => {
-                        let temp = ids.map((id) => rows.find((row) => row.id === id))
-                        let t2 = selectedDestinations
-                        setSelectedDestinations(temp)
-                        if(persistentDest.length === 0) {
-                            setPersistentDest(temp)
-                        }
-                        let current = persistentDest
-                        let x = temp.filter(n => !selectedDestinations.includes(n))
-                        if(x[0] !== undefined) {
-                            current.push(x[0])
-                        }
-                        // for deletions
-                        if((temp.length < t2.length) && temp.length > 0) {
-                            let remove = t2[t2.length - 1]
-                            let j = current.findIndex((y) => y === remove)
-                            current.splice(j, 1)
-                        }
-                        if(temp.length === 0 && t2.length === 1) {
-                            if(current.length === 1)
-                                current = []
-                            else {
-                                current.pop()
+            {rows.length > 0 ?
+                <Box sx={{ height: 1152, width: '100%', marginTop: '2%'}}>
+                    <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        pageSize={20}
+                        rowsPerPageOptions={[20]}
+                        checkboxSelection={type != 'hotel' && type != 'poi'}
+                        isRowSelectable={(p) => (persistentDest.length) < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
+                        onSelectionModelChange={(ids) => {
+                            let temp = ids.map((id) => rows.find((row) => row.id === id))
+                            let t2 = selectedDestinations
+                            setSelectedDestinations(temp)
+                            if(persistentDest.length === 0) {
+                                setPersistentDest(temp)
                             }
-                        }
-                        setPersistentDest(current)
-                    }}
-                />
-            </Box>
+                            let current = persistentDest
+                            let x = temp.filter(n => !selectedDestinations.includes(n))
+                            if(x[0] !== undefined) {
+                                current.push(x[0])
+                            }
+                            // for deletions
+                            if((temp.length < t2.length) && temp.length > 0) {
+                                let remove = t2[t2.length - 1]
+                                let j = current.findIndex((y) => y === remove)
+                                current.splice(j, 1)
+                            }
+                            if(temp.length === 0 && t2.length === 1) {
+                                if(current.length === 1)
+                                    current = []
+                                else {
+                                    current.pop()
+                                }
+                            }
+                            setPersistentDest(current)
+                        }}
+                    />
+                </Box>
+            : 
+            <></>}
         </div>
     )
 }
