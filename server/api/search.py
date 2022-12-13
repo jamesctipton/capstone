@@ -33,13 +33,16 @@ class FlightSearchHandler(Resource):
         src_longitude = json_data['src_longitude']
         dst_latitude = json_data['dst_latitude']
         dst_longitude = json_data['dst_longitude']
-        date = json_data['date']
+        begin_date = json_data['begin_date']
+        end_date = json_data['end_date']
 
-        flights = get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, date)
+        begin_flights = get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, begin_date)
+        end_flights = get_flights(dst_latitude, dst_longitude, src_latitude, src_longitude, end_date)
         return{
             'resultStatus': 'SUCCESS',
             'message': "Flight search successful",
-            'hotels': flights
+            'flights_to_destination': begin_flights,
+            'flights_from_destination': end_flights
         }
 
 # Search parameters: lat/long and radius in miles
