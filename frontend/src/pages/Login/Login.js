@@ -58,7 +58,8 @@ const Login = () => {
           firstname: response['data']['firstname'],
           lastname: response['data']['lastname'],
           email: response['data']['email'],
-          groups: JSON.parse(response['data']['groups'])
+          groups: JSON.parse(response['data']['groups']),
+          votedPolls: new Array()
         }  
         localStorage.setItem('user', JSON.stringify(user)) 
         handleCookies(user)

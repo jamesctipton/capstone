@@ -1,7 +1,7 @@
 FRONTEND =====================================================
 
 - home page:
-    - show member count on carousel
+    ✓ show member count on carousel
 - trip page:
     - flight poll - may need rework
     - hotel poll - may need rework
@@ -13,7 +13,7 @@ FRONTEND =====================================================
         - members
 - search:
     - can't search another POI / hotel location after one is already loaded
-    - vote create
+    ✓ vote create
     - handle errors from backend (search st. louis)
     - flights
         ✓ fix searchbar(s)
@@ -21,8 +21,8 @@ FRONTEND =====================================================
     - backend?
 
 - implement admin privileges:
-- profile page:
-- "remember me" login functionality:
+✓ profile page:
+✓ "remember me" login functionality:
     - cookies i guess
 
 SERVER SIDE ===================================================

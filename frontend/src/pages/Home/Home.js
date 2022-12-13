@@ -27,6 +27,10 @@ const Home = () => {
         for (let i = 0; i < user.groups.length; i++) {
           const group = user.groups[i];
           if(group.polls) {
+            group.polls.sort(function(a, b) {
+              var x = a['pollCategory']; var y = b['pollCategory'];
+              return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            })
             for (let j = 0; j < group.polls.length; j++) {
               const p = group.polls[j];
               polls.push(p)
@@ -75,10 +79,14 @@ const Home = () => {
               ></Poll>
               :
               <>
-                {polls.map(p => (
+                <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>Active Polls</Typography>
+                {polls.map((p, i) => (
                 <Poll
+                  key={i}
                   options={p.options}
-                  title="Active Polls"
+                  totalVotes={p.totalVotes}
+                  pollCode={p.pollCode}
+                  category={p.pollCategory}
                 ></Poll> 
                 ))} 
               </>

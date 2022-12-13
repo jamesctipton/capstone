@@ -1,18 +1,33 @@
 import React from 'react';
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
 import { styled } from '@mui/material/styles';
+import PublicIcon from '@mui/icons-material/Public';
+import FlightIcon from '@mui/icons-material/Flight';
+import HotelIcon from '@mui/icons-material/Hotel';
+import PlaceIcon from '@mui/icons-material/Place';
 import axios from 'axios';
 
 const url = "http://127.0.0.1:5000/vote-poll"
 
 export function Poll(props) {
 
-    const user = props.user;
+    const user = JSON.parse(localStorage.getItem('user'))
+
     const [options, setOptions] = React.useState(props.options);
     const [totalVotes, setTotalVotes] = React.useState(0);
+    const [hp, setHP] = React.useState(true);
+
     if(props.totalVotes && (totalVotes != props.totalVotes)) {
         setTotalVotes(props.totalVotes);
+    }
+    
+    if(user.votedPolls) {
+      if(hp === true) {
+        if(user.votedPolls.findIndex((element) => element === props.pollCode) != -1) {
+          setHP(false);
+        }
+      }
     }
 
     const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -29,14 +44,17 @@ export function Poll(props) {
     
     const handleVote = (choice) => {
       var votedChoice = options.findIndex( (item) => {
-        return item.name === choice
+        return item === choice
       });
       setTotalVotes(totalVotes + 1)
       var temp = options
       temp[votedChoice].votes++;
       
       setOptions(temp)
-      hidePercent(false);
+      setHP(false);
+
+      user.votedPolls.push(props.pollCode)
+      localStorage.setItem('user', JSON.stringify(user));
 
       // do server stuff
       axios.post(url, {
@@ -50,29 +68,38 @@ export function Poll(props) {
       })
     }
   
-    const [hp, hidePercent] = React.useState(true);
-  
     return (
-      <div className="poll-container">
-        <Typography sx={{width: '100%', textAlign: 'center', fontWeight: 'bold', color: '#CF7D30', mb: 1}} variant='h2'>{props.title}</Typography>
-        {options.map((i) => (              
-          <Box key={i.name} sx={{display: 'grid', gridTemplateColumns: hp ? '1fr' : '1fr 8fr 35px', alignItems: 'center', columnGap: 1, mb: 1}}>
-            <Button
-                sx={{gridColumnStart: 1, justifySelf: 'stretch', width: '100%'}}
-                onClick={() => { handleVote(i) }}
-            >{i.name}</Button>
-            
-            <Box hidden={hp} sx={{ gridColumnStart: 2, justifySelf: 'start', width: '100%', mr: 1}}>
-              <BorderLinearProgress variant="determinate" value={ Math.round( (i.votes / props.totalVotes) * 100 ) }></BorderLinearProgress>
+      <Card>
+        <CardContent>
+          {(props.category === 'destination') ?
+          <PublicIcon fontSize='large' /> : <>
+          {(props.category === 'flight') ?
+          <FlightIcon fontSize='large' /> : <>
+          {(props.category === 'hotel') ?
+          <HotelIcon fontSize='large' /> :
+          <PlaceIcon fontSize='large' /> }</>
+          }</>
+          }
+          {options.map((item, i) => (              
+            <Box key={item.name + i} sx={{display: 'grid', gridTemplateColumns: hp ? '1fr' : '1fr 8fr 35px', alignItems: 'center', columnGap: 1, mb: 1}}>
+              <Button
+                  disabled={!hp}
+                  sx={{gridColumnStart: 1, justifySelf: 'stretch', width: '100%', "&:disabled": {color: '#CF7D30'}}}
+                  onClick={() => { handleVote(item) }}
+              >{item.name}</Button>
+              
+              <Box hidden={hp} sx={{ gridColumnStart: 2, justifySelf: 'start', width: '100%', mr: 1}}>
+                <BorderLinearProgress variant="determinate" value={ Math.round( (item.votes / (props.totalVotes + 1)) * 100 ) }></BorderLinearProgress>
+              </Box>
+              <Box sx={{gridColumnStart: 3, minWidth: 35}}>
+                <Typography hidden={hp} variant='h6' color="text.secondary">
+                  {`${ Math.round( (item.votes / (props.totalVotes + 1)) * 100 ) }%`}
+                </Typography>
+              </Box>
+    
             </Box>
-            <Box sx={{gridColumnStart: 3, minWidth: 35}}>
-              <Typography hidden={hp} variant='h6' color="text.secondary">
-                {`${ Math.round( (i.votes / props.totalVotes) * 100 ) }%`}
-              </Typography>
-            </Box>
-  
-          </Box>
-        ))}
-      </div>
+          ))}
+        </CardContent>
+      </Card>
     );
   }
