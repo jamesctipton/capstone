@@ -51,7 +51,7 @@ def get_destinations(keyword):
         return error
 
 # Uncomment below to test
-#print(get_destinations("Pennsylvania"))
+#print(get_destinations("Philadelphia"))
 
 # get airline name given an airline iata code
 def get_airline_name(iata_code):
@@ -60,6 +60,7 @@ def get_airline_name(iata_code):
     for code in codes:
         if iata_code == code["code"]:
             return code["name"]
+    return ""
 
 
 # get most relevant airport near a given set of coordinates
@@ -133,15 +134,13 @@ def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, depart
 
             record["duration"] = record["duration"][2:]
 
-        print(flights_dict[0])
-
-        return
+        return flights_dict
     
     except ResponseError as error:
         return error
 
-get_flights(51.507351, -0.127758, 52.520008, 13.404954, "2022-12-15")
-
+# Uncomment below to test
+#print(get_flights(51.507351, -0.127758, 52.520008, 13.404954, "2022-12-18"))
 
 
 # get hotels for certain latitude/longitude in a certain radius (miles)
@@ -176,6 +175,7 @@ def get_hotels(latitude, longitude, radius, city, state, country):
 
 # Uncomment below to test
 #print(get_hotels(48.85693, 2.3412, 50, "madrid", "", "spain"))
+
 
 # get points of interest for certain destination
 # return poi name, category(sightseeing, restaurant, etc), latitude/longitude, description tags, and URL

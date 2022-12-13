@@ -27,7 +27,21 @@ class FlightSearchHandler(Resource):
             'resultStatus': 'SUCCESS',
             'message': "flight search handler hit"
         }
-    
+    def post(self):
+        json_data = request.get_json()
+        src_latitude = json_data['src_latitude']
+        src_longitude = json_data['src_longitude']
+        dst_latitude = json_data['dst_latitude']
+        dst_longitude = json_data['dst_longitude']
+        date = json_data['date']
+
+        flights = get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, date)
+        return{
+            'resultStatus': 'SUCCESS',
+            'message': "Flight search successful",
+            'hotels': flights
+        }
+
 # Search parameters: lat/long and radius in miles
 # Lat/long will be retrieved from city/poi that user chooses
 class HotelSearchHandler(Resource):          
