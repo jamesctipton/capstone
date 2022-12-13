@@ -1,7 +1,7 @@
 FRONTEND =====================================================
 - home page:
     ✓ show member count on carousel
-    - spruce up polls
+    ✓ spruce up polls
 - trip page:
     - delete trip
     - voting
@@ -21,8 +21,8 @@ FRONTEND =====================================================
 - implement admin privileges:
 ✓ profile page:
 ✓ "remember me" login functionality:
-    - cookies i guess
-- spruce up profile page you lazy asses
+    ✓ cookies i guess
+✓ spruce up profile page you lazy asses
 - jest unit testing
 
 SERVER SIDE ===================================================
@@ -33,3 +33,5 @@ SERVER SIDE ===================================================
     - handle only one person voting at a time
     
 GENERAL POLISH ================================================
+
+- get rid of warnings
