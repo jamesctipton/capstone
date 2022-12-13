@@ -207,7 +207,7 @@ const HotelSearch = () => {
             groupid: group,
             pollname: name,
             pollOptions: options,
-            category: "hotels"
+            category: "hotel"
         }).then((response) => {
             console.log(response)
         }).catch((error) => {
