@@ -92,3 +92,112 @@ class VotePollHandler(Resource):
             'pollID': pollCode,
             'userWhoVoted' : username                
         } 
+
+class VotePollHandler(Resource):
+    def get(self):
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': "vote poll handler get hit"
+        }
+
+    def post(self):
+        json_data = request.get_json()
+        pollCode = json_data['pollCode']
+        option_id = json_data['optionid']
+        username = json_data['username'] # user who voted
+
+        # check if user is in the poll's user voted list
+        user = User.query.filter_by(username=username)
+        if (user is None):
+            return{
+                'resultStatus': 'FAILURE',
+                'message': "user does not exist"
+            }
+        for u in poll.users:
+            if user.id == u.id:
+                return{
+                    'message': "User has already voted"
+                }
+        poll.users.append(user)
+
+        poll = Poll.query.filter_by(pollCode=pollCode)
+        if (poll is None):
+            return{
+                'resultStatus': 'FAILURE',
+                'message': "Poll does not exist"
+            }
+        poll.totalVotes += 1
+
+        option = PollOption.query.filter_by(id=option_id)
+        if (option is None):
+            return{
+                'resultStatus': 'FAILURE',
+                'message': "Poll option does not exist"
+            }
+        option.votes += 1
+
+        # update db
+        db.session.add(poll)
+        db.session.add(option)
+        db.session.commit()   
+
+        # return success
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': "Poll successfully voted on",
+            'pollID': pollCode,
+            'userWhoVoted' : username                
+        }
+
+class RemoveVotePollHandler(Resource):
+    def get(self):
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': "remove vote poll handler get hit"
+        }
+
+    def post(self):
+        json_data = request.get_json()
+        pollCode = json_data['pollCode']
+        option_id = json_data['optionid']
+        username = json_data['username'] # user who voted
+
+        # check if user is in the poll's user voted list
+        user = User.query.filter_by(username=username)
+        if (user is None):
+            return{
+                'resultStatus': 'FAILURE',
+                'message': "user does not exist"
+            }
+        for u in poll.users:
+            if user.id == u.id:
+                poll.users.remove(user)
+
+        poll = Poll.query.filter_by(pollCode=pollCode)
+        if (poll is None):
+            return{
+                'resultStatus': 'FAILURE',
+                'message': "Poll does not exist"
+            }
+        poll.totalVotes -= 1
+
+        option = PollOption.query.filter_by(id=option_id)
+        if (option is None):
+            return{
+                'resultStatus': 'FAILURE',
+                'message': "Poll option does not exist"
+            }
+        option.votes -= 1
+
+        # update db
+        db.session.add(poll)
+        db.session.add(option)
+        db.session.commit()   
+
+        # return success
+        return {
+            'resultStatus': 'SUCCESS',
+            'message': "Vote successfully removed",
+            'pollID': pollCode,
+            'userVoteRemoved' : username                
+        }

@@ -1,7 +1,6 @@
 from flask_restful import Resource
 from flask import request
 from api.travel_data import *
-from time import strptime
 import calendar
 
 # Search parameters: Just a keyword
@@ -38,21 +37,21 @@ class FlightSearchHandler(Resource):
         begin_date = json_data['begin_date']
         end_date = json_data['end_date']
 
-        abbr_to_num = {name: num for num, name in enumerate(calendar.month_abbr) if num}
-
+        print(src_latitude)
+        print(src_longitude)
+        print(dst_latitude)
+        print(dst_longitude)
         begin_date = begin_date.split(" ")
-        print(begin_date)
-        print(begin_date[3])
-        print(begin_date[2])
-        print(begin_date[1])
-        #print("month number: " + abbr_to_num[begin_date[2]])
+
+        
         formatted_begin_date = begin_date[3] + "-" + str(list(calendar.month_abbr).index(begin_date[1])) + "-" + begin_date[2]
         print(formatted_begin_date)
+        print(type(formatted_begin_date))
 
         end_date = end_date.split(" ")
         formatted_end_date = end_date[3] + "-" + str(list(calendar.month_abbr).index(end_date[1])) + "-" + end_date[2]
 
-        flights = get_flights_v2(src_latitude, -1 * src_longitude, dst_latitude, -1 * dst_longitude, formatted_begin_date, formatted_end_date)
+        flights = get_flights_v2(float(src_latitude), float(src_longitude), float(dst_latitude), float(dst_longitude), str(formatted_begin_date), str(formatted_end_date))
         return{
             'resultStatus': 'SUCCESS',
             'message': "Flight search successful",

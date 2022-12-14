@@ -9,6 +9,11 @@ Group_User = db.Table('Group_User',
                     db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
                     )
 
+Poll_User_Vote = db.Table('Poll_User_Vote',
+                    db.Column('poll_id', db.Integer, db.ForeignKey('poll.id')),
+                    db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
+                    )
+
 # User class 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -55,6 +60,7 @@ class Poll(db.Model):
     group_id = db.Column(db.Integer, db.ForeignKey('group.id')) # group poll belongs in
     totalVotes = db.Column(db.Integer)
     options = db.relationship('PollOption', backref='poll')
+    users_voted = db.relationship('User', secondary=Poll_User_Vote, backref='polls_voted_in') # polls user has voted in
 
 # Individual poll option
 class PollOption(db.Model):

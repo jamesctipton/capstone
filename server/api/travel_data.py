@@ -260,7 +260,8 @@ def get_flights_v2(src_latitude, src_longitude, dst_latitude, dst_longitude, sta
                 "GDS"
             ],
         }
-    response = amadeus.shopping.flight_offers_search.post(body)
+    response = amadeus.shopping.flight_offers_search.get(originLocationCode=src_airport, destinationLocationCode=dst_airport,
+                                                            departureDate=start_date, returnDate=end_date, adults=1, currencyCode="USD")
 
     if(response.data is None):
         return []
@@ -282,7 +283,7 @@ def get_flights_v2(src_latitude, src_longitude, dst_latitude, dst_longitude, sta
                 segment["duration"] = segment["duration"][2:]
 
     return flights_dict
-#get_flights_v2(38.9517, -92.3341, 41.8781, -87.6298, "2022-12-18", "2022-12-25")
+#print(get_flights_v2(38.9517, 38.951, 38.951, 38.951, "2022-12-18", "2022-12-25"))
 
 def get_hotels_v2(latitude, longitude, radius, city, state, country, start_date, end_date):
     try:

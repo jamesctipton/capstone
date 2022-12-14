@@ -36,14 +36,16 @@ class LoginHandler(Resource):
                 options = []
                 # Option population
                 for option in poll.options:
-                    option = {'name': option.optionname,
+                    option = {'optionid': option.id,
+                              'name': option.optionname,
                               'latitude': option.latitude,
                               'longitude': option.longitude,
                               'country_code': option.countryCode,
                               #'image': option.image,
                               'votes': option.votes}
                     options.append(option)
-                poll = {'pollname': poll.pollname,
+                poll = {'pollid': option.id,
+                        'pollname': poll.pollname,
                         'pollCode': poll.pollCode,
                         'pollCategory': poll.pollCategory,
                         'totalVotes': poll.totalVotes,
