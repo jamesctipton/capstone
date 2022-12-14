@@ -69,6 +69,11 @@ class PollOption(db.Model):
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     countryCode = db.Column(db.String(4))
+    flightprice = db.Column(db.Float)
+    departingairport = db.Column(db.String(3))
+    arrivinggairport = db.Column(db.String(3))
+    departingduration = db.Column(db.String(20))
+    arrivingduration = db.Column(db.String(20))
     votes = db.Column(db.Integer)
-    image = db.Column(db.Text(4294000000), nullable=True)
+    #image = db.Column(db.Text(4294000000), nullable=True)
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id')) # poll that option belongs in

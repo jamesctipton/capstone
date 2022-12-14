@@ -37,7 +37,7 @@ def get_destinations(keyword):
 
         df = pd.json_normalize(response.data)
         # Create dataframe of cities, rename columns, and convert to dictionary
-        df = df[["name", "address.countryCode", "address.stateCode", "geoCode.latitude", "geoCode.longitude"]]
+        df = df[["name", "iataCode", "address.countryCode", "address.stateCode", "geoCode.latitude", "geoCode.longitude"]]
         df.rename(columns = {'address.countryCode':'countryCode', 'address.stateCode':'stateCode', 
                              'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
         destinations_dict = df.to_dict('records')
@@ -261,7 +261,7 @@ def get_flights_v2(src_latitude, src_longitude, dst_latitude, dst_longitude, sta
     response = amadeus.shopping.flight_offers_search.get(originLocationCode=src_airport, destinationLocationCode=dst_airport,
                                                             departureDate=start_date, returnDate=end_date, adults=1, currencyCode="USD")
 
-    if(response.data is None):
+    if(response.data == []):
         return []
 
     df = pd.json_normalize(response.data)
@@ -276,35 +276,21 @@ def get_flights_v2(src_latitude, src_longitude, dst_latitude, dst_longitude, sta
             for segment in itinerary['segments']:
                 del segment['aircraft']
                 del (segment['id'])
-                del (segment['numberOfStops'])
+                #del (segment['numberOfStops'])
                 del (segment['blacklistedInEU'])
                 segment["duration"] = segment["duration"][2:]
 
     return flights_dict
-#print(get_flights_v2(38.9517, 38.951, 38.951, 38.951, "2022-12-18", "2022-12-25"))
+#print(get_flights_v2(39.099724, -94.578331, 41.881832, -87.623177, "2022-12-18", "2022-12-25")[0])
 
-def get_hotels_v2(latitude, longitude, radius, city, state, country, start_date, end_date):
+# doesn't work :(
+def get_hotels_v2(cityCode):
     try:
-        response = amadeus.reference_data.locations.hotels.by_geocode.get(longitude=longitude,latitude=latitude,radius=radius,radiusUnit='MILE')
-        if(response.data is None):
-            return []
-
-        df = pd.json_normalize(response.data)
-        df = df[["name", "geoCode.latitude", "geoCode.longitude", "distance.value", "distance.unit"]]
-        df.rename(columns = {'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
-        hotels_dict = df.to_dict('records')
-        
-        for record in hotels_dict:
-            if math.isnan(record['latitude']) or math.isnan(record['longitude']):
-                del record['latitude']
-                del record['longitude']
-            separator = '+'
-            if(state == ""):
-                params = separator.join([record['name'], city, country])
-            else:
-                params = separator.join([record['name'], city, state, country])
-            url = furl('https://www.google.com/search?').add({'q':params}).url
-            record.update({'URL':url})
+        hotels_by_city = amadeus.shopping.hotel_offers.get(cityCode=cityCode)
+        df = json.normalize(hotels_by_city.data)
+        print(df)
+        df = df[[]]
+        hotels_dict = []
 
         return hotels_dict
     except ResponseError as error:

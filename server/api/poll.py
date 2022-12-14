@@ -41,7 +41,11 @@ class CreatePollHandler(Resource):
 
         #print(pollOptions)
         for option in pollOptions:
-            op = PollOption(optionname = option['name'], latitude = option['latitude'], 
+            if (option["category"] == "Flight"):
+                op = PollOption(flightprice = option["price"], departingairport = option["departairport"], arrivinggairport = option["arriveairport"], 
+                                departingduration = option["departduration"],arrivingduration = option["arriveduration"], votes = 0)
+            else:
+                op = PollOption(optionname = option['name'], latitude = option['latitude'], 
                             longitude = option['longitude'], countryCode = option['countryCode'], votes = 0)
             poll.options.append(op)
 
@@ -52,8 +56,12 @@ class CreatePollHandler(Resource):
         return {
             'resultStatus': 'SUCCESS',
             'message': "Poll successfully created",
-            'pollID': pollCode                                 
-        } 
+            'pollname': poll.pollname,
+            'totalVotes': poll.totalVotes,
+            'pollCategory': poll.pollCategory,
+            'pollCode': pollCode,
+            'options': poll.options
+        }
 
 # unfinished
 class VotePollHandler(Resource):

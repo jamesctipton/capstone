@@ -74,8 +74,6 @@ class HotelSearchHandler(Resource):
         city = json_data['city']
         state = json_data['state']
         country = json_data['country']
-        startDate = json_data['startDate']
-        endDate = json_data['endDate']
 
         hotels = get_hotels(latitude, longitude, radius, city, state, country)
 
