@@ -75,7 +75,7 @@ class CreatePollHandler(Resource):
             'totalVotes': poll.totalVotes,
             'pollCategory': poll.pollCategory,
             'pollCode': pollCode,
-            'options': poll.options
+            'options': options
         }
 
 # unfinished
