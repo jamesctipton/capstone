@@ -196,6 +196,7 @@ const FlightSearch = () => {
                                     width: '80%',
                                 }} 
                             />}
+                        disablePast
                     />
                 </div>
                 <div flex={0.1}>
@@ -265,6 +266,7 @@ const FlightSearch = () => {
                                         width: '80%',
                                     }} 
                                 />}
+                            disablePast
                         />
                     </div>
                 </div>
