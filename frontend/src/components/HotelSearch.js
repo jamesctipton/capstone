@@ -188,6 +188,7 @@ const HotelSearch = () => {
             endDate: end
         }).then((response) => {
             const results = response['data']['hotels']
+            console.log(results)
             let temp_array = []
             for(let i = 0; i < results.length; i++) {
                 results[i].id = results[i].name + i.toString()

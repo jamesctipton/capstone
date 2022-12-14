@@ -68,7 +68,47 @@ const FlightSearch = () => {
     ]
     const flightColumns = [
         {
-            
+            field: 'price',
+            headerName: 'Price',
+            minWidth: 100,
+            flex: 0.1
+        },
+        {
+            field: 'departingAP',
+            headerName: 'Departing Airport',
+            minWidth: 200,
+            flex: 0.1
+        },
+        {
+            field: 'departingLength',
+            headerName: 'Departing Flight Time',
+            minWidth: 100,
+            flex: 0.2
+        },
+        {
+            field: 'departingLO',
+            headerName: 'Departing Layovers',
+            minWidth: 150,
+            flex: 0.1
+        },
+        {
+            field: 'arrivingAP',
+            headerName: 'Arrival Airport',
+            minWidth: 200,
+            flex: 0.1,
+        },
+        {
+            field: 'returningLength',
+            headerName: 'Return Flight Time',
+            minWidth: 100,
+            flex: 0.2
+        },
+        
+        {
+            field: 'arrivingLO',
+            headerName: 'Returning Layovers',
+            minWidth: 150,
+            flex: 0.1
         }
     ]
 
@@ -129,6 +169,7 @@ const FlightSearch = () => {
     }
 
     const searchFlights = (startDate, endDate, srcLat, srcLong, destLat, destLong) => {
+        setFlightRows([])
         console.log(startDate, endDate, srcLat, srcLong, destLat, destLong)
         axios.post(search_url+'flights', {
             src_latitude: srcLat,
@@ -138,7 +179,33 @@ const FlightSearch = () => {
             begin_date: startDate,
             end_date: endDate
         }).then((response) => {
-            console.log(response)
+            const results = response['data']['flights']
+            let temp_array = []
+            let temp_itinerary = {
+                id: "",
+                price: 0,
+                departingAP: "",
+                arrivingAP: "",
+                departingLO: 0,
+                arrivingLO: 0,
+                departingLength: "",
+                returningLength: ""
+            }
+            for(let i=0; i < results.length; i++) {
+                results[i].id = results[i].price + i.toString()
+                temp_itinerary = {
+                    id: results[i].price + i.toString(),
+                    price: results[i].price,
+                    departingAP: results[i].itineraries[0].segments[0].departure.iataCode,
+                    arrivingAP: results[i].itineraries[1].segments[0].departure.iataCode,
+                    departingLO: results[i].itineraries[0].segments.length - 1,
+                    arrivingLO: results[i].itineraries[1].segments.length - 1,
+                    departingLength: results[i].itineraries[0].duration.slice(2),
+                    returningLength: results[i].itineraries[1].duration.slice(2)
+                }
+                temp_array.push(temp_itinerary)
+            }
+            setFlightRows(temp_array)
         }).catch((error) => {
             if (error.response) {
                 // The request was made and the server responded with a status code
@@ -289,10 +356,8 @@ const FlightSearch = () => {
                             checkboxSelection
                             isRowSelectable={(p) => (selectedDeparture < 2 || !(selectedDeparture.indexOf(p.row) === -1))}
                             onSelectionModelChange={(ids) => {
-                                console.log(ids)
                                 let temp = ids.map((id) => fromRows.find((row) => row.id === id))
                                 setSelectedDeparture(temp)
-                                console.log(selectedDeparture)
                             }}
                         />
                     :<></>}
@@ -310,8 +375,6 @@ const FlightSearch = () => {
                             onSelectionModelChange={(ids) => {
                                 let temp = ids.map((id) => destRows.find((row) => row.id === id))
                                 setSelectedArrival(temp)
-                                console.log(temp)
-                                console.log(selectedArrival)
                             }}
                         />
                     :<></>}
@@ -319,7 +382,7 @@ const FlightSearch = () => {
                 </div>
             </div>
             : 
-                <div style={{ width: '100%', display: 'flex', marginTop: '2%', marginBottom: '2%', justifyContent: 'space-between' }}>
+                <div style={{ width: '100%', display: 'flex', marginTop: '2%', marginBottom: '2%', justifyContent: 'space-between', height: 475 }}>
                     <DataGrid
                         rows={flightRows}
                         columns={flightColumns}
