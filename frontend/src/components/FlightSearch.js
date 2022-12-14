@@ -7,7 +7,11 @@ import {
     Button,
     OutlinedInput,
     IconButton,
-    Box
+    Box,
+    Divider,
+    MenuItem,
+    Select,
+    InputLabel
 } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -37,7 +41,9 @@ const FlightSearch = () => {
     const [groupValue, setGroupValue] = useState("")
     const [departDate, setDepartDate] = useState("")
     const [returnDate, setReturnDate] = useState("")
-
+    const [selectedFlights, setSelectedFlights] = useState([])
+    const [persistentFlights, setPersistentFlights] = useState([])
+    const [loading, setLoading] = useState(false)
 
     //constant variables for component
     const navigate = useNavigate()
@@ -84,7 +90,7 @@ const FlightSearch = () => {
             field: 'departingLength',
             headerName: 'Departing Flight Time',
             minWidth: 100,
-            flex: 0.2
+            flex: 0.2,
         },
         {
             field: 'departingLO',
@@ -154,22 +160,39 @@ const FlightSearch = () => {
         }
     }
 
-    const createPoll = (group, pollName, destinations) => {
-        console.log(group, pollName, destinations)
+    const createPoll = (group, pollName, flights) => {
+        console.log(group, pollName, flights)
         axios.post(create_poll_url, {
             pollname: pollName,
             user: user.name,
             groupid: group,
-            options: destinations,
+            pollOptions: flights,
             category: 'flight'
         }).then((response) => {
             console.log(response)
         }).catch((error) => {
-            setError({ message: error, result: true })
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                // console.log(error.response.data);
+                // console.log(error.response.status);
+                // console.log(error.response.headers);
+                alert("Request to server failed.");
+            } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the 
+                // browser and an instance of
+                // http.ClientRequest in node.js
+                alert("Server time out.");
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+            }
         })
     }
 
     const searchFlights = (startDate, endDate, srcLat, srcLong, destLat, destLong) => {
+        setLoading(true)
         setFlightRows([])
         console.log(startDate, endDate, srcLat, srcLong, destLat, destLong)
         axios.post(search_url+'flights', {
@@ -180,6 +203,7 @@ const FlightSearch = () => {
             begin_date: startDate,
             end_date: endDate
         }).then((response) => {
+            setLoading(false)
             const results = response['data']['flights']
             let temp_array = []
             let temp_itinerary = {
@@ -201,13 +225,14 @@ const FlightSearch = () => {
                     arrivingAP: results[i].itineraries[1].segments[0].departure.iataCode,
                     departingLO: results[i].itineraries[0].segments.length - 1,
                     arrivingLO: results[i].itineraries[1].segments.length - 1,
-                    departingLength: results[i].itineraries[0].duration.slice(2),
-                    returningLength: results[i].itineraries[1].duration.slice(2)
+                    departingLength: results[i].itineraries[0].duration.slice(2).toLowerCase(),
+                    returningLength: results[i].itineraries[1].duration.slice(2).toLowerCase()
                 }
                 temp_array.push(temp_itinerary)
             }
             setFlightRows(temp_array)
         }).catch((error) => {
+            setLoading(false)
             if (error.response) {
                 // The request was made and the server responded with a status code
                 // that falls out of the range of 2xx
@@ -390,6 +415,34 @@ const FlightSearch = () => {
                         pageSize={7}
                         rowsPerPageOptions={[7]}
                         checkboxSelection
+                        isRowSelectable={(p) => (selectedFlights.length) < 5 || !(selectedFlights.indexOf(p.row) === -1)}
+                        onSelectionModelChange={(ids) => {
+                            let temp = ids.map((id) => flightRows.find((row) => row.id === id))                            
+                            let t2 = selectedFlights
+                            setSelectedFlights(temp)
+                            if(persistentFlights.length === 0) {
+                                setPersistentFlights(temp)
+                            }
+                            let current = persistentFlights
+                            let x = temp.filter(n => !selectedFlights.includes(n))
+                            if(x[0] !== undefined) {
+                                current.push(x[0])
+                            }
+                            // for deletions
+                            if((temp.length < t2.length) && temp.length > 0) {
+                                let remove = t2[t2.length - 1]
+                                let j = current.findIndex((y) => y === remove)
+                                current.splice(j, 1)
+                            }
+                            if(temp.length === 0 && t2.length === 1) {
+                                if(current.length === 1)
+                                    current = []
+                                else {
+                                    current.pop()
+                                }
+                            }
+                            setPersistentFlights(current)
+                        }}
                     />
                 </div>
             }
@@ -398,9 +451,46 @@ const FlightSearch = () => {
                 type='button'
                 variant="outlined"
                 sx={{ m: 1, borderWidth: 3, borderRadius: 30, borderColor: 'primary', whiteSpace: 'nowrap', minWidth: 'maxcontent', '&:hover': { borderWidth: 3 }, width: 200, height: 50, fontSize: 20 }}
-                disabled={(from === "" || to === "" || departDate === "" || returnDate === "" || selectedDeparture.lenght === 0 || selectedArrival.length === 0 )}
+                disabled={(from === "" || to === "" || departDate === "" || returnDate === "" || selectedDeparture.lenght === 0 || selectedArrival.length === 0 || loading)}
                 onClick={() => searchFlights(departDate.toString(), returnDate.toString(), selectedDeparture[0].latitude, selectedDeparture[0].longitude, selectedArrival[0].latitude, selectedArrival[0].longitude)}
-            >Search Flights</Button>
+            >{loading ? "Loading..." : "Search Flights"}</Button>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, minWidth: 'max-content'}}>
+                    {user != undefined ?
+                    <FormControl fullWidth>
+                    <InputLabel id="select-label">Group</InputLabel>
+                    <Select
+                        id="group"
+                        labelId="select-group"
+                        value={groupValue}
+                        label="Group"
+                        onChange={(e) => {
+                            setGroupValue(e.target.value)
+                            // setSelectedDestinations([])
+                        }}
+                        variant="outlined"
+                        sx={{ minWidth: '100px' }}
+                        autoWidth
+                    >
+                    {(user.groups.length > 0) ? 
+                        user.groups.map((g, i) => {
+                            return(
+                                <MenuItem key={i} value={g.groupCode}>{g.groupname}</MenuItem>
+                            )
+                        }): <MenuItem>No groups available</MenuItem>}
+                        <Divider orientation="horizontal"  variant="middle" flexItem sx={{ background: 'rgba(162, 162, 162, 0.86)', width: '80%'}}></Divider>
+                        <Button sx={{ marginLeft: '8%' }} onClick={() => navigateToCreateGroup()}>Create Group</Button>
+                    </Select>
+                </FormControl>
+                : <></>}
+                    <TextField id='poll_name' label="Poll Name" variant="outlined" onChange={(e) => setPollName(e.target.value)} value={pollNameValue} sx={{ minWidth: 'max-content'}}></TextField>
+                    <Button 
+                        disabled={(!(user || persistentFlights.length > 5) && (persistentFlights.length === 1 || persistentFlights.length === 0)) || (groupValue === "" || pollNameValue === "")}
+                        sx={{ border: '2px solid orange', borderRadius: 1, padding: 1, whiteSpace: 'no-wrap', minWidth: 'max-content' }} 
+                        onClick={() => createPoll(groupValue, pollNameValue, persistentFlights)}
+                    >
+                        Add Poll
+                    </Button>
+                </div>
             </div>
         </div>
     )
