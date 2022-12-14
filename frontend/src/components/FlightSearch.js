@@ -37,6 +37,7 @@ const FlightSearch = () => {
     const [departDate, setDepartDate] = useState("")
     const [returnDate, setReturnDate] = useState("")
 
+
     //constant variables for component
     const navigate = useNavigate()
     const navigateToCreateGroup = () => {
@@ -279,8 +280,11 @@ const FlightSearch = () => {
                             checkboxSelection
                             isRowSelectable={(p) => (selectedDeparture < 2 || !(selectedDeparture.indexOf(p.row) === -1))}
                             onSelectionModelChange={(ids) => {
+                                console.log(ids)
+                                console.log(fromRows)
                                 let temp = ids.map((id) => fromRows.find((row) => row.id === id))
                                 setSelectedDeparture(temp)
+                                console.log(selectedDeparture)
                             }}
                         />
                     :<></>}
@@ -294,10 +298,13 @@ const FlightSearch = () => {
                             pageSize={7}
                             rowsPerPageOptions={[7]}
                             checkboxSelection
+                            disableSelectionOnClick
                             isRowSelectable={(p) => (selectedArrival < 2) || !(selectedArrival.indexOf(p.row) === -1)}
                             onSelectionModelChange={(ids) => {
                                 let temp = ids.map((id) => destRows.find((row) => row.id === id))
                                 setSelectedArrival(temp)
+                                console.log(temp)
+                                console.log(selectedArrival)
                             }}
                         />
                     :<></>}
@@ -309,7 +316,7 @@ const FlightSearch = () => {
                 type='button'
                 variant="outlined"
                 sx={{ m: 1, borderWidth: 3, borderRadius: 30, borderColor: 'primary', whiteSpace: 'nowrap', minWidth: 'maxcontent', '&:hover': { borderWidth: 3 }, width: 200, height: 50, fontSize: 20 }}
-                disabled={(from === "" || to === "" || departDate === "" || returnDate === "" || selectedDeparture === [] || selectedArrival === [])}
+                disabled={(from === "" || to === "" || departDate === "" || returnDate === "" || selectedDeparture.lenght === 0 || selectedArrival.length === 0 )}
                 onClick={() => searchFlights(departDate.toString(), returnDate.toString(), selectedDeparture[0].latitude, selectedDeparture[0].longitude, selectedArrival[0].latitude, selectedArrival[0].longitude)}
             >Search Flights</Button>
             </div>
