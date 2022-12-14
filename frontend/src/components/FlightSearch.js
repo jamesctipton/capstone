@@ -71,7 +71,8 @@ const FlightSearch = () => {
             field: 'price',
             headerName: 'Price',
             minWidth: 100,
-            flex: 0.1
+            flex: 0.1,
+            valueFormatter: ({ value }) => `$${value}`
         },
         {
             field: 'departingAP',
