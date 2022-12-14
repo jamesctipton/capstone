@@ -44,7 +44,7 @@ class LoginHandler(Resource):
                               #'image': option.image,
                               'votes': option.votes}
                     options.append(option)
-                poll = {'pollid': option.id,
+                poll = {'pollid': poll.id,
                         'pollname': poll.pollname,
                         'pollCode': poll.pollCode,
                         'pollCategory': poll.pollCategory,
