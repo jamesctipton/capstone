@@ -41,7 +41,7 @@ class CreatePollHandler(Resource):
 
         #print(pollOptions)
         for option in pollOptions:
-            if (option["category"] == "Flight"):
+            if (option["category"] == "flight"):
                 op = PollOption(flightprice = option["price"], departingairport = option["departingAP"], arrivinggairport = option["arrivingAP"], 
                                 departingduration = option["departingLength"],arrivingduration = option["returningLength"], votes = 0)
             else:
