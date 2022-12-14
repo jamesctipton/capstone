@@ -37,7 +37,7 @@ def get_destinations(keyword):
 
         df = pd.json_normalize(response.data)
         # Create dataframe of cities, rename columns, and convert to dictionary
-        df = df[["name", "iataCode", "address.countryCode", "address.stateCode", "geoCode.latitude", "geoCode.longitude"]]
+        df = df[["name", "address.countryCode", "address.stateCode", "geoCode.latitude", "geoCode.longitude"]]
         df.rename(columns = {'address.countryCode':'countryCode', 'address.stateCode':'stateCode', 
                              'geoCode.latitude':'latitude', 'geoCode.longitude': 'longitude'}, inplace = True)
         destinations_dict = df.to_dict('records')
