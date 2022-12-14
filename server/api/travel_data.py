@@ -94,7 +94,7 @@ def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, depart
 
     
     try:
-        '''
+        
         body = {
             "originDestinations": [
                 {
@@ -119,9 +119,7 @@ def get_flights(src_latitude, src_longitude, dst_latitude, dst_longitude, depart
         }
 
         response = amadeus.shopping.availability.flight_availabilities.post(body)
-        '''
-        response = amadeus.shopping.flight_offers_search.get(originLocationCode=src_airport, destinationLocationCode=dst_airport,
-                                                        departureDate=departure_date, adults=1).data
+
         if(response.data is None):
             return []
 
