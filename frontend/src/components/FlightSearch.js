@@ -140,23 +140,23 @@ const FlightSearch = () => {
         }).then((response) => {
             console.log(response)
         }).catch((error) => {
-            // if (error.response) {
-            //     // The request was made and the server responded with a status code
-            //     // that falls out of the range of 2xx
-            //     // console.log(error.response.data);
-            //     // console.log(error.response.status);
-            //     // console.log(error.response.headers);
-            //     alert("Request to server failed.");
-            // } else if (error.request) {
-            //     // The request was made but no response was received
-            //     // `error.request` is an instance of XMLHttpRequest in the 
-            //     // browser and an instance of
-            //     // http.ClientRequest in node.js
-            //     alert("Server time out.");
-            // } else {
-            //     // Something happened in setting up the request that triggered an Error
-            //     console.log('Error', error.message);
-            // }
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                // console.log(error.response.data);
+                // console.log(error.response.status);
+                // console.log(error.response.headers);
+                alert("Request to server failed.");
+            } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the 
+                // browser and an instance of
+                // http.ClientRequest in node.js
+                alert("Server time out.");
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+            }
             // console.log = console.warn = console.error = () => {};
         })
     }
@@ -252,10 +252,6 @@ const FlightSearch = () => {
                             </OutlinedInput>
                         </FormControl>
                     </div>
-                    { errorValue.result ? 
-                        <Box sx={{ border: '3px solid red', background: 'rgba(255, 0, 0, 0.1)', color: 'red', padding: 2 }}>
-                            <Typography>{errorValue.message}</Typography>
-                        </Box> : <></> }
                     <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
                         <DesktopDatePicker
                             label="Return Date"
@@ -277,6 +273,10 @@ const FlightSearch = () => {
                     </div>
                 </div>
             </div>
+            { errorValue.result ? 
+                        <Box sx={{ border: '3px solid red', background: 'rgba(255, 0, 0, 0.1)', color: 'red', padding: 2 }}>
+                            <Typography>{errorValue.message}</Typography>
+            </Box> : <></> }
             {flightRows.length === 0 ? 
             <div id='results-container' style={{ width: '100%', display: 'flex', marginTop: '2%', marginBottom: '2%', justifyContent: 'space-between' }}>               
                 <div id='start-flight-results' style={{ width: '48%', display: 'flex', justifyContent: 'flex-start', flexDirection: 'column', height: 475 }}>
