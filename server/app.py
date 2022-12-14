@@ -19,12 +19,12 @@ api.add_resource(JoinGroupHandler, '/join-group')
 api.add_resource(EditGroupHandler,'/edit-group')
 api.add_resource(CreatePollHandler,'/create-poll')
 api.add_resource(VotePollHandler,'/vote-poll')
+api.add_resource(RemoveVotePollHandler, '/remove-vote-poll')
 api.add_resource(DestinationSearchHandler, '/search-destinations')
 api.add_resource(HotelSearchHandler, '/search-hotels')
 api.add_resource(PoiSearchHandler, '/search-pois')
 api.add_resource(FlightSearchHandler, '/search-flights')
-api.add_resource(VotePollHandler, '/vote')
-api.add_resource(RemoveVotePollHandler, '/remove-vote')
+
 
 
 if __name__ == "__main__":
