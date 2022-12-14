@@ -40,14 +40,29 @@ class CreatePollHandler(Resource):
                     totalVotes=totalVotes, pollCategory = category)
 
         #print(pollOptions)
+        options = []
         for option in pollOptions:
             if (category == "flight"):
                 op = PollOption(flightprice = option["price"], departingairport = option["departingAP"], arrivinggairport = option["arrivingAP"], 
                                 departingduration = option["departingLength"],arrivingduration = option["returningLength"], votes = 0)
+                option = {
+                'flightprice': option.flightprice,
+                'departingairport': option.departingairport,
+                'arrivinggairport': option.arrivinggairport,
+                'departingduration': option.departingduration,
+                'arrivingduration': option.arrivingduration,
+                'votes': option.votes}
             else:
                 op = PollOption(optionname = option['name'], latitude = option['latitude'], 
                             longitude = option['longitude'], countryCode = option['countryCode'], votes = 0)
+                option = {
+                'name': option.optionname,
+                'latitude': option.latitude,
+                'longitude': option.longitude,
+                'country_code': option.countryCode,
+                'votes': option.votes}
             poll.options.append(op)
+        
 
         # add poll to db, assign creator and group
         db.session.add(poll)
