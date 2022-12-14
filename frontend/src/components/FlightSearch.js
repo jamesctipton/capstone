@@ -30,6 +30,7 @@ const FlightSearch = () => {
     const [from, setFrom] = useState("")
     const [fromRows, setFromRows] = useState([])
     const [destRows, setDestRows] = useState([])
+    const [flightRows, setFlightRows] = useState([])
     const [selectedDeparture, setSelectedDeparture] = useState([])
     const [selectedArrival, setSelectedArrival] = useState([])   
     const [pollNameValue, setPollName] = useState("")
@@ -64,6 +65,11 @@ const FlightSearch = () => {
             flex: 0.10
         },
 
+    ]
+    const flightColumns = [
+        {
+            
+        }
     ]
 
     setTimeout(() => {
@@ -252,7 +258,7 @@ const FlightSearch = () => {
                         </Box> : <></> }
                     <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
                         <DesktopDatePicker
-                            label="Arrival Date"
+                            label="Return Date"
                             inputFormat="MM/DD/YYYY"
                             value={returnDate}
                             onChange={setReturnDate}
@@ -271,7 +277,8 @@ const FlightSearch = () => {
                     </div>
                 </div>
             </div>
-            <div id='results-container' style={{ width: '100%', display: 'flex', marginTop: '2%', marginBottom: '2%', justifyContent: 'space-between' }}>                
+            {flightRows.length === 0 ? 
+            <div id='results-container' style={{ width: '100%', display: 'flex', marginTop: '2%', marginBottom: '2%', justifyContent: 'space-between' }}>               
                 <div id='start-flight-results' style={{ width: '48%', display: 'flex', justifyContent: 'flex-start', flexDirection: 'column', height: 475 }}>
                     {fromRows.length > 0 ?
                         <DataGrid
@@ -283,7 +290,6 @@ const FlightSearch = () => {
                             isRowSelectable={(p) => (selectedDeparture < 2 || !(selectedDeparture.indexOf(p.row) === -1))}
                             onSelectionModelChange={(ids) => {
                                 console.log(ids)
-                                console.log(fromRows)
                                 let temp = ids.map((id) => fromRows.find((row) => row.id === id))
                                 setSelectedDeparture(temp)
                                 console.log(selectedDeparture)
@@ -300,7 +306,6 @@ const FlightSearch = () => {
                             pageSize={7}
                             rowsPerPageOptions={[7]}
                             checkboxSelection
-                            disableSelectionOnClick
                             isRowSelectable={(p) => (selectedArrival < 2) || !(selectedArrival.indexOf(p.row) === -1)}
                             onSelectionModelChange={(ids) => {
                                 let temp = ids.map((id) => destRows.find((row) => row.id === id))
@@ -313,6 +318,17 @@ const FlightSearch = () => {
                     
                 </div>
             </div>
+            : 
+                <div style={{ width: '100%', display: 'flex', marginTop: '2%', marginBottom: '2%', justifyContent: 'space-between' }}>
+                    <DataGrid
+                        rows={flightRows}
+                        columns={flightColumns}
+                        pageSize={7}
+                        rowsPerPageOptions={[7]}
+                        checkboxSelection
+                    />
+                </div>
+            }
             <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
             <Button 
                 type='button'
