@@ -263,9 +263,10 @@ const DestinationSearch = ({ type, setDestination }) => {
                         checkboxSelection={type != 'hotel' && type != 'poi'}
                         isRowSelectable={(p) => (persistentDest.length) < 5 || !(selectedDestinations.indexOf(p.row) === -1)}
                         onSelectionModelChange={(ids) => {
-                            let temp = ids.map((id) => rows.find((row) => row.id === id))
+                            let temp = ids.map((id) => rows.find((row) => row.id === id))                            
                             let t2 = selectedDestinations
                             setSelectedDestinations(temp)
+                            console.log(selectedDestinations)
                             if(persistentDest.length === 0) {
                                 setPersistentDest(temp)
                             }
